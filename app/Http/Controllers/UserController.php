@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\UserDetail;
 use App\Role;
 use DB;
 use Hash;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -117,8 +119,41 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        User::find($id)->delete();
-        return redirect()->route('users.index')
+        User::where('id',$id)->delete();
+        return redirect()->back()
             ->with('success','User deleted successfully');
+    }
+
+    public function staffs()
+    {
+        $staffs = User::all();
+        return view('staffs.index', compact('staffs'));
+    }
+
+    public function create_staff(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|unique:users|max:255',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+
+        $request['password'] = Hash::make($request->password); //Hash password
+        $createUser = User::create($request->all()); //Create User table entry
+
+
+        if($createUser){
+            $request['user_id'] = $createUser->id; // Get User ID
+            $createUserDetails = UserDetail::create($request->all());
+
+            //Attach the Staff Role
+            $role_id = Role::where('name','staff')->first()->id;
+            if($role_id)     
+                $createUser->attachRole($role_id);
+        }
+        
+
+        return 'done';
     }
 }

@@ -12,9 +12,7 @@
 */
 
 Route::get('/', 'HomeController@index')->name('dashboard');
-Route::get('/test',function(){
-	return view('test');
-});
+
 
 Auth::routes();
 
@@ -22,3 +20,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['role:superAdmin']], functio
     Route::resource('roles','RoleController');
     Route::resource('users','UserController');
 });
+
+Route::get('/staffs','UserController@staffs')->name('staffs.index');
+Route::post('/createStaff','UserController@create_staff')->name('staffs.create');
+
+Route::resource('attendance','AttendanceController');
+Route::resource('clients','ClientController');
+Route::resource('jobs','JobController');
+Route::get('listJobs','JobController@jobs');

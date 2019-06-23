@@ -1,5 +1,7 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
-    "/js/system.js": "/js/system.js"
+    "/system/vue/clients.js": "/system/vue/clients.js",
+    "/system/vue/jobs.js": "/system/vue/jobs.js",
+    "/system/vue/staffs.js": "/system/vue/staffs.js"
 }

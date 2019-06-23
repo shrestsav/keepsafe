@@ -36,7 +36,12 @@ class DatabaseSeeder extends Seeder
                 'name' => 'admin', 
                 'display_name' => 'Admin', 
                 'description' => 'Admin Role'
-            ]
+            ],
+            [
+                'name' => 'staff', 
+                'display_name' => 'Staff', 
+                'description' => 'Staff Role'
+            ],
         ];
         
         foreach ($other_roles as $key => $value) {

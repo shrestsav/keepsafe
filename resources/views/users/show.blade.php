@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app',['title'=>'Clients'])
 
 @section('content')
 <div class="row justify-content-xl-center">

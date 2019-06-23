@@ -1,11 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.app',['title'=>'Clients'])
 
 @section('content')
-@if ($message = Session::get('success'))
-<div class="alert alert-success">
-  <p>{{ $message }}</p>
-</div>
-@endif
+
 <div class="row justify-content-xl-center">
   <div class="col-xl-8">
     <div class="card">
@@ -14,7 +10,7 @@
           <div class="col-6">
             <h3 class="mb-0">User Management</h3>
           </div>
-{{--           <div class="col-6 text-right">
+          {{--<div class="col-6 text-right">
             <a href="{{ route('users.create') }}" class="btn btn-outline-primary" data-toggle="tooltip" data-original-title="Edit product">
               <span class="btn-inner--icon"><i class="fas fa-user-edit"></i></span>
               <span class="btn-inner--text">New User</span>
@@ -59,8 +55,8 @@
             </tr>
             @endforeach
           </tbody>
-          {{ $users->links() }} 
         </table>
+        {{ $users->links() }} 
       </div>
     </div>
   </div>
