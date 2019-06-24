@@ -14,4 +14,9 @@ class ClientContact extends Model
         'fax',
         'email',
     ];
+
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
 }

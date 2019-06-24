@@ -31,7 +31,12 @@ class JobController extends Controller
 
     public function jobs()
     {
-        $jobs = Job::all();
+        $jobs = Job::with('client')->get();
+        foreach($jobs as $job){
+            $contacts = $job->clientContacts();
+            $job['contacts'] = $contacts;
+        }
+    
         return $jobs;
     }
     /**
@@ -49,7 +54,7 @@ class JobController extends Controller
             'status' => 'required',
             'invoice_note' => 'required|string|max:555',
         ]);
-
+        $request['client_contacts'] = json_encode($request->client_contacts);
         $job = Job::create($request->all());
 
     }

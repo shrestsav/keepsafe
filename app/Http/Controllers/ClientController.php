@@ -99,4 +99,10 @@ class ClientController extends Controller
     {
         //
     }
+
+    public function clientContacts(Request $request)
+    {
+        $clientContacts = Client::find($request->client_id)->contacts;
+        return $clientContacts;
+    }
 }

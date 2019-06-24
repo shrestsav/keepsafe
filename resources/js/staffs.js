@@ -7,12 +7,14 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import create from './components/staffs/create.vue'
+import index from './components/staffs/index.vue'
 
 
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/addStaff', component: create },
+  {name:'createStaff', path: '/create', component: create },
+  {name:'listStaff', path: '/', component: index },
 ]
 
 const router = new VueRouter({

@@ -130,6 +130,16 @@ class UserController extends Controller
         return view('staffs.index', compact('staffs'));
     }
 
+    public function listStaffs()
+    {
+        $staffs = User::whereHas('roles', function ($query) {
+                          $query->where('name', '=', 'staff');
+                        })
+                        ->with('details')
+                        ->get();
+        return $staffs;
+    }
+
     public function create_staff(Request $request)
     {
         $validatedData = $request->validate([
@@ -138,10 +148,8 @@ class UserController extends Controller
             'password' => 'required|string|min:6|confirmed',
         ]);
 
-
         $request['password'] = Hash::make($request->password); //Hash password
         $createUser = User::create($request->all()); //Create User table entry
-
 
         if($createUser){
             $request['user_id'] = $createUser->id; // Get User ID
@@ -152,7 +160,6 @@ class UserController extends Controller
             if($role_id)     
                 $createUser->attachRole($role_id);
         }
-        
 
         return 'done';
     }

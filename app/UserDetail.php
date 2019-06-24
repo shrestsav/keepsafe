@@ -18,4 +18,9 @@ class UserDetail extends Model
         'joined_date',
         'documents'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -24,16 +24,26 @@
             <td>{{item.location}}</td>
             <td>{{item.suburb}}</td>
             <td>{{item.footnote}}</td>
-            <td></td>
+            <td>
+              <a href="#" class="table-action" @click="showDetails(key-1)" data-toggle="modal" data-target="#showJobDetails">
+                <i class="fas fa-eye"></i>
+              </a>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
+    <show></show>
   </div>
 </template>
 
 <script>
+  import show from './show.vue'
+
   export default{
+    components: {
+      show
+    },
     data(){
       return{
         errors:{},
@@ -41,14 +51,22 @@
       }
     },
     mounted(){
+      this.$Progress.start();
       axios.get('/listJobs')
         .then((response) => {
           console.log(response)
           this.jobs = response.data;
+          this.$Progress.finish();
         })
         .catch((error) => {
         })
     },
+    methods:{
+      showDetails(key){
+        this.$children[0].details = this.jobs[key]
+      }
+    }
+
   }
 
 </script>

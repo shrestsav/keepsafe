@@ -26,4 +26,14 @@ class Client extends Model
         'charge_rate',
         'footnote',
     ];
+
+    public function contacts()
+    {
+        return $this->hasMany(ClientContact::class);
+    }
+
+    public function jobs()
+    {
+        return $this->hasMany(Job::class);
+    }
 }

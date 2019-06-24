@@ -1,6 +1,6 @@
 @extends('layouts.app',['title'=>'Clients'])
 
-@section('subMenus')
+@section('headerMenu')
   <router-link to="/" class="btn btn-sm btn-neutral">
     <span class="btn-inner--icon"><i class="fas fa-user-edit"></i></span>
     <span class="btn-inner--text">Client List</span>

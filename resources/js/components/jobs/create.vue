@@ -28,7 +28,26 @@
                   <input class="custom-control-input" id="customCheck2" type="checkbox" checked="" v-model="job['cr_ac_approve']">
                   <label class="custom-control-label" for="customCheck2">Credit Account Approved</label>
                 </div>
-                <v-select v-if="item['type']==='select' && key==='client_id'" v-model="job.client_id" :options="clients" :reduce="name => name.id" label="name" placeholder="Select Clients" />
+                <v-select
+                  class="form-control"  
+                  v-if="item['type']==='select' && key==='client_id'" 
+                  v-model="job.client_id" 
+                  :options="clients" 
+                  :reduce="name => name.id" 
+                  label="name" 
+                  placeholder="Select Client"
+                />
+                <v-select
+                  multiple
+                  class="form-control" 
+                  v-if="item['type']==='select' && key==='client_contacts'" 
+                  v-model="job.client_contacts" 
+                  :options="clientContacts" 
+                  :reduce="name => name.id" 
+                  label="name" 
+                  placeholder="Add Client Contacts"
+                  v-on:change="callme()" 
+                />
                 <select v-if="item['type']==='select' && key==='job_type'" v-model="job.job_type" class="form-control">
                   <option v-for="type,id in job_types" :value="id">{{type}}</option>
                 </select>
@@ -67,40 +86,6 @@
         </div>
         <hr class="my-4"/>
       </div>
-<!--       <h6 class="heading-small text-muted mb-4">Client Contacts</h6>
-      <div class="row" v-for="(field, index) in job.contacts">
-        <div class="col-md-3">
-          <div class="form-group">
-            <input :class="{'not-validated':errors.contacts}"  type="text" class="form-control" placeholder="Name" v-model="field.name">
-          </div>
-        </div>
-        <div class="col-md-2">
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder="Position" v-model="field.position">
-          </div>
-        </div>
-        <div class="col-md-2">
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder="Phone" v-model="field.phone">
-          </div>
-        </div>
-        <div class="col-md-2">
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder="Fax" v-model="field.fax">
-          </div>
-        </div>
-        <div class="col-md-2">
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder="Email" v-model="field.email">
-          </div>
-        </div>
-        <div class="col-md-1">
-          <button class="btn btn-outline-danger" @click="deleteRow(index)">Delete</button>
-        </div>
-
-      </div>
-      <button class="btn btn-outline-success" @click="addRow">Add Client Contacts</button>
-      -->
     </div>
     <div class="card-footer text-center">
        <button class="btn btn-outline-primary" @click="save">Save changes</button>
@@ -135,9 +120,9 @@
           AMORR:'',
           status:'',
           invoice_note:'',
-          contacts:[],
         },
         clients:{},
+        clientContacts:{},
         errors:{},
         fields:{
           'Job Information':{
@@ -226,23 +211,10 @@
         })
     },
     methods:{
-      addRow() {
-        this.job.contacts.push({
-          name: '',
-          position: '',
-          phone: '',
-          fax: '',
-          email: '',
-        })
-      },
-      deleteRow(index) {
-        this.job.contacts.splice(index,1)
-      },
-      save(){
-        axios.post('/jobs',this.$data.job)
+      getClientContacts(client_id){
+        axios.post('/clientContacts',{'client_id':client_id})
           .then((response) => {
-            this.$router.push({ path: '/' });
-            showNotify('primary','Job Created');
+            this.clientContacts = response.data;
           })
           .catch((error) => {
             this.errors = error.response.data.errors;
@@ -250,13 +222,39 @@
               showNotify('danger',this.errors[prop])
             }       
           })
+      },
+      save(){
+        axios.post('/jobs',this.$data.job)
+        .then((response) => {
+          this.$router.push({ path: '/' });
+          showNotify('primary','Job Created');
+        })
+        .catch((error) => {
+          this.errors = error.response.data.errors;
+          for (var prop in this.errors) {
+            showNotify('danger',this.errors[prop])
+          }       
+        })
       }
-    }
+    },
+    computed: {
+      client_id() {
+        return this.job.client_id;
+      }
+    },
+    watch: {
+      client_id(newVal) {
+        this.getClientContacts(newVal);
+      }
+    },
   }
 
 </script>
-<style scoped>
+<style>
   .not-validated{
     border-color: #fb6340;
+  }
+  .form-control .vs__dropdown-toggle {
+    border: 0px !important;
   }
 </style>

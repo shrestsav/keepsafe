@@ -22,4 +22,18 @@ class Job extends Model
 		'status',
 		'invoice_note',
     ];
+
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
+
+    public function clientContacts()
+    {
+    	$contacts = [];
+    	$ids = json_decode($this->client_contacts, true);
+    	if($ids)
+            $contacts = ClientContact::whereIn('id',$ids)->get();
+        return $contacts;
+    }
 }

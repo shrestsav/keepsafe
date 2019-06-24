@@ -22,9 +22,19 @@ Route::group(['prefix' => 'admin', 'middleware' => ['role:superAdmin']], functio
 });
 
 Route::get('/staffs','UserController@staffs')->name('staffs.index');
+Route::get('/listStaffs','UserController@listStaffs')->name('staffs.list');
 Route::post('/createStaff','UserController@create_staff')->name('staffs.create');
 
 Route::resource('attendance','AttendanceController');
+
 Route::resource('clients','ClientController');
+Route::post('clientContacts','ClientController@clientContacts');
+
 Route::resource('jobs','JobController');
 Route::get('listJobs','JobController@jobs');
+
+//Config variables
+Route::get('jobTypes','CoreController@jobTypes');
+Route::get('jobStatuses','CoreController@jobStatuses');
+Route::get('states','CoreController@states');
+
