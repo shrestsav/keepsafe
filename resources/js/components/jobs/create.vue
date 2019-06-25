@@ -2,8 +2,15 @@
   <div class="card">
     <div class="card-header">
       <div class="row align-items-center">
-        <div class="col-8">
-          <h3 class="mb-0">Create Job</h3>
+        <div class="col-1">
+          <h3 class="mb-0">Job</h3>
+        </div>
+        |
+        <div class="col-2">
+          <router-link :to="{ name: 'jobEvent'}">
+            <h3 class="mb-0">Event</h3>
+          </router-link>
+          
         </div>
       </div>
     </div>
@@ -28,7 +35,7 @@
                   <input class="custom-control-input" id="customCheck2" type="checkbox" checked="" v-model="job['cr_ac_approve']">
                   <label class="custom-control-label" for="customCheck2">Credit Account Approved</label>
                 </div>
-                <v-select
+                <!-- <v-select
                   class="form-control"  
                   v-if="item['type']==='select' && key==='client_id'" 
                   v-model="job.client_id" 
@@ -46,8 +53,14 @@
                   :reduce="name => name.id" 
                   label="name" 
                   placeholder="Add Client Contacts"
-                  v-on:change="callme()" 
-                />
+                /> -->
+                <select class="form-control" v-if="item['type']==='select' && key==='client_id'" v-model="job.client_id">
+                  <option v-for="client in clients" :value="client.id">{{client.name}}</option>
+                </select>
+                <select multiple class="form-control" v-if="item['type']==='select' && key==='client_contacts'" v-model="job.client_contacts" >
+                  <option v-for="contact in clientContacts" :value="contact.id">{{contact.name}}</option>
+                </select>
+
                 <select v-if="item['type']==='select' && key==='job_type'" v-model="job.job_type" class="form-control">
                   <option v-for="type,id in job_types" :value="id">{{type}}</option>
                 </select>
@@ -88,7 +101,8 @@
       </div>
     </div>
     <div class="card-footer text-center">
-       <button class="btn btn-outline-primary" @click="save">Save changes</button>
+       <button class="btn btn-outline-primary" @click="save" v-if="create">Save changes</button>
+       <button class="btn btn-outline-primary" @click="update" v-if="!create">Update changes</button>
     </div>
   </div>
 </template>
@@ -102,13 +116,14 @@
     components: {
       vSelect
     },
-    props: ['job_types','job_statuses'],
+    props: ['job_types','job_statuses','type','job_id'],
     data(){
       return{
+        create:true,
         job: {
           job_type:'',
           client_id:'',
-          client_contacts:'',
+          client_contacts:[],
           purchase_order:'',
           location:'',
           site_contact:'',
@@ -203,6 +218,13 @@
       }
     },
     mounted(){
+      if(this.type==='edit'){
+        this.create = false,
+        this.getJobData(this.job_id);
+      }
+      if(this.type!=='create' && this.type!=='edit')
+        this.create = true;
+
       axios.get('/jobs/create')
         .then((response) => {
           this.clients = response.data;
@@ -211,6 +233,19 @@
         })
     },
     methods:{
+      getJobData(id){
+        axios.get('/jobs/'+id+'/edit')
+        .then((response) => {
+          this.job = response.data;
+          this.job.client_contacts = JSON.parse(response.data.client_contacts)
+        })
+        .catch((error) => {
+          this.errors = error.response.data.errors;
+          for (var prop in this.errors) {
+            showNotify('danger',this.errors[prop])
+          }       
+        })
+      },
       getClientContacts(client_id){
         axios.post('/clientContacts',{'client_id':client_id})
           .then((response) => {
@@ -235,6 +270,9 @@
             showNotify('danger',this.errors[prop])
           }       
         })
+      },
+      update(){
+        alert('update triggered');
       }
     },
     computed: {

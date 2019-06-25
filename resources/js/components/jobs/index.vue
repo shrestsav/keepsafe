@@ -12,26 +12,36 @@
         <thead class="thead-light">
           <tr>
             <th>S.No</th>
-            <th>Location</th>
+            <th>Client</th>
+            <th>Type</th>
+            <th>Status</th>
             <th>Suburb</th>
-            <th>Footnote</th>
+            <th>Location</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item,key in jobs">
+          <tr v-for="job,key in jobs.data">
             <td>{{++key}}</td>
-            <td>{{item.location}}</td>
-            <td>{{item.suburb}}</td>
-            <td>{{item.footnote}}</td>
+            <td>{{job.client.name}}</td>
+            <td>{{job_types[job.job_type]}}</td>
+            <td>{{job_statuses[job.status]}}</td>
+            <td>{{job.suburb}}</td>
+            <td>{{job.location}}</td>
             <td>
               <a href="#" class="table-action" @click="showDetails(key-1)" data-toggle="modal" data-target="#showJobDetails">
                 <i class="fas fa-eye"></i>
+              </a>
+              <a href="#" class="table-action" @click="editJob(job.id)">
+                <i class="fas fa-edit"></i>
               </a>
             </td>
           </tr>
         </tbody>
       </table>
+    </div>
+    <div class="card-footer py-4">
+      <pagination :data="jobs" @pagination-change-page="getResults"></pagination>
     </div>
     <show></show>
   </div>
@@ -41,6 +51,7 @@
   import show from './show.vue'
 
   export default{
+    props:['job_statuses','job_types'],
     components: {
       show
     },
@@ -51,19 +62,22 @@
       }
     },
     mounted(){
-      this.$Progress.start();
-      axios.get('/listJobs')
-        .then((response) => {
-          console.log(response)
-          this.jobs = response.data;
-          this.$Progress.finish();
-        })
-        .catch((error) => {
-        })
+      this.getResults();
     },
     methods:{
+      getResults(page = 1) {
+        this.$Progress.start();
+        axios.get('listJobs?page=' + page)
+          .then(response => {
+            this.$Progress.finish();
+            this.jobs = response.data;
+          });
+      },
       showDetails(key){
-        this.$children[0].details = this.jobs[key]
+        this.$children[1].details = this.jobs.data[key]
+      },
+      editJob(id){
+        this.$router.push({ name: 'jobEdit', params:{ type:'edit', job_id:id} });
       }
     }
 

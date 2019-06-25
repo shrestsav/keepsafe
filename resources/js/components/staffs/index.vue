@@ -19,7 +19,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="staff,key in staffs">
+          <tr v-for="staff,key in staffs.data">
             <td>{{++key}}</td>
             <td>{{staff.name}}</td>
             <td>{{staff.email}}</td>
@@ -39,6 +39,9 @@
         </tbody>
       </table>
     </div>
+    <div class="card-footer py-4">
+      <pagination :data="staffs" @pagination-change-page="getResults"></pagination>
+    </div>
     <show></show>
   </div>
 </template>
@@ -57,17 +60,19 @@
       }
     },
     mounted(){
-      axios.get('/listStaffs')
-        .then((response) => {
-          console.log(response)
-          this.staffs = response.data;
-        })
-        .catch((error) => {
-        })
+      this.getResults();
     },
     methods:{
+      getResults(page = 1) {
+        this.$Progress.start();
+        axios.get('listStaffs?page=' + page)
+        .then(response => {
+          this.$Progress.finish();
+          this.staffs = response.data;
+        });
+      },
       showDetails(key){
-        this.$children[0].details = this.staffs[key];
+        this.$children[1].details = this.staffs.data[key];
       }
     }
   }

@@ -30,6 +30,6 @@ return [
         1 => 'Commercial',
         2 => 'Domestic',
     ],
-    'rows' => 30,
+    'rows' => 5,
 
 ];

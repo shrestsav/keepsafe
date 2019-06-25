@@ -126,8 +126,7 @@ class UserController extends Controller
 
     public function staffs()
     {
-        $staffs = User::all();
-        return view('staffs.index', compact('staffs'));
+        return view('staffs.index');
     }
 
     public function listStaffs()
@@ -136,8 +135,8 @@ class UserController extends Controller
                           $query->where('name', '=', 'staff');
                         })
                         ->with('details')
-                        ->get();
-        return $staffs;
+                        ->paginate(config('settings.rows'));
+        return response()->json($staffs);
     }
 
     public function create_staff(Request $request)

@@ -31,13 +31,14 @@ class JobController extends Controller
 
     public function jobs()
     {
-        $jobs = Job::with('client')->get();
+        $jobs = Job::with('client')->paginate(config('settings.rows'));
         foreach($jobs as $job){
             $contacts = $job->clientContacts();
             $job['contacts'] = $contacts;
         }
     
-        return $jobs;
+        // return $jobs; //same thing
+        return response()->json($jobs);
     }
     /**
      * Store a newly created resource in storage.
@@ -78,7 +79,8 @@ class JobController extends Controller
      */
     public function edit($id)
     {
-        //
+        $job = Job::find($id);
+        return response()->json($job);
     }
 
     /**

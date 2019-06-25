@@ -24,7 +24,7 @@
   <nav id="navbar-main" class="navbar navbar-horizontal navbar-transparent navbar-main navbar-expand-lg navbar-light">
     <div class="container">
       <a class="navbar-brand" href="../dashboards/dashboard.html">
-        <img src="{{asset('argon')}}/img/brand/white.png">
+        <img src="{{asset('system')}}/img/logo_white.png">
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -34,7 +34,7 @@
           <div class="row">
             <div class="col-6 collapse-brand">
               <a href="{{url('/')}}">
-                <img src="{{asset('argon')}}/img/brand/blue.png">
+                <img src="{{asset('system')}}/img/logo_blue.png">
               </a>
             </div>
             <div class="col-6 collapse-close">

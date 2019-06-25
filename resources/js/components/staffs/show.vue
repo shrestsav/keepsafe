@@ -17,7 +17,7 @@
 		              <div class="form-group">
 		                <label class="form-control-label" :for="'input-'+key">{{item['display_name']}}</label>
 		                <p class="form-control" v-if="key==='name' || key==='email'">{{details[key]}}</p>
-		                <p class="form-control" v-if="key!=='name' && key!=='email'">{{details['details'][key]}}</p>
+		                <p class="form-control" v-if="key!=='name' && key!=='email'">{{details.details[key]}}</p>
 		              </div>
 		            </div>
 		          </div>
@@ -38,57 +38,50 @@
 	export default{
 		data(){
 			return{
-        details:{},
+        details:{
+          details:{}
+        },
         fields:{
           'Staff Information':{
             name:{
               display_name:'Full Name',
               col:'6',
-              type: 'text',
             },
             email:{
               display_name:'Email Address',
               col:'6',
-              type: 'email',
             },
             d_o_b:{
               display_name:'Date of Birth',
               col:'4',
-              type: 'date',
             },
             license_no:{
               display_name:'License No',
               col:'4',
-              type: 'text',
             },
             license_expiry:{
               display_name:'License Expiry',
               col:'4',
-              type: 'date',
             },
           },
           'Contact Information':{
             address:{
               display_name:'Address',
               col:'4',
-              type: 'text',
             },
             contact:{
               display_name:'Contact No',
               col:'4',
-              type: 'text',
             },
             joined_date:{
               display_name:'Joined Date',
               col:'4',
-              type: 'date',
             },
           },
           'About':{
             about:{
               display_name:'About',
               col:'12',
-              type: 'textarea',
             },
           },
         },

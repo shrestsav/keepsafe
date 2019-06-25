@@ -2,7 +2,7 @@
   <!-- Brand -->
   <div class="sidenav-header d-flex align-items-center">
     <a class="navbar-brand" href="{{route('dashboard')}}">
-      <img src="{{asset('system')}}/img/logo.jpg" class="navbar-brand-img" alt="..." height="120%" width="120%">
+      <img src="{{asset('system')}}/img/logo_blue.png" class="navbar-brand-img" alt="..." height="120%" width="120%">
     </a>
     <div class="ml-auto">
       <!-- Sidenav toggler -->
