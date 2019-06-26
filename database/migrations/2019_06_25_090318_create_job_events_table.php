@@ -17,12 +17,12 @@ class CreateJobEventsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('job_id')->unsigned();
             $table->smallInteger('priority');
-            $table->smallInteger('superslip');
+            $table->smallInteger('superslip')->default(0);
             $table->date('date');
             $table->smallInteger('status');
             $table->smallInteger('type');
             $table->smallInteger('vehicle');
-            $table->smallInteger('boom_lift_req')->nullable();
+            $table->smallInteger('boom_lift_req')->default(0);
             $table->text('note')->nullable();
             $table->integer('rail_rate')->nullable();
             $table->integer('platform_rate')->nullable();

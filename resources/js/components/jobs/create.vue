@@ -3,14 +3,7 @@
     <div class="card-header">
       <div class="row align-items-center">
         <div class="col-1">
-          <h3 class="mb-0">Job</h3>
-        </div>
-        |
-        <div class="col-2">
-          <router-link :to="{ name: 'jobEvent'}">
-            <h3 class="mb-0">Event</h3>
-          </router-link>
-          
+          <h3 class="mb-0">Create Job</h3>
         </div>
       </div>
     </div>
@@ -54,17 +47,17 @@
                   label="name" 
                   placeholder="Add Client Contacts"
                 /> -->
-                <select class="form-control" v-if="item['type']==='select' && key==='client_id'" v-model="job.client_id">
+                <select class="form-control" v-if="item['type']==='select' && key==='client_id'" v-model="job.client_id" :class="{'not-validated':errors[key]}" >
                   <option v-for="client in clients" :value="client.id">{{client.name}}</option>
                 </select>
-                <select multiple class="form-control" v-if="item['type']==='select' && key==='client_contacts'" v-model="job.client_contacts" >
+                <select multiple class="form-control" v-if="item['type']==='select' && key==='client_contacts'" v-model="job.client_contacts" :class="{'not-validated':errors[key]}" >
                   <option v-for="contact in clientContacts" :value="contact.id">{{contact.name}}</option>
                 </select>
 
-                <select v-if="item['type']==='select' && key==='job_type'" v-model="job.job_type" class="form-control">
+                <select v-if="item['type']==='select' && key==='job_type'" v-model="job.job_type" class="form-control" :class="{'not-validated':errors[key]}" >
                   <option v-for="type,id in job_types" :value="id">{{type}}</option>
                 </select>
-                <select v-if="item['type']==='select' && key==='status'" v-model="job.status" class="form-control">
+                <select v-if="item['type']==='select' && key==='status'" v-model="job.status" class="form-control" :class="{'not-validated':errors[key]}" >
                   <option v-for="status,id in job_statuses" :value="id">{{status}}</option>
                 </select>
                 <date-picker 
@@ -101,8 +94,7 @@
       </div>
     </div>
     <div class="card-footer text-center">
-       <button class="btn btn-outline-primary" @click="save" v-if="create">Save changes</button>
-       <button class="btn btn-outline-primary" @click="update" v-if="!create">Update changes</button>
+       <button class="btn btn-outline-primary" @click="save">Save changes</button>
     </div>
   </div>
 </template>
@@ -116,10 +108,9 @@
     components: {
       vSelect
     },
-    props: ['job_types','job_statuses','type','job_id'],
+    props: ['job_types','job_statuses'],
     data(){
       return{
-        create:true,
         job: {
           job_type:'',
           client_id:'',
@@ -218,21 +209,17 @@
       }
     },
     mounted(){
-      if(this.type==='edit'){
-        this.create = false,
-        this.getJobData(this.job_id);
-      }
-      if(this.type!=='create' && this.type!=='edit')
-        this.create = true;
-
-      axios.get('/jobs/create')
+      this.getClients();
+    },
+    methods:{
+      getClients(){
+        axios.get('/jobs/create')
         .then((response) => {
           this.clients = response.data;
         })
         .catch((error) => {
         })
-    },
-    methods:{
+      },
       getJobData(id){
         axios.get('/jobs/'+id+'/edit')
         .then((response) => {
@@ -248,21 +235,21 @@
       },
       getClientContacts(client_id){
         axios.post('/clientContacts',{'client_id':client_id})
-          .then((response) => {
-            this.clientContacts = response.data;
-          })
-          .catch((error) => {
-            this.errors = error.response.data.errors;
-            for (var prop in this.errors) {
-              showNotify('danger',this.errors[prop])
-            }       
-          })
+        .then((response) => {
+          this.clientContacts = response.data;
+        })
+        .catch((error) => {
+          this.errors = error.response.data.errors;
+          for (var prop in this.errors) {
+            showNotify('danger',this.errors[prop])
+          }       
+        })
       },
       save(){
         axios.post('/jobs',this.$data.job)
         .then((response) => {
-          this.$router.push({ path: '/' });
           showNotify('primary','Job Created');
+          this.$router.push({ name: 'jobEdit', params:{ job_id:response.data } });
         })
         .catch((error) => {
           this.errors = error.response.data.errors;

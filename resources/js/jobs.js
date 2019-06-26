@@ -16,8 +16,8 @@ Vue.use(VueProgressBar, {
 
 import index from './components/jobs/index.vue'
 import create from './components/jobs/create.vue'
-import edit from './components/jobs/create.vue'
-import event from './components/jobs/event.vue'
+import edit from './components/jobs/edit.vue'
+import event from './components/jobs/events/index.vue'
 
 const routes = [
   {name:'jobIndex', path: '/', component: index },

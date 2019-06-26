@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+  <div class="card">
     <div class="card-header">
       <div class="row align-items-center">
         <div class="col-8">

@@ -77,7 +77,7 @@
         this.$children[1].details = this.jobs.data[key]
       },
       editJob(id){
-        this.$router.push({ name: 'jobEdit', params:{ type:'edit', job_id:id} });
+        this.$router.push({ name: 'jobEdit', params:{ job_id:id } });
       }
     }
 

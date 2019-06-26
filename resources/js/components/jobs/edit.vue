@@ -1,9 +1,16 @@
 <template>
-    <div class="card">
+  <div class="card">
     <div class="card-header">
       <div class="row align-items-center">
-        <div class="col-8">
-          <h3 class="mb-0">Create Job</h3>
+        <div class="col-1">
+          <h3 class="mb-0">Edit Job Details</h3>
+        </div>
+        |
+        <div class="col-2">
+          <router-link :to="{ name: 'jobEvent', params:{job_id:job_id}}">
+            <h3 class="mb-0">Event</h3>
+          </router-link>
+          
         </div>
       </div>
     </div>
@@ -16,128 +23,177 @@
               <div class="form-group">
                 <label class="form-control-label" :for="'input-'+key">{{item['display_name']}}</label>
                 <input 
-                  v-if="item['type']!=='textarea' && item['type']!=='date'" 
+                  v-if="item['type']==='text' || item['type']==='number'" 
                   :class="{'not-validated':errors[key]}" 
                   :type="item['type']" 
                   :id="'input-'+key" 
                   :placeholder="item['display_name']" 
-                  v-model="staff[key]"
+                  v-model="job[key]"
                   class="form-control" 
                 >
+                <div class="custom-control custom-checkbox mb-3" v-if="key==='account_limit'">
+                  <input class="custom-control-input" id="customCheck2" type="checkbox" checked="" v-model="job['cr_ac_approve']">
+                  <label class="custom-control-label" for="customCheck2">Credit Account Approved</label>
+                </div>
+                <!-- <v-select
+                  class="form-control"  
+                  v-if="item['type']==='select' && key==='client_id'" 
+                  v-model="job.client_id" 
+                  :options="clients" 
+                  :reduce="name => name.id" 
+                  label="name" 
+                  placeholder="Select Client"
+                />
+                <v-select
+                  multiple
+                  class="form-control" 
+                  v-if="item['type']==='select' && key==='client_contacts'" 
+                  v-model="job.client_contacts" 
+                  :options="clientContacts" 
+                  :reduce="name => name.id" 
+                  label="name" 
+                  placeholder="Add Client Contacts"
+                /> -->
+                <select class="form-control" v-if="item['type']==='select' && key==='client_id'" v-model="job.client_id">
+                  <option v-for="client in clients" :value="client.id">{{client.name}}</option>
+                </select>
+                <select multiple class="form-control" v-if="item['type']==='select' && key==='client_contacts'" v-model="job.client_contacts" >
+                  <option v-for="contact in clientContacts" :value="contact.id">{{contact.name}}</option>
+                </select>
+
+                <select v-if="item['type']==='select' && key==='job_type'" v-model="job.job_type" class="form-control">
+                  <option v-for="type,id in job_types" :value="id">{{type}}</option>
+                </select>
+                <select v-if="item['type']==='select' && key==='status'" v-model="job.status" class="form-control">
+                  <option v-for="status,id in job_statuses" :value="id">{{status}}</option>
+                </select>
                 <date-picker 
                   v-if="item['type']==='date'"  
-                  v-model="staff[key]"
+                  v-model="job[key]"
                   lang='en' 
                   input-class="form-control"
                   valueType="format" 
                 ></date-picker>
                 <textarea 
-                  v-if="item['type']==='textarea'" 
+                  v-if="item['type']==='textarea' && key==='footnote'" 
                   rows="4" 
+                  :class="{'not-validated':errors[key]}" 
                   class="form-control" 
-                  placeholder="Brief Introduction about staff" 
-                  v-model="staff.about"
+                  placeholder="Beware footnote will appear live in job details on handhelds" 
+                  v-model="job.footnote"
+                ></textarea>
+                <textarea 
+                  v-if="item['type']==='textarea' && key==='invoice_note'" 
+                  rows="4" 
+                  :class="{'not-validated':errors[key]}" 
+                  class="form-control" 
+                  placeholder="Invoice Note will appear on invoices" 
+                  v-model="job.invoice_note"
                 ></textarea>
                 <div class="invalid-feedback" style="display: block;" v-if="errors[key]">
                   {{errors[key][0]}}
                 </div>
               </div>
-              
             </div>
           </div>
         </div>
-        <hr v-if="index !== last" class="my-4" />
+        <hr class="my-4"/>
       </div>
     </div>
     <div class="card-footer text-center">
-       <button class="btn btn-primary" @click="save">Save changes</button>
+       <button class="btn btn-outline-primary" @click="update">Update changes</button>
     </div>
   </div>
-
 </template>
 
-
 <script>
-  import DatePicker from 'vue2-datepicker'
+
+  import vSelect from 'vue-select'
+  import 'vue-select/dist/vue-select.css'
 
   export default{
-    components: { 
-      DatePicker
+    components: {
+      vSelect
     },
+    props: ['job_types','job_statuses','job_id'],
     data(){
       return{
-        staff: {
-          name:'',
-          email:'',
-          d_o_b:'',
-          license_no:'',
-          license_expiry:'',
-          password:'',
-          password_confirmation:'',
-          address:'',
-          contact:'',
-          joined_date:'',
-          about:'',
-        },
+        create:true,
+        job: {},
+        clients:{},
+        clientContacts:{},
         errors:{},
         fields:{
-          'Staff Information':{
-            name:{
-              display_name:'Full Name',
-              col:'6',
+          'Job Information':{
+            job_type:{
+              display_name:'Job Type',
+              col:'4',
+              type: 'select',
+            },
+            client_id:{
+              display_name:'Client',
+              col:'4',
+              type: 'select',
+            },
+            client_contacts:{
+              display_name:'Job Contacts',
+              col:'4',
+              type: 'select',
+            },
+            purchase_order:{
+              display_name:'Purchase Order',
+              col:'4',
               type: 'text',
             },
-            email:{
-              display_name:'Email Address',
-              col:'6',
-              type: 'email',
-            },
-            d_o_b:{
-              display_name:'Date of Birth',
-              col:'4',
-              type: 'date',
-            },
-            license_no:{
-              display_name:'License No',
-              col:'4',
+            location:{
+              display_name:'Location',
+              col:'3',
               type: 'text',
             },
-            license_expiry:{
-              display_name:'License Expiry',
-              col:'4',
-              type: 'date',
+            site_contact:{
+              display_name:'Site Contact',
+              col:'3',
+              type: 'text',
             },
-            password:{
-              display_name:'Password',
-              col:'6',
-              type: 'password',
+            site_phone:{
+              display_name:'Site Phone',
+              col:'3',
+              type: 'text',
             },
-            password_confirmation:{
-              display_name:'Confirm Password',
-              col:'6',
-              type: 'password',
+            suburb:{
+              display_name:'Suburb',
+              col:'3',
+              type: 'text',
+            },
+            site_address:{
+              display_name:'Site Address',
+              col:'3',
+              type: 'text',
+            },
+            directions:{
+              display_name:'Directions',
+              col:'3',
+              type: 'text',
+            },
+            footnote:{
+              display_name:'Footnote',
+              col:'12',
+              type: 'textarea',
             },
           },
-          'Contact Information':{
-            address:{
-              display_name:'Address',
-              col:'4',
-              type: 'text',
+          'Job Status':{
+            AMORR:{
+              display_name:"Approximate M's Of Rail Required",
+              col:'6',
+              type: 'number',
             },
-            contact:{
-              display_name:'Contact No',
-              col:'4',
-              type: 'text',
+            status:{
+              display_name:'Current Status',
+              col:'6',
+              type: 'select',
             },
-            joined_date:{
-              display_name:'Joined Date',
-              col:'4',
-              type: 'date',
-            },
-          },
-          'About':{
-            about:{
-              display_name:'About',
+            invoice_note:{
+              display_name:'Notes for Invoicing',
               col:'12',
               type: 'textarea',
             },
@@ -145,38 +201,81 @@
         }
       }
     },
-    computed: {
-      last(){
-         return Object.keys(this.fields).length-1;
+    mounted(){
+      if(this.job_id===undefined){
+        this.$router.push({name:'jobIndex'});
       }
+      this.getJobData(this.job_id);
+      this.getClients();
     },
     methods:{
-      save(){
-        axios.post('/createStaff',this.$data.staff)
-          .then((response) => {
-            showNotify('primary','Staff Created');
-            this.$router.push({ path: '/' });
-          })
-          .catch((error) => {
-            this.errors = error.response.data.errors;
-            for (var prop in this.errors) {
-              showNotify('danger',this.errors[prop])
-            }       
-          })
+      getClients(){
+        axios.get('/jobs/create')
+        .then((response) => {
+          this.clients = response.data;
+        })
+        .catch((error) => {
+        })
+      },
+      getJobData(id){
+        axios.get('/jobs/'+id+'/edit')
+        .then((response) => {
+          this.job = response.data;
+          this.job.client_contacts = JSON.parse(response.data.client_contacts);
+        })
+        .catch((error) => {
+          this.errors = error.response.data.errors;
+          for (var prop in this.errors) {
+            showNotify('danger',this.errors[prop])
+          }       
+        })
+      },
+      getClientContacts(client_id){
+        axios.post('/clientContacts',{'client_id':client_id})
+        .then((response) => {
+          this.clientContacts = response.data;
+        })
+        .catch((error) => {
+          this.errors = error.response.data.errors;
+          for (var prop in this.errors) {
+            showNotify('danger',this.errors[prop])
+          }       
+        })
+      },
+      update(){
+        axios.patch('/jobs/'+this.job_id,this.$data.job)
+        .then((response) => {
+          console.log(response);
+          // showNotify('primary','Job Created');
+          // this.$router.push({ name: 'jobEdit'});
+          // this.$router.push({ path: '/' });
+        })
+        .catch((error) => {
+          this.errors = error.response.data.errors;
+          for (var prop in this.errors) {
+            showNotify('danger',this.errors[prop])
+          }       
+        })
+      },
+    },
+    computed: {
+      client_id() {
+        return this.job.client_id;
       }
-    }
+    },
+    watch: {
+      client_id(newVal) {
+        this.getClientContacts(newVal);
+      }
+    },
   }
 
 </script>
-<style scoped>
-  .mx-datepicker{
-    width: unset;
-    display: unset;
-  }
-  .mx-datepicker-popup{
-    top: 0 !important;
-  }
+<style>
   .not-validated{
     border-color: #fb6340;
+  }
+  .form-control .vs__dropdown-toggle {
+    border: 0px !important;
   }
 </style>
