@@ -28,6 +28,11 @@ class Job extends Model
         return $this->belongsTo(Client::class);
     }
 
+    public function events()
+    {
+        return $this->hasMany(JobEvent::class);
+    }
+
     public function clientContacts()
     {
     	$contacts = [];

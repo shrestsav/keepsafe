@@ -2,18 +2,18 @@
 	<div class="card">
 		<div class="card-header border-0">
 			<div class="row">
-				<div class="col-1">
-					<router-link :to="{ name: 'jobEdit', params:{ job_id:job_id } }">
+				<div class="col-2">
+					<router-link :to="{ name: 'jobEdit', params:{ job_id:job.id } }">
 						<h3 class="mb-0">Edit Job Details</h3>
 					</router-link>
 				</div>
 				|
-				<div class="col-1">
+				<div class="col-2">
 					<router-link :to="{ name: 'jobEvent'}">
 						<h3 class="mb-0">Event</h3>
 					</router-link>
 				</div>
-				<div class="col-9 text-right">
+				<div class="col-7 text-right">
 					<button class="btn btn-outline-primary" data-toggle="modal" data-target="#addJobEvents" @click="passData()">Add Events</button>
 				</div>
 			</div>
@@ -58,7 +58,7 @@
 		components: {
 			create
 		},
-		props:['job_id'],
+		props:['job'],
 		data(){
 			return{
 				errors:{},
@@ -69,7 +69,7 @@
 			}
 		},
 		mounted(){
-			if(this.job_id===undefined){
+			if(this.job===undefined){
 				// this.$router.push({name:'jobIndex'});
 			}
 			this.getResults();
@@ -78,7 +78,7 @@
 		methods:{
 			getResults(page = 1) {
 				this.$Progress.start();
-				axios.get('listEvents/'+this.job_id+'?page=' + page)
+				axios.get('listEvents/'+this.job.id+'?page=' + page)
 				.then(response => {
 					this.$Progress.finish();
 					this.events = response.data;
@@ -93,7 +93,10 @@
 				this.$children[3].eventStatuses = this.eventStatuses;
 				this.$children[3].eventTypes = this.eventTypes;
 				this.$children[3].eventVehicles = this.eventVehicles;
-				this.$children[3].form.job_id = this.job_id;
+				this.$children[3].job = this.job;
+				this.$children[3].initializeForm();
+				
+				
 			}
 		}
 	}

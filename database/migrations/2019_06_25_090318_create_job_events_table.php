@@ -37,7 +37,6 @@ class CreateJobEventsTable extends Migration
             $table->longText('GD')->nullable()->comment('General Details');
             $table->longText('NORR')->nullable()->comment('No of Rails Req');
             $table->longText('BOMR')->nullable()->comment("Breakdown of M's Required");
-            $table->longText('P')->nullable()->comment('Platform');
             $table->longText('UB')->nullable()->comment('Universal Brackets');
             $table->text('N')->nullable()->comment('Notes');
             $table->longText('BR')->nullable()->comment('Brackets Req');

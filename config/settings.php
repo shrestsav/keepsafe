@@ -68,13 +68,6 @@ return [
         3 => 'Corrugated',
         4 => 'Other',
     ],
-    'platform_lengths' => [
-        1 => '6m',
-        2 => '5m',
-        3 => '4m',
-        4 => '3m',
-        5 => '2m',
-    ],
     'pitches' => [
         1 => 'Flat',
         2 => 'Steep',

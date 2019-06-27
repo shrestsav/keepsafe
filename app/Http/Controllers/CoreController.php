@@ -46,11 +46,6 @@ class CoreController extends Controller
         $roof_types = config('settings.roof_types');
         return $roof_types;
     }
-    public function platform_lengths()
-    {
-        $platform_lengths = config('settings.platform_lengths');
-        return $platform_lengths;
-    }
     public function pitches()
     {
         $pitches = config('settings.pitches');
@@ -60,5 +55,10 @@ class CoreController extends Controller
     {
     	$heights = config('settings.heights');
     	return $heights;
+    }
+    public function job_event_fields()
+    {
+        $fields = config('fields.job_event');
+        return $fields;
     }
 }

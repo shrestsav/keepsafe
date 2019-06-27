@@ -17,6 +17,7 @@
             <th>Status</th>
             <th>Suburb</th>
             <th>Location</th>
+            <th>Events</th>
             <th></th>
           </tr>
         </thead>
@@ -28,6 +29,7 @@
             <td>{{job_statuses[job.status]}}</td>
             <td>{{job.suburb}}</td>
             <td>{{job.location}}</td>
+            <td>{{job.events_count}}</td>
             <td>
               <a href="#" class="table-action" @click="showDetails(key-1)" data-toggle="modal" data-target="#showJobDetails">
                 <i class="fas fa-eye"></i>

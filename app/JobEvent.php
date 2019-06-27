@@ -27,7 +27,6 @@ class JobEvent extends Model
 		'GD',
 		'NORR',
 		'BOMR',
-		'P',
 		'UB',
 		'N',
 		'BR',
@@ -36,4 +35,9 @@ class JobEvent extends Model
 		'BRR',
 		'BRP',
     ];
+
+    public function job()
+    {
+        return $this->belongsTo(Job::class);
+    }
 }

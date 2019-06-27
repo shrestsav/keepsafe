@@ -44,7 +44,8 @@ Route::get('eventTypes','CoreController@event_types');
 Route::get('eventVehicles','CoreController@event_vehicles');
 Route::get('installTypes','CoreController@install_types');
 Route::get('roofTypes','CoreController@roof_types');
-Route::get('platformLengths','CoreController@platform_lengths');
 Route::get('pitches','CoreController@pitches');
 Route::get('heights','CoreController@heights');
 
+//Config Fields
+Route::get('jobEventFields','CoreController@job_event_fields');

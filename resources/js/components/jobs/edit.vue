@@ -2,12 +2,12 @@
   <div class="card">
     <div class="card-header">
       <div class="row align-items-center">
-        <div class="col-1">
+        <div class="col-2">
           <h3 class="mb-0">Edit Job Details</h3>
         </div>
         |
         <div class="col-2">
-          <router-link :to="{ name: 'jobEvent', params:{job_id:job_id}}">
+          <router-link :to="{ name: 'jobEvent', params:{job:job}}">
             <h3 class="mb-0">Event</h3>
           </router-link>
           

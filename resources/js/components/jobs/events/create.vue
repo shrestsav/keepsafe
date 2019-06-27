@@ -25,6 +25,22 @@
                       v-model="form[key]"
                       class="form-control" 
                     >
+                    <div v-if="item['type']==='2text'">
+                      <input 
+                        :class="{'not-validated':errors[key]}" 
+                        type="text" 
+                        placeholder="25x25s" 
+                        v-model="form['Number of Rails Req'][key]['25x25s']"
+                        class="form-control" 
+                      >
+                      <input 
+                        :class="{'not-validated':errors[key]}" 
+                        type="text" 
+                        placeholder="30x30s" 
+                        v-model="form['Number of Rails Req'][key]['30x30s']"
+                        class="form-control" 
+                      >
+                    </div>
                     <div class="col-md-12" v-if="item['type']==='radio'">
                       <div class="custom-control custom-radio mb-3">
                         <input :name="key" class="custom-control-input" id="customRadio5" type="radio" value="1" v-model="form[key]">
@@ -93,7 +109,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-outline-primary" @click="resetForm">Reset</button>
+          <button class="btn btn-outline-primary" @click="initializeForm">Reset</button>
           <button class="btn btn-outline-primary" @click="save">Save changes</button>
         </div>
       </div>
@@ -113,13 +129,10 @@
     },
     data(){
       return{
-        form: {
-          job_id:'',
-        },
+        form: {},
         confSettings:{
           installTypes:{},
           roofTypes:{},
-          platformLengths:{},
           pitches:{},
           heights:{},
         },
@@ -127,194 +140,8 @@
         eventTypes:{},
         eventVehicles:{},
         errors:{},
-        fields:{
-          'Job Details':{
-            priority:{
-              display_name:'Priority',
-              col:'1',
-              type: 'number',
-            },
-            superslip:{
-              display_name:'Superslip',
-              col:'1',
-              type: 'checkbox',
-            },
-            date:{
-              display_name:'Date',
-              col:'2',
-              type: 'date',
-            },
-            status:{
-              display_name:'Status',
-              col:'2',
-              type: 'select',
-            },
-            type:{
-              display_name:'Type',
-              col:'2',
-              type: 'select',
-            },
-            vehicle:{
-              display_name:'Vehicle',
-              col:'2',
-              type: 'select',
-            },
-            boom_lift_req:{
-              display_name:'Keepsafe Boom Lift Req',
-              col:'2',
-              type: 'checkbox',
-            },
-            rail_rate:{
-              display_name:'Charge Rail Rate',
-              col:'2',
-              type: 'number',
-            },
-            platform_rate:{
-              display_name:'Charge Rate Platform',
-              col:'2',
-              type: 'number',
-            },
-            int_platform_rate:{
-              display_name:'Charge Rate Int. Platform',
-              col:'2',
-              type: 'number',
-            },
-            purchase_order:{
-              display_name:'Purchase Order',
-              col:'2',
-              type: 'text',
-            },
-            ref:{
-              display_name:'Ref',
-              col:'2',
-              type: 'text',
-            },
-            location:{
-              display_name:'Location',
-              col:'2',
-              type: 'text',
-            },
-            note:{
-              display_name:'Note, (available upon log-in)',
-              col:'6',
-              type: 'textarea',
-            },
-          },
-          'General Details':{
-            type_of_install:{
-              display_name:"Type of Install",
-              col:'2',
-              type: 'select',
-            },
-            type_of_roof:{
-              display_name:'Type of Roof',
-              col:'2',
-              type: 'select',
-            },
-            edge_protection_required:{
-              display_name:'Edge protection required',
-              col:'1',
-              type: 'checkbox',
-            },
-            platform_required:{
-              display_name:'Platform Required',
-              col:'1',
-              type: 'checkbox',
-            },
-            plank_system:{
-              display_name:'Plank System',
-              col:'2',
-              type: 'select',
-            },
-            platform_lengths:{
-              display_name:'Platform lengths',
-              col:'2',
-              type: 'select',
-            },
-            total_m_Rail:{
-              display_name:"Total M's Rail",
-              col:'2',
-              type: 'number',
-            },
-            total_m_std_platform:{
-              display_name:"Total M's STD Platform",
-              col:'2',
-              type: 'number',
-            },
-            total_m_internal_platform:{
-              display_name:"Total M's Internal Platform",
-              col:'2',
-              type: 'number',
-            },
-            total_m_edge_void_1_rail:{
-              display_name:"Total M's Edge Void 1 Rail",
-              col:'2',
-              type: 'number',
-            },
-            total_m_edge_void_2_rail:{
-              display_name:"Total M's Edge Void 2 Rail",
-              col:'2',
-              type: 'number',
-            },
-            total_m_mesh_guard:{
-              display_name:"Total M's Mesh Gaurd",
-              col:'2',
-              type: 'number',
-            },
-            total_m_kickboards:{
-              display_name:"Total M's Kickboards",
-              col:'2',
-              type: 'number',
-            },
-            platform_charge_type:{
-              display_name:"Platform Charge Type",
-              col:'2',
-              type: 'radio',
-              one: 'Commercial',
-              two: 'Domestic',
-            },
-            pitch:{
-              display_name:"Pitch",
-              col:'2',
-              type: 'select',
-            },
-            height:{
-              display_name:"Height",
-              col:'2',
-              type: 'select',
-            },
-            install_sign:{
-              display_name:"Install Sign",
-              col:'1',
-              type: 'checkbox',
-            },
-            install_banner:{
-              display_name:"Install Banner",
-              col:'1',
-              type: 'checkbox',
-            },
-            panel_patch:{
-              display_name:"Panel Patch",
-              col:'1',
-              type: 'checkbox',
-            },
-            strapping_tools_etc:{
-              display_name:"Strapping Tools etc",
-              col:'1',
-              type: 'checkbox',
-            },
-            extension_ladder:{
-              display_name:"Extension Ladder",
-              col:'1',
-              type: 'checkbox',
-            },
-            step_ladder:{
-              display_name:"Step Ladder",
-              col:'1',
-              type: 'checkbox',
-            },
-          },
-        }
+        fields:{},
+        job:{},
       }
     },
     mounted(){
@@ -324,16 +151,17 @@
       defSettings(){
         axios.get('installTypes').then(response => this.confSettings.installTypes = response.data);
         axios.get('roofTypes').then(response => this.confSettings.roofTypes = response.data);
-        axios.get('platformLengths').then(response => this.confSettings.platformLengths = response.data);
         axios.get('pitches').then(response => this.confSettings.pitches = response.data);
         axios.get('heights').then(response => this.confSettings.heights = response.data);
+        axios.get('jobEventFields').then(response => this.fields = response.data);
       },
       save(){
         axios.post('/storeEvent',this.$data.form)
         .then((response) => {
+          console.log(response.data)
           this.$parent.getResults();
           showNotify('primary','Event has been Created');
-          this.resetForm();
+          this.initializeForm();
           this.closeModal();
         })
         .catch((error) => {
@@ -343,15 +171,52 @@
           }       
         })
       },
+      initializeForm(){
+        this.$data.form = {
+          job_id:this.job.id,
+          'Number of Rails Req':{
+            '6.5s':{
+              '25x25s':'',
+              '30x30s':'',
+            },
+            '4.5s':{
+              '25x25s':'',
+              '30x30s':'',
+            },
+            '3.25s':{
+              '25x25s':'',
+              '30x30s':'',
+            },
+            '2s':{
+              '25x25s':'',
+              '30x30s':'',
+            },
+          }
+        };
+        var json_field_list = {
+          'GD_list' : 'General Details',
+          'BOMR_list' : 'Breakdown of M Required',
+          'UB_list' : 'Universal Brackets',
+          'BR_list' : 'Brackets Req',
+          'BRC_list' : 'Brackets Req Const',
+          'BRR_list' : 'Brackets Req Reno',
+          'BRP_list' : 'Brackets Req Pole',
+          'ORS_list' : 'On Roof Systems'
+        };
+        for(var list in json_field_list){
+          this.form[list] = [];
+          for(var field in this.fields[json_field_list[list]]){
+            this.form[field]='';
+            this.form[list].push(field);
+          }
+        }
+        this.form.json_field_list = json_field_list;
+        
+      },
       closeModal(){
         const elem = this.$refs.closeModal;
         elem.click()
       },
-      resetForm(){
-        this.$data.form = {
-          job_id:'',
-        };
-      }
     },
     computed: {
 

@@ -2535,6 +2535,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2545,13 +2561,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      form: {
-        job_id: ''
-      },
+      form: {},
       confSettings: {
         installTypes: {},
         roofTypes: {},
-        platformLengths: {},
         pitches: {},
         heights: {}
       },
@@ -2559,194 +2572,8 @@ __webpack_require__.r(__webpack_exports__);
       eventTypes: {},
       eventVehicles: {},
       errors: {},
-      fields: {
-        'Job Details': {
-          priority: {
-            display_name: 'Priority',
-            col: '1',
-            type: 'number'
-          },
-          superslip: {
-            display_name: 'Superslip',
-            col: '1',
-            type: 'checkbox'
-          },
-          date: {
-            display_name: 'Date',
-            col: '2',
-            type: 'date'
-          },
-          status: {
-            display_name: 'Status',
-            col: '2',
-            type: 'select'
-          },
-          type: {
-            display_name: 'Type',
-            col: '2',
-            type: 'select'
-          },
-          vehicle: {
-            display_name: 'Vehicle',
-            col: '2',
-            type: 'select'
-          },
-          boom_lift_req: {
-            display_name: 'Keepsafe Boom Lift Req',
-            col: '2',
-            type: 'checkbox'
-          },
-          rail_rate: {
-            display_name: 'Charge Rail Rate',
-            col: '2',
-            type: 'number'
-          },
-          platform_rate: {
-            display_name: 'Charge Rate Platform',
-            col: '2',
-            type: 'number'
-          },
-          int_platform_rate: {
-            display_name: 'Charge Rate Int. Platform',
-            col: '2',
-            type: 'number'
-          },
-          purchase_order: {
-            display_name: 'Purchase Order',
-            col: '2',
-            type: 'text'
-          },
-          ref: {
-            display_name: 'Ref',
-            col: '2',
-            type: 'text'
-          },
-          location: {
-            display_name: 'Location',
-            col: '2',
-            type: 'text'
-          },
-          note: {
-            display_name: 'Note, (available upon log-in)',
-            col: '6',
-            type: 'textarea'
-          }
-        },
-        'General Details': {
-          type_of_install: {
-            display_name: "Type of Install",
-            col: '2',
-            type: 'select'
-          },
-          type_of_roof: {
-            display_name: 'Type of Roof',
-            col: '2',
-            type: 'select'
-          },
-          edge_protection_required: {
-            display_name: 'Edge protection required',
-            col: '1',
-            type: 'checkbox'
-          },
-          platform_required: {
-            display_name: 'Platform Required',
-            col: '1',
-            type: 'checkbox'
-          },
-          plank_system: {
-            display_name: 'Plank System',
-            col: '2',
-            type: 'select'
-          },
-          platform_lengths: {
-            display_name: 'Platform lengths',
-            col: '2',
-            type: 'select'
-          },
-          total_m_Rail: {
-            display_name: "Total M's Rail",
-            col: '2',
-            type: 'number'
-          },
-          total_m_std_platform: {
-            display_name: "Total M's STD Platform",
-            col: '2',
-            type: 'number'
-          },
-          total_m_internal_platform: {
-            display_name: "Total M's Internal Platform",
-            col: '2',
-            type: 'number'
-          },
-          total_m_edge_void_1_rail: {
-            display_name: "Total M's Edge Void 1 Rail",
-            col: '2',
-            type: 'number'
-          },
-          total_m_edge_void_2_rail: {
-            display_name: "Total M's Edge Void 2 Rail",
-            col: '2',
-            type: 'number'
-          },
-          total_m_mesh_guard: {
-            display_name: "Total M's Mesh Gaurd",
-            col: '2',
-            type: 'number'
-          },
-          total_m_kickboards: {
-            display_name: "Total M's Kickboards",
-            col: '2',
-            type: 'number'
-          },
-          platform_charge_type: {
-            display_name: "Platform Charge Type",
-            col: '2',
-            type: 'radio',
-            one: 'Commercial',
-            two: 'Domestic'
-          },
-          pitch: {
-            display_name: "Pitch",
-            col: '2',
-            type: 'select'
-          },
-          height: {
-            display_name: "Height",
-            col: '2',
-            type: 'select'
-          },
-          install_sign: {
-            display_name: "Install Sign",
-            col: '1',
-            type: 'checkbox'
-          },
-          install_banner: {
-            display_name: "Install Banner",
-            col: '1',
-            type: 'checkbox'
-          },
-          panel_patch: {
-            display_name: "Panel Patch",
-            col: '1',
-            type: 'checkbox'
-          },
-          strapping_tools_etc: {
-            display_name: "Strapping Tools etc",
-            col: '1',
-            type: 'checkbox'
-          },
-          extension_ladder: {
-            display_name: "Extension Ladder",
-            col: '1',
-            type: 'checkbox'
-          },
-          step_ladder: {
-            display_name: "Step Ladder",
-            col: '1',
-            type: 'checkbox'
-          }
-        }
-      }
+      fields: {},
+      job: {}
     };
   },
   mounted: function mounted() {
@@ -2762,25 +2589,27 @@ __webpack_require__.r(__webpack_exports__);
       axios.get('roofTypes').then(function (response) {
         return _this.confSettings.roofTypes = response.data;
       });
-      axios.get('platformLengths').then(function (response) {
-        return _this.confSettings.platformLengths = response.data;
-      });
       axios.get('pitches').then(function (response) {
         return _this.confSettings.pitches = response.data;
       });
       axios.get('heights').then(function (response) {
         return _this.confSettings.heights = response.data;
       });
+      axios.get('jobEventFields').then(function (response) {
+        return _this.fields = response.data;
+      });
     },
     save: function save() {
       var _this2 = this;
 
       axios.post('/storeEvent', this.$data.form).then(function (response) {
+        console.log(response.data);
+
         _this2.$parent.getResults();
 
         showNotify('primary', 'Event has been Created');
 
-        _this2.resetForm();
+        _this2.initializeForm();
 
         _this2.closeModal();
       })["catch"](function (error) {
@@ -2791,14 +2620,53 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
+    initializeForm: function initializeForm() {
+      this.$data.form = {
+        job_id: this.job.id,
+        'Number of Rails Req': {
+          '6.5s': {
+            '25x25s': '',
+            '30x30s': ''
+          },
+          '4.5s': {
+            '25x25s': '',
+            '30x30s': ''
+          },
+          '3.25s': {
+            '25x25s': '',
+            '30x30s': ''
+          },
+          '2s': {
+            '25x25s': '',
+            '30x30s': ''
+          }
+        }
+      };
+      var json_field_list = {
+        'GD_list': 'General Details',
+        'BOMR_list': 'Breakdown of M Required',
+        'UB_list': 'Universal Brackets',
+        'BR_list': 'Brackets Req',
+        'BRC_list': 'Brackets Req Const',
+        'BRR_list': 'Brackets Req Reno',
+        'BRP_list': 'Brackets Req Pole',
+        'ORS_list': 'On Roof Systems'
+      };
+
+      for (var list in json_field_list) {
+        this.form[list] = [];
+
+        for (var field in this.fields[json_field_list[list]]) {
+          this.form[field] = '';
+          this.form[list].push(field);
+        }
+      }
+
+      this.form.json_field_list = json_field_list;
+    },
     closeModal: function closeModal() {
       var elem = this.$refs.closeModal;
       elem.click();
-    },
-    resetForm: function resetForm() {
-      this.$data.form = {
-        job_id: ''
-      };
     }
   },
   computed: {},
@@ -2875,7 +2743,7 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     create: _create_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  props: ['job_id'],
+  props: ['job'],
   data: function data() {
     return {
       errors: {},
@@ -2886,7 +2754,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    if (this.job_id === undefined) {// this.$router.push({name:'jobIndex'});
+    if (this.job === undefined) {// this.$router.push({name:'jobIndex'});
     }
 
     this.getResults();
@@ -2898,7 +2766,7 @@ __webpack_require__.r(__webpack_exports__);
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       this.$Progress.start();
-      axios.get('listEvents/' + this.job_id + '?page=' + page).then(function (response) {
+      axios.get('listEvents/' + this.job.id + '?page=' + page).then(function (response) {
         _this.$Progress.finish();
 
         _this.events = response.data;
@@ -2921,7 +2789,8 @@ __webpack_require__.r(__webpack_exports__);
       this.$children[3].eventStatuses = this.eventStatuses;
       this.$children[3].eventTypes = this.eventTypes;
       this.$children[3].eventVehicles = this.eventVehicles;
-      this.$children[3].form.job_id = this.job_id;
+      this.$children[3].job = this.job;
+      this.$children[3].initializeForm();
     }
   }
 });
@@ -2938,6 +2807,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _show_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./show.vue */ "./resources/js/components/jobs/show.vue");
+//
+//
 //
 //
 //
@@ -6384,11 +6255,7 @@ var render = function() {
           [
             _c(
               "router-link",
-              {
-                attrs: {
-                  to: { name: "jobEvent", params: { job_id: _vm.job_id } }
-                }
-              },
+              { attrs: { to: { name: "jobEvent", params: { job: _vm.job } } } },
               [_c("h3", { staticClass: "mb-0" }, [_vm._v("Event")])]
             )
           ],
@@ -6908,7 +6775,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-1" }, [
+    return _c("div", { staticClass: "col-2" }, [
       _c("h3", { staticClass: "mb-0" }, [_vm._v("Edit Job Details")])
     ])
   }
@@ -7128,6 +6995,96 @@ var render = function() {
                                       }
                                     }
                                   })
+                                : _vm._e(),
+                              _vm._v(" "),
+                              item["type"] === "2text"
+                                ? _c("div", [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value:
+                                            _vm.form["Number of Rails Req"][
+                                              key
+                                            ]["25x25s"],
+                                          expression:
+                                            "form['Number of Rails Req'][key]['25x25s']"
+                                        }
+                                      ],
+                                      staticClass: "form-control",
+                                      class: {
+                                        "not-validated": _vm.errors[key]
+                                      },
+                                      attrs: {
+                                        type: "text",
+                                        placeholder: "25x25s"
+                                      },
+                                      domProps: {
+                                        value:
+                                          _vm.form["Number of Rails Req"][key][
+                                            "25x25s"
+                                          ]
+                                      },
+                                      on: {
+                                        input: function($event) {
+                                          if ($event.target.composing) {
+                                            return
+                                          }
+                                          _vm.$set(
+                                            _vm.form["Number of Rails Req"][
+                                              key
+                                            ],
+                                            "25x25s",
+                                            $event.target.value
+                                          )
+                                        }
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value:
+                                            _vm.form["Number of Rails Req"][
+                                              key
+                                            ]["30x30s"],
+                                          expression:
+                                            "form['Number of Rails Req'][key]['30x30s']"
+                                        }
+                                      ],
+                                      staticClass: "form-control",
+                                      class: {
+                                        "not-validated": _vm.errors[key]
+                                      },
+                                      attrs: {
+                                        type: "text",
+                                        placeholder: "30x30s"
+                                      },
+                                      domProps: {
+                                        value:
+                                          _vm.form["Number of Rails Req"][key][
+                                            "30x30s"
+                                          ]
+                                      },
+                                      on: {
+                                        input: function($event) {
+                                          if ($event.target.composing) {
+                                            return
+                                          }
+                                          _vm.$set(
+                                            _vm.form["Number of Rails Req"][
+                                              key
+                                            ],
+                                            "30x30s",
+                                            $event.target.value
+                                          )
+                                        }
+                                      }
+                                    })
+                                  ])
                                 : _vm._e(),
                               _vm._v(" "),
                               item["type"] === "radio"
@@ -7881,7 +7838,7 @@ var render = function() {
                 "button",
                 {
                   staticClass: "btn btn-outline-primary",
-                  on: { click: _vm.resetForm }
+                  on: { click: _vm.initializeForm }
                 },
                 [_vm._v("Reset")]
               ),
@@ -7931,13 +7888,13 @@ var render = function() {
         _c("div", { staticClass: "row" }, [
           _c(
             "div",
-            { staticClass: "col-1" },
+            { staticClass: "col-2" },
             [
               _c(
                 "router-link",
                 {
                   attrs: {
-                    to: { name: "jobEdit", params: { job_id: _vm.job_id } }
+                    to: { name: "jobEdit", params: { job_id: _vm.job.id } }
                   }
                 },
                 [
@@ -7952,7 +7909,7 @@ var render = function() {
           _vm._v("\n\t\t\t|\n\t\t\t"),
           _c(
             "div",
-            { staticClass: "col-1" },
+            { staticClass: "col-2" },
             [
               _c("router-link", { attrs: { to: { name: "jobEvent" } } }, [
                 _c("h3", { staticClass: "mb-0" }, [_vm._v("Event")])
@@ -7961,7 +7918,7 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _c("div", { staticClass: "col-9 text-right" }, [
+          _c("div", { staticClass: "col-7 text-right" }, [
             _c(
               "button",
               {
@@ -8098,6 +8055,8 @@ var render = function() {
                 _vm._v(" "),
                 _c("td", [_vm._v(_vm._s(job.location))]),
                 _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(job.events_count))]),
+                _vm._v(" "),
                 _c("td", [
                   _c(
                     "a",
@@ -8185,6 +8144,8 @@ var staticRenderFns = [
         _c("th", [_vm._v("Suburb")]),
         _vm._v(" "),
         _c("th", [_vm._v("Location")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Events")]),
         _vm._v(" "),
         _c("th")
       ])

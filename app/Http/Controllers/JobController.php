@@ -32,7 +32,7 @@ class JobController extends Controller
 
     public function jobs()
     {
-        $jobs = Job::with('client')->paginate(config('settings.rows'));
+        $jobs = Job::with('client')->withCount('events')->paginate(config('settings.rows'));
         foreach($jobs as $job){
             $contacts = $job->clientContacts();
             $job['contacts'] = $contacts;
@@ -124,7 +124,7 @@ class JobController extends Controller
     }
 
     public function jobEventStore(Request $request)
-    {
+    { 
         $validatedData = $request->validate([
             'job_id' => 'required',
             'priority' => 'required',
@@ -133,6 +133,16 @@ class JobController extends Controller
             'type' => 'required',
             'vehicle' => 'required',
         ]);
+        $request['NORR'] = json_encode($request['Number of Rails Req']);
+        foreach($request->json_field_list as $key => $value){
+            $var = explode("_",$key);
+            ${$var[0]} = [];
+            foreach($request->{$key} as $list) {
+                ${$var[0]}[$list] = $request[$list];
+            }
+            $request[$var[0]] = json_encode(${$var[0]});
+        }
+
         $jobEvent = JobEvent::create($request->all());
     }
 }
