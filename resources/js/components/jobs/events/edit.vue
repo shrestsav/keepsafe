@@ -1,9 +1,9 @@
 <template>
-  <div class="modal fade" id="addJobEvents" tabindex="-1" role="dialog" aria-labelledby="add_staffs_modal" aria-hidden="true">
+  <div class="modal fade" id="editJobEvents" tabindex="-1" role="dialog" aria-labelledby="add_staffs_modal" aria-hidden="true">
     <div class="modal-dialog modal- modal-dialog-centered modal- modal-fullscreen" role="document">
       <div class="modal-content">
         <div class="modal-header text-center">
-          <h6 class="modal-title" id="modal-title-default">Picking Slip Event</h6>
+          <h6 class="modal-title" id="modal-title-default">Edit Picking Slip Event</h6>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close" ref="closeModal">
             <span aria-hidden="true">×</span>
           </button>
@@ -109,8 +109,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-outline-primary" @click="initializeForm">Reset</button>
-          <button class="btn btn-outline-primary" @click="save">Save changes</button>
+          <button class="btn btn-outline-primary" @click="update">Update changes</button>
         </div>
       </div>
     </div>
@@ -129,7 +128,24 @@
     },
     data(){
       return{
-        form: {},
+        form: {
+          '6.5s':{
+            '25x25s':'',
+            '30x30s':'',
+          },
+          '4.5s':{
+            '25x25s':'',
+            '30x30s':'',
+          },
+          '3.25s':{
+            '25x25s':'',
+            '30x30s':'',
+          },
+          '2s':{
+            '25x25s':'',
+            '30x30s':'',
+          },
+        },
         confSettings:{
           installTypes:{},
           roofTypes:{},
@@ -161,6 +177,13 @@
     //   }
     // },
     methods:{
+      getData(event_id){
+        axios.get('detailEvent/'+event_id).then((response) => {
+          this.form = response.data;
+          this.initializeForm();
+        });
+        
+      },
       clearForm(arrSection){
         arrSection.forEach((section) => {
           this.form[section].forEach(function(field){
@@ -175,13 +198,12 @@
         axios.get('heights').then(response => this.confSettings.heights = response.data);
         axios.get('jobEventFields').then(response => this.fields = response.data);
       },
-      save(){
-        axios.post('/storeEvent',this.$data.form)
+      update(){
+        axios.post('/updateEvent',this.$data.form)
         .then((response) => {
           console.log(response.data)
           this.$parent.getResults();
-          showNotify('primary','Event has been Created');
-          this.initializeForm();
+          showNotify('primary','Event has been Updated');
           this.closeModal();
         })
         .catch((error) => {
@@ -192,41 +214,20 @@
         })
       },
       initializeForm(){
-        this.$data.form = {
-          job_id:this.job.id,
-          '6.5s':{
-            '25x25s':'',
-            '30x30s':'',
-          },
-          '4.5s':{
-            '25x25s':'',
-            '30x30s':'',
-          },
-          '3.25s':{
-            '25x25s':'',
-            '30x30s':'',
-          },
-          '2s':{
-            '25x25s':'',
-            '30x30s':'',
-          },
-        };
         var json_field_list = {
-          'GD_list'   : 'General Details',
+          'GD_list' : 'General Details',
           'NORR_list' : 'Number of Rails Req',
           'BOMR_list' : 'Breakdown of M Required',
-          'UB_list'   : 'Universal Brackets',
-          'BR_list'   : 'Brackets Req',
-          'BRC_list'  : 'Brackets Req Const',
-          'BRR_list'  : 'Brackets Req Reno',
-          'BRP_list'  : 'Brackets Req Pole',
-          'ORS_list'  : 'On Roof Systems'
+          'UB_list' : 'Universal Brackets',
+          'BR_list' : 'Brackets Req',
+          'BRC_list' : 'Brackets Req Const',
+          'BRR_list' : 'Brackets Req Reno',
+          'BRP_list' : 'Brackets Req Pole',
+          'ORS_list' : 'On Roof Systems'
         };
         for(var list in json_field_list){ 
           this.form[list] = [];
           for(var field in this.fields[json_field_list[list]]){
-            if(list!=='NORR_list') //NORR_list has different structure
-              this.form[field]='';
             this.form[list].push(field);
           }
         }

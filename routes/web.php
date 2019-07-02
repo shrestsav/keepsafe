@@ -34,6 +34,8 @@ Route::resource('jobs','JobController');
 Route::get('listJobs','JobController@jobs');
 Route::get('listEvents/{job_id}','JobController@jobEvents');
 Route::post('storeEvent','JobController@jobEventStore');
+Route::post('updateEvent','JobController@jobEventUpdate');
+Route::get('detailEvent/{event_id}','JobController@jobEventDetails');
 
 //Config variables
 Route::get('jobTypes','CoreController@jobTypes');

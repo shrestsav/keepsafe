@@ -133,7 +133,7 @@ class JobController extends Controller
             'type' => 'required',
             'vehicle' => 'required',
         ]);
-        $request['NORR'] = json_encode($request['Number of Rails Req']);
+
         foreach($request->json_field_list as $key => $value){
             $var = explode("_",$key);
             ${$var[0]} = [];
@@ -144,5 +144,70 @@ class JobController extends Controller
         }
 
         $jobEvent = JobEvent::create($request->all());
+    } 
+
+    public function jobEventUpdate(Request $request)
+    { 
+        $validatedData = $request->validate([
+            'job_id' => 'required',
+            'priority' => 'required',
+            'date' => 'required',
+            'status' => 'required',
+            'type' => 'required',
+            'vehicle' => 'required',
+        ]);
+
+        foreach($request->json_field_list as $key => $value){
+            $var = explode("_",$key);
+            ${$var[0]} = [];
+            foreach($request->{$key} as $list) {
+                ${$var[0]}[$list] = $request[$list];
+                unset($request[$list]);
+                unset($request[$key]);
+            }
+            $request[$var[0]] = json_encode(${$var[0]});
+        }
+        unset($request['json_field_list']);
+        unset($request['job']);
+
+        $update = JobEvent::where('id',$request->id)->update($request->all());
+        return $update;
+    }
+
+    public function jobEventDetails($event_id)
+    {
+        $jobEvent = JobEvent::find($event_id);
+        $json_fields_all = ['GD','NORR','BOMR','UB'];
+        $json_fields_commercial = ['BR','ORS'];
+        $json_fields_domestic = ['BRC','BRR','BRP'];
+
+        foreach($json_fields_all as $jfa){
+            $arr = json_decode($jobEvent->{$jfa},true);
+            foreach($arr as $key => $val){
+                $jobEvent[$key] = $val;
+            }
+            unset($jobEvent[$jfa]);
+        }
+        if($jobEvent->job->job_type==1 || $jobEvent->superslip){
+            foreach($json_fields_commercial as $jfc){
+                $arr = json_decode($jobEvent->{$jfc},true);
+                foreach($arr as $key => $val){
+                    $jobEvent[$key] = $val;
+                }
+                unset($jobEvent[$jfc]);
+            }
+            
+        }
+        if($jobEvent->job->job_type==2 || $jobEvent->superslip){
+            foreach($json_fields_domestic as $jfd){
+                $arr = json_decode($jobEvent->{$jfd},true);
+                foreach($arr as $key => $val){
+                    $jobEvent[$key] = $val;
+                }
+                unset($jobEvent[$jfd]);
+            }
+            
+        }
+        return $jobEvent;
     }
 }

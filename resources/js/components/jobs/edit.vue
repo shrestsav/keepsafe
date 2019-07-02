@@ -119,7 +119,9 @@
     data(){
       return{
         create:true,
-        job: {},
+        job: {
+          client_contacts:[],
+        },
         clients:{},
         clientContacts:{},
         errors:{},

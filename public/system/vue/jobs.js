@@ -2258,7 +2258,9 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       create: true,
-      job: {},
+      job: {
+        client_contacts: []
+      },
       clients: {},
       clientContacts: {},
       errors: {},
@@ -2579,71 +2581,92 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     this.defSettings();
   },
+  // computed: {
+  //   superslip() {
+  //     return this.form.superslip;
+  //   }
+  // },
+  // watch: {
+  //   superslip(newVal) {
+  //     if(!newVal && this.job.job_type===1)
+  //       this.clearForm(['BRC_list','BRR_list','BRP_list'])
+  //     else if(!newVal && this.job.job_type===2)
+  //       this.clearForm(['BR_list','ORS_list'])
+  //   }
+  // },
   methods: {
-    defSettings: function defSettings() {
+    clearForm: function clearForm(arrSection) {
       var _this = this;
 
+      arrSection.forEach(function (section) {
+        _this.form[section].forEach(function (field) {
+          console.log(field);
+        });
+      });
+    },
+    defSettings: function defSettings() {
+      var _this2 = this;
+
       axios.get('installTypes').then(function (response) {
-        return _this.confSettings.installTypes = response.data;
+        return _this2.confSettings.installTypes = response.data;
       });
       axios.get('roofTypes').then(function (response) {
-        return _this.confSettings.roofTypes = response.data;
+        return _this2.confSettings.roofTypes = response.data;
       });
       axios.get('pitches').then(function (response) {
-        return _this.confSettings.pitches = response.data;
+        return _this2.confSettings.pitches = response.data;
       });
       axios.get('heights').then(function (response) {
-        return _this.confSettings.heights = response.data;
+        return _this2.confSettings.heights = response.data;
       });
       axios.get('jobEventFields').then(function (response) {
-        return _this.fields = response.data;
+        return _this2.fields = response.data;
       });
     },
     save: function save() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.post('/storeEvent', this.$data.form).then(function (response) {
         console.log(response.data);
 
-        _this2.$parent.getResults();
+        _this3.$parent.getResults();
 
         showNotify('primary', 'Event has been Created');
 
-        _this2.initializeForm();
+        _this3.initializeForm();
 
-        _this2.closeModal();
+        _this3.closeModal();
       })["catch"](function (error) {
-        _this2.errors = error.response.data.errors;
+        _this3.errors = error.response.data.errors;
 
-        for (var prop in _this2.errors) {
-          showNotify('danger', _this2.errors[prop]);
+        for (var prop in _this3.errors) {
+          showNotify('danger', _this3.errors[prop]);
         }
       });
     },
     initializeForm: function initializeForm() {
       this.$data.form = {
         job_id: this.job.id,
-        'Number of Rails Req': {
-          '6.5s': {
-            '25x25s': '',
-            '30x30s': ''
-          },
-          '4.5s': {
-            '25x25s': '',
-            '30x30s': ''
-          },
-          '3.25s': {
-            '25x25s': '',
-            '30x30s': ''
-          },
-          '2s': {
-            '25x25s': '',
-            '30x30s': ''
-          }
+        '6.5s': {
+          '25x25s': '',
+          '30x30s': ''
+        },
+        '4.5s': {
+          '25x25s': '',
+          '30x30s': ''
+        },
+        '3.25s': {
+          '25x25s': '',
+          '30x30s': ''
+        },
+        '2s': {
+          '25x25s': '',
+          '30x30s': ''
         }
       };
       var json_field_list = {
         'GD_list': 'General Details',
+        'NORR_list': 'Number of Rails Req',
         'BOMR_list': 'Breakdown of M Required',
         'UB_list': 'Universal Brackets',
         'BR_list': 'Brackets Req',
@@ -2657,7 +2680,8 @@ __webpack_require__.r(__webpack_exports__);
         this.form[list] = [];
 
         for (var field in this.fields[json_field_list[list]]) {
-          this.form[field] = '';
+          if (list !== 'NORR_list') //NORR_list has different structure
+            this.form[field] = '';
           this.form[list].push(field);
         }
       }
@@ -2668,9 +2692,287 @@ __webpack_require__.r(__webpack_exports__);
       var elem = this.$refs.closeModal;
       elem.click();
     }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/jobs/events/edit.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/jobs/events/edit.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-select */ "./node_modules/vue-select/dist/vue-select.js");
+/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_select__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-select/dist/vue-select.css */ "./node_modules/vue-select/dist/vue-select.css");
+/* harmony import */ var vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var vue2_datepicker__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue2-datepicker */ "./node_modules/vue2-datepicker/lib/index.js");
+/* harmony import */ var vue2_datepicker__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue2_datepicker__WEBPACK_IMPORTED_MODULE_2__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    vSelect: vue_select__WEBPACK_IMPORTED_MODULE_0___default.a,
+    DatePicker: vue2_datepicker__WEBPACK_IMPORTED_MODULE_2___default.a
   },
-  computed: {},
-  watch: {}
+  data: function data() {
+    return {
+      form: {
+        '6.5s': {
+          '25x25s': '',
+          '30x30s': ''
+        },
+        '4.5s': {
+          '25x25s': '',
+          '30x30s': ''
+        },
+        '3.25s': {
+          '25x25s': '',
+          '30x30s': ''
+        },
+        '2s': {
+          '25x25s': '',
+          '30x30s': ''
+        }
+      },
+      confSettings: {
+        installTypes: {},
+        roofTypes: {},
+        pitches: {},
+        heights: {}
+      },
+      eventStatuses: {},
+      eventTypes: {},
+      eventVehicles: {},
+      errors: {},
+      fields: {},
+      job: {}
+    };
+  },
+  mounted: function mounted() {
+    this.defSettings();
+  },
+  // computed: {
+  //   superslip() {
+  //     return this.form.superslip;
+  //   }
+  // },
+  // watch: {
+  //   superslip(newVal) {
+  //     if(!newVal && this.job.job_type===1)
+  //       this.clearForm(['BRC_list','BRR_list','BRP_list'])
+  //     else if(!newVal && this.job.job_type===2)
+  //       this.clearForm(['BR_list','ORS_list'])
+  //   }
+  // },
+  methods: {
+    getData: function getData(event_id) {
+      var _this = this;
+
+      axios.get('detailEvent/' + event_id).then(function (response) {
+        _this.form = response.data;
+
+        _this.initializeForm();
+      });
+    },
+    clearForm: function clearForm(arrSection) {
+      var _this2 = this;
+
+      arrSection.forEach(function (section) {
+        _this2.form[section].forEach(function (field) {
+          console.log(field);
+        });
+      });
+    },
+    defSettings: function defSettings() {
+      var _this3 = this;
+
+      axios.get('installTypes').then(function (response) {
+        return _this3.confSettings.installTypes = response.data;
+      });
+      axios.get('roofTypes').then(function (response) {
+        return _this3.confSettings.roofTypes = response.data;
+      });
+      axios.get('pitches').then(function (response) {
+        return _this3.confSettings.pitches = response.data;
+      });
+      axios.get('heights').then(function (response) {
+        return _this3.confSettings.heights = response.data;
+      });
+      axios.get('jobEventFields').then(function (response) {
+        return _this3.fields = response.data;
+      });
+    },
+    update: function update() {
+      var _this4 = this;
+
+      axios.post('/updateEvent', this.$data.form).then(function (response) {
+        console.log(response.data);
+
+        _this4.$parent.getResults();
+
+        showNotify('primary', 'Event has been Updated');
+
+        _this4.closeModal();
+      })["catch"](function (error) {
+        _this4.errors = error.response.data.errors;
+
+        for (var prop in _this4.errors) {
+          showNotify('danger', _this4.errors[prop]);
+        }
+      });
+    },
+    initializeForm: function initializeForm() {
+      var json_field_list = {
+        'GD_list': 'General Details',
+        'NORR_list': 'Number of Rails Req',
+        'BOMR_list': 'Breakdown of M Required',
+        'UB_list': 'Universal Brackets',
+        'BR_list': 'Brackets Req',
+        'BRC_list': 'Brackets Req Const',
+        'BRR_list': 'Brackets Req Reno',
+        'BRP_list': 'Brackets Req Pole',
+        'ORS_list': 'On Roof Systems'
+      };
+
+      for (var list in json_field_list) {
+        this.form[list] = [];
+
+        for (var field in this.fields[json_field_list[list]]) {
+          this.form[list].push(field);
+        }
+      }
+
+      this.form.json_field_list = json_field_list;
+    },
+    closeModal: function closeModal() {
+      var elem = this.$refs.closeModal;
+      elem.click();
+    }
+  }
 });
 
 /***/ }),
@@ -2685,6 +2987,14 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _create_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./create.vue */ "./resources/js/components/jobs/events/create.vue");
+/* harmony import */ var _edit_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./edit.vue */ "./resources/js/components/jobs/events/edit.vue");
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2739,9 +3049,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    create: _create_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    create: _create_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    edit: _edit_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   props: ['job'],
   data: function data() {
@@ -2754,7 +3066,10 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    if (this.job === undefined) {// this.$router.push({name:'jobIndex'});
+    if (this.job === undefined) {
+      this.$router.push({
+        name: 'jobIndex'
+      });
     }
 
     this.getResults();
@@ -2785,12 +3100,16 @@ __webpack_require__.r(__webpack_exports__);
         return _this2.eventVehicles = response.data;
       });
     },
-    passData: function passData() {
-      this.$children[3].eventStatuses = this.eventStatuses;
-      this.$children[3].eventTypes = this.eventTypes;
-      this.$children[3].eventVehicles = this.eventVehicles;
-      this.$children[3].job = this.job;
-      this.$children[3].initializeForm();
+    passData: function passData(type, child) {
+      var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+
+      if (type === 'create' || type === 'edit') {
+        this.$children[child].eventStatuses = this.eventStatuses;
+        this.$children[child].eventTypes = this.eventTypes;
+        this.$children[child].eventVehicles = this.eventVehicles;
+        this.$children[child].job = this.job;
+        if (type === 'edit' && id !== null) this.$children[child].getData(id);else this.$children[child].initializeForm();
+      }
     }
   }
 });
@@ -3116,6 +3435,25 @@ exports.push([module.i, "\n.not-validated{\n  border-color: #fb6340;\n}\n.form-c
 /*!************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/jobs/events/create.vue?vue&type=style&index=0&lang=css& ***!
   \************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.mx-datepicker{\n  width: unset;\n  display: unset;\n}\n.mx-datepicker-popup{\n  top: 0 !important;\n}\n.not-validated{\n  border-color: #fb6340;\n}\n.form-control .vs__dropdown-toggle {\n  border: 0px !important;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/jobs/events/edit.vue?vue&type=style&index=0&lang=css&":
+/*!**********************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/jobs/events/edit.vue?vue&type=style&index=0&lang=css& ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5097,6 +5435,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/jobs/events/edit.vue?vue&type=style&index=0&lang=css&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/jobs/events/edit.vue?vue&type=style&index=0&lang=css& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../../node_modules/css-loader??ref--6-1!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/src??ref--6-2!../../../../../node_modules/vue-loader/lib??vue-loader-options!./edit.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/jobs/events/edit.vue?vue&type=style&index=0&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/lib/addStyles.js":
 /*!****************************************************!*\
   !*** ./node_modules/style-loader/lib/addStyles.js ***!
@@ -6856,295 +7224,47 @@ var render = function() {
               "div",
               { staticClass: "modal-body" },
               _vm._l(_vm.fields, function(section, sec_name, index) {
-                return _c("div", [
-                  _c("h6", { staticClass: "heading-small text-muted mb-4" }, [
-                    _vm._v(_vm._s(sec_name))
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "pl-lg-4" }, [
-                    _c(
-                      "div",
-                      { staticClass: "row" },
-                      _vm._l(section, function(item, key) {
-                        return _c("div", { class: "col-lg-" + item["col"] }, [
-                          _c(
-                            "div",
-                            { staticClass: "form-group" },
-                            [
-                              _c(
-                                "label",
-                                {
-                                  staticClass: "form-control-label",
-                                  attrs: { for: "input-" + key }
-                                },
-                                [_vm._v(_vm._s(item["display_name"]))]
-                              ),
-                              _vm._v(" "),
-                              item["type"] === "checkbox" &&
-                              (item["type"] === "text" ||
-                                item["type"] === "number")
-                                ? _c("input", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: _vm.form[key],
-                                        expression: "form[key]"
-                                      }
-                                    ],
-                                    staticClass: "form-control",
-                                    class: { "not-validated": _vm.errors[key] },
-                                    attrs: {
-                                      id: "input-" + key,
-                                      placeholder: item["display_name"],
-                                      type: "checkbox"
-                                    },
-                                    domProps: {
-                                      checked: Array.isArray(_vm.form[key])
-                                        ? _vm._i(_vm.form[key], null) > -1
-                                        : _vm.form[key]
-                                    },
-                                    on: {
-                                      change: function($event) {
-                                        var $$a = _vm.form[key],
-                                          $$el = $event.target,
-                                          $$c = $$el.checked ? true : false
-                                        if (Array.isArray($$a)) {
-                                          var $$v = null,
-                                            $$i = _vm._i($$a, $$v)
-                                          if ($$el.checked) {
-                                            $$i < 0 &&
-                                              _vm.$set(
-                                                _vm.form,
-                                                key,
-                                                $$a.concat([$$v])
-                                              )
-                                          } else {
-                                            $$i > -1 &&
-                                              _vm.$set(
-                                                _vm.form,
-                                                key,
-                                                $$a
-                                                  .slice(0, $$i)
-                                                  .concat($$a.slice($$i + 1))
-                                              )
-                                          }
-                                        } else {
-                                          _vm.$set(_vm.form, key, $$c)
-                                        }
-                                      }
-                                    }
-                                  })
-                                : item["type"] === "radio" &&
-                                  (item["type"] === "text" ||
-                                    item["type"] === "number")
-                                ? _c("input", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: _vm.form[key],
-                                        expression: "form[key]"
-                                      }
-                                    ],
-                                    staticClass: "form-control",
-                                    class: { "not-validated": _vm.errors[key] },
-                                    attrs: {
-                                      id: "input-" + key,
-                                      placeholder: item["display_name"],
-                                      type: "radio"
-                                    },
-                                    domProps: {
-                                      checked: _vm._q(_vm.form[key], null)
-                                    },
-                                    on: {
-                                      change: function($event) {
-                                        return _vm.$set(_vm.form, key, null)
-                                      }
-                                    }
-                                  })
-                                : item["type"] === "text" ||
-                                  item["type"] === "number"
-                                ? _c("input", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: _vm.form[key],
-                                        expression: "form[key]"
-                                      }
-                                    ],
-                                    staticClass: "form-control",
-                                    class: { "not-validated": _vm.errors[key] },
-                                    attrs: {
-                                      id: "input-" + key,
-                                      placeholder: item["display_name"],
-                                      type: item["type"]
-                                    },
-                                    domProps: { value: _vm.form[key] },
-                                    on: {
-                                      input: function($event) {
-                                        if ($event.target.composing) {
-                                          return
-                                        }
-                                        _vm.$set(
-                                          _vm.form,
-                                          key,
-                                          $event.target.value
-                                        )
-                                      }
-                                    }
-                                  })
-                                : _vm._e(),
-                              _vm._v(" "),
-                              item["type"] === "2text"
-                                ? _c("div", [
-                                    _c("input", {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value:
-                                            _vm.form["Number of Rails Req"][
-                                              key
-                                            ]["25x25s"],
-                                          expression:
-                                            "form['Number of Rails Req'][key]['25x25s']"
-                                        }
-                                      ],
-                                      staticClass: "form-control",
-                                      class: {
-                                        "not-validated": _vm.errors[key]
-                                      },
-                                      attrs: {
-                                        type: "text",
-                                        placeholder: "25x25s"
-                                      },
-                                      domProps: {
-                                        value:
-                                          _vm.form["Number of Rails Req"][key][
-                                            "25x25s"
-                                          ]
-                                      },
-                                      on: {
-                                        input: function($event) {
-                                          if ($event.target.composing) {
-                                            return
-                                          }
-                                          _vm.$set(
-                                            _vm.form["Number of Rails Req"][
-                                              key
-                                            ],
-                                            "25x25s",
-                                            $event.target.value
-                                          )
-                                        }
-                                      }
-                                    }),
-                                    _vm._v(" "),
-                                    _c("input", {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value:
-                                            _vm.form["Number of Rails Req"][
-                                              key
-                                            ]["30x30s"],
-                                          expression:
-                                            "form['Number of Rails Req'][key]['30x30s']"
-                                        }
-                                      ],
-                                      staticClass: "form-control",
-                                      class: {
-                                        "not-validated": _vm.errors[key]
-                                      },
-                                      attrs: {
-                                        type: "text",
-                                        placeholder: "30x30s"
-                                      },
-                                      domProps: {
-                                        value:
-                                          _vm.form["Number of Rails Req"][key][
-                                            "30x30s"
-                                          ]
-                                      },
-                                      on: {
-                                        input: function($event) {
-                                          if ($event.target.composing) {
-                                            return
-                                          }
-                                          _vm.$set(
-                                            _vm.form["Number of Rails Req"][
-                                              key
-                                            ],
-                                            "30x30s",
-                                            $event.target.value
-                                          )
-                                        }
-                                      }
-                                    })
-                                  ])
-                                : _vm._e(),
-                              _vm._v(" "),
-                              item["type"] === "radio"
-                                ? _c("div", { staticClass: "col-md-12" }, [
+                return (sec_name !== "Brackets Req Const" &&
+                  sec_name !== "Brackets Req Reno" &&
+                  sec_name !== "Brackets Req Pole" &&
+                  _vm.job.job_type === 1) ||
+                  (sec_name !== "Brackets Req" &&
+                    sec_name !== "On Roof Systems" &&
+                    _vm.job.job_type === 2) ||
+                  _vm.form.superslip
+                  ? _c("div", [
+                      _c(
+                        "h6",
+                        { staticClass: "heading-small text-muted mb-4" },
+                        [_vm._v(_vm._s(sec_name))]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "pl-lg-4" }, [
+                        _c(
+                          "div",
+                          { staticClass: "row" },
+                          _vm._l(section, function(item, key) {
+                            return _c(
+                              "div",
+                              { class: "col-lg-" + item["col"] },
+                              [
+                                _c(
+                                  "div",
+                                  { staticClass: "form-group" },
+                                  [
                                     _c(
-                                      "div",
+                                      "label",
                                       {
-                                        staticClass:
-                                          "custom-control custom-radio mb-3"
+                                        staticClass: "form-control-label",
+                                        attrs: { for: "input-" + key }
                                       },
-                                      [
-                                        _c("input", {
-                                          directives: [
-                                            {
-                                              name: "model",
-                                              rawName: "v-model",
-                                              value: _vm.form[key],
-                                              expression: "form[key]"
-                                            }
-                                          ],
-                                          staticClass: "custom-control-input",
-                                          attrs: {
-                                            name: key,
-                                            id: "customRadio5",
-                                            type: "radio",
-                                            value: "1"
-                                          },
-                                          domProps: {
-                                            checked: _vm._q(_vm.form[key], "1")
-                                          },
-                                          on: {
-                                            change: function($event) {
-                                              return _vm.$set(
-                                                _vm.form,
-                                                key,
-                                                "1"
-                                              )
-                                            }
-                                          }
-                                        }),
-                                        _vm._v(" "),
-                                        _c(
-                                          "label",
-                                          {
-                                            staticClass: "custom-control-label",
-                                            attrs: { for: "customRadio5" }
-                                          },
-                                          [_vm._v(_vm._s(item["one"]))]
-                                        )
-                                      ]
+                                      [_vm._v(_vm._s(item["display_name"]))]
                                     ),
                                     _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "custom-control custom-radio mb-3"
-                                      },
-                                      [
-                                        _c("input", {
+                                    item["type"] === "checkbox" &&
+                                    (item["type"] === "text" ||
+                                      item["type"] === "number")
+                                      ? _c("input", {
                                           directives: [
                                             {
                                               name: "model",
@@ -7153,682 +7273,980 @@ var render = function() {
                                               expression: "form[key]"
                                             }
                                           ],
-                                          staticClass: "custom-control-input",
+                                          staticClass: "form-control",
+                                          class: {
+                                            "not-validated": _vm.errors[key]
+                                          },
                                           attrs: {
-                                            name: key,
-                                            id: "customRadio6",
-                                            type: "radio",
-                                            value: "2"
+                                            id: "input-" + key,
+                                            placeholder: item["display_name"],
+                                            type: "checkbox"
                                           },
                                           domProps: {
-                                            checked: _vm._q(_vm.form[key], "2")
+                                            checked: Array.isArray(
+                                              _vm.form[key]
+                                            )
+                                              ? _vm._i(_vm.form[key], null) > -1
+                                              : _vm.form[key]
+                                          },
+                                          on: {
+                                            change: function($event) {
+                                              var $$a = _vm.form[key],
+                                                $$el = $event.target,
+                                                $$c = $$el.checked
+                                                  ? true
+                                                  : false
+                                              if (Array.isArray($$a)) {
+                                                var $$v = null,
+                                                  $$i = _vm._i($$a, $$v)
+                                                if ($$el.checked) {
+                                                  $$i < 0 &&
+                                                    _vm.$set(
+                                                      _vm.form,
+                                                      key,
+                                                      $$a.concat([$$v])
+                                                    )
+                                                } else {
+                                                  $$i > -1 &&
+                                                    _vm.$set(
+                                                      _vm.form,
+                                                      key,
+                                                      $$a
+                                                        .slice(0, $$i)
+                                                        .concat(
+                                                          $$a.slice($$i + 1)
+                                                        )
+                                                    )
+                                                }
+                                              } else {
+                                                _vm.$set(_vm.form, key, $$c)
+                                              }
+                                            }
+                                          }
+                                        })
+                                      : item["type"] === "radio" &&
+                                        (item["type"] === "text" ||
+                                          item["type"] === "number")
+                                      ? _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: _vm.form[key],
+                                              expression: "form[key]"
+                                            }
+                                          ],
+                                          staticClass: "form-control",
+                                          class: {
+                                            "not-validated": _vm.errors[key]
+                                          },
+                                          attrs: {
+                                            id: "input-" + key,
+                                            placeholder: item["display_name"],
+                                            type: "radio"
+                                          },
+                                          domProps: {
+                                            checked: _vm._q(_vm.form[key], null)
                                           },
                                           on: {
                                             change: function($event) {
                                               return _vm.$set(
                                                 _vm.form,
                                                 key,
-                                                "2"
+                                                null
                                               )
                                             }
                                           }
-                                        }),
-                                        _vm._v(" "),
-                                        _c(
-                                          "label",
-                                          {
-                                            staticClass: "custom-control-label",
-                                            attrs: { for: "customRadio6" }
+                                        })
+                                      : item["type"] === "text" ||
+                                        item["type"] === "number"
+                                      ? _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: _vm.form[key],
+                                              expression: "form[key]"
+                                            }
+                                          ],
+                                          staticClass: "form-control",
+                                          class: {
+                                            "not-validated": _vm.errors[key]
                                           },
-                                          [_vm._v(_vm._s(item["two"]))]
+                                          attrs: {
+                                            id: "input-" + key,
+                                            placeholder: item["display_name"],
+                                            type: item["type"]
+                                          },
+                                          domProps: { value: _vm.form[key] },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.$set(
+                                                _vm.form,
+                                                key,
+                                                $event.target.value
+                                              )
+                                            }
+                                          }
+                                        })
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    item["type"] === "2text"
+                                      ? _c("div", [
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.form[key]["25x25s"],
+                                                expression:
+                                                  "form[key]['25x25s']"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            class: {
+                                              "not-validated": _vm.errors[key]
+                                            },
+                                            attrs: {
+                                              type: "text",
+                                              placeholder: "25x25s"
+                                            },
+                                            domProps: {
+                                              value: _vm.form[key]["25x25s"]
+                                            },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  _vm.form[key],
+                                                  "25x25s",
+                                                  $event.target.value
+                                                )
+                                              }
+                                            }
+                                          }),
+                                          _vm._v(" "),
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.form[key]["30x30s"],
+                                                expression:
+                                                  "form[key]['30x30s']"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            class: {
+                                              "not-validated": _vm.errors[key]
+                                            },
+                                            attrs: {
+                                              type: "text",
+                                              placeholder: "30x30s"
+                                            },
+                                            domProps: {
+                                              value: _vm.form[key]["30x30s"]
+                                            },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  _vm.form[key],
+                                                  "30x30s",
+                                                  $event.target.value
+                                                )
+                                              }
+                                            }
+                                          })
+                                        ])
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    item["type"] === "radio"
+                                      ? _c(
+                                          "div",
+                                          { staticClass: "col-md-12" },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "custom-control custom-radio mb-3"
+                                              },
+                                              [
+                                                _c("input", {
+                                                  directives: [
+                                                    {
+                                                      name: "model",
+                                                      rawName: "v-model",
+                                                      value: _vm.form[key],
+                                                      expression: "form[key]"
+                                                    }
+                                                  ],
+                                                  staticClass:
+                                                    "custom-control-input",
+                                                  attrs: {
+                                                    name: key,
+                                                    id: "customRadio5",
+                                                    type: "radio",
+                                                    value: "1"
+                                                  },
+                                                  domProps: {
+                                                    checked: _vm._q(
+                                                      _vm.form[key],
+                                                      "1"
+                                                    )
+                                                  },
+                                                  on: {
+                                                    change: function($event) {
+                                                      return _vm.$set(
+                                                        _vm.form,
+                                                        key,
+                                                        "1"
+                                                      )
+                                                    }
+                                                  }
+                                                }),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "label",
+                                                  {
+                                                    staticClass:
+                                                      "custom-control-label",
+                                                    attrs: {
+                                                      for: "customRadio5"
+                                                    }
+                                                  },
+                                                  [_vm._v(_vm._s(item["one"]))]
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "custom-control custom-radio mb-3"
+                                              },
+                                              [
+                                                _c("input", {
+                                                  directives: [
+                                                    {
+                                                      name: "model",
+                                                      rawName: "v-model",
+                                                      value: _vm.form[key],
+                                                      expression: "form[key]"
+                                                    }
+                                                  ],
+                                                  staticClass:
+                                                    "custom-control-input",
+                                                  attrs: {
+                                                    name: key,
+                                                    id: "customRadio6",
+                                                    type: "radio",
+                                                    value: "2"
+                                                  },
+                                                  domProps: {
+                                                    checked: _vm._q(
+                                                      _vm.form[key],
+                                                      "2"
+                                                    )
+                                                  },
+                                                  on: {
+                                                    change: function($event) {
+                                                      return _vm.$set(
+                                                        _vm.form,
+                                                        key,
+                                                        "2"
+                                                      )
+                                                    }
+                                                  }
+                                                }),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "label",
+                                                  {
+                                                    staticClass:
+                                                      "custom-control-label",
+                                                    attrs: {
+                                                      for: "customRadio6"
+                                                    }
+                                                  },
+                                                  [_vm._v(_vm._s(item["two"]))]
+                                                )
+                                              ]
+                                            )
+                                          ]
                                         )
-                                      ]
-                                    )
-                                  ])
-                                : _vm._e(),
-                              _vm._v(" "),
-                              item["type"] === "checkbox"
-                                ? _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "custom-control custom-checkbox mb-3"
-                                    },
-                                    [
-                                      _c("input", {
-                                        directives: [
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    item["type"] === "checkbox"
+                                      ? _c(
+                                          "div",
                                           {
-                                            name: "model",
-                                            rawName: "v-model",
+                                            staticClass:
+                                              "custom-control custom-checkbox mb-3"
+                                          },
+                                          [
+                                            _c("input", {
+                                              directives: [
+                                                {
+                                                  name: "model",
+                                                  rawName: "v-model",
+                                                  value: _vm.form[key],
+                                                  expression: "form[key]"
+                                                }
+                                              ],
+                                              staticClass:
+                                                "custom-control-input",
+                                              attrs: {
+                                                id: "customCheck2_" + key,
+                                                type: "checkbox"
+                                              },
+                                              domProps: {
+                                                checked: Array.isArray(
+                                                  _vm.form[key]
+                                                )
+                                                  ? _vm._i(
+                                                      _vm.form[key],
+                                                      null
+                                                    ) > -1
+                                                  : _vm.form[key]
+                                              },
+                                              on: {
+                                                change: function($event) {
+                                                  var $$a = _vm.form[key],
+                                                    $$el = $event.target,
+                                                    $$c = $$el.checked
+                                                      ? true
+                                                      : false
+                                                  if (Array.isArray($$a)) {
+                                                    var $$v = null,
+                                                      $$i = _vm._i($$a, $$v)
+                                                    if ($$el.checked) {
+                                                      $$i < 0 &&
+                                                        _vm.$set(
+                                                          _vm.form,
+                                                          key,
+                                                          $$a.concat([$$v])
+                                                        )
+                                                    } else {
+                                                      $$i > -1 &&
+                                                        _vm.$set(
+                                                          _vm.form,
+                                                          key,
+                                                          $$a
+                                                            .slice(0, $$i)
+                                                            .concat(
+                                                              $$a.slice($$i + 1)
+                                                            )
+                                                        )
+                                                    }
+                                                  } else {
+                                                    _vm.$set(_vm.form, key, $$c)
+                                                  }
+                                                }
+                                              }
+                                            }),
+                                            _vm._v(" "),
+                                            _c("label", {
+                                              staticClass:
+                                                "custom-control-label",
+                                              attrs: {
+                                                for: "customCheck2_" + key
+                                              }
+                                            })
+                                          ]
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    key === "status"
+                                      ? _c(
+                                          "select",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.form[key],
+                                                expression: "form[key]"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            class: {
+                                              "not-validated": _vm.errors[key]
+                                            },
+                                            on: {
+                                              change: function($event) {
+                                                var $$selectedVal = Array.prototype.filter
+                                                  .call(
+                                                    $event.target.options,
+                                                    function(o) {
+                                                      return o.selected
+                                                    }
+                                                  )
+                                                  .map(function(o) {
+                                                    var val =
+                                                      "_value" in o
+                                                        ? o._value
+                                                        : o.value
+                                                    return val
+                                                  })
+                                                _vm.$set(
+                                                  _vm.form,
+                                                  key,
+                                                  $event.target.multiple
+                                                    ? $$selectedVal
+                                                    : $$selectedVal[0]
+                                                )
+                                              }
+                                            }
+                                          },
+                                          _vm._l(_vm.eventStatuses, function(
+                                            status,
+                                            key
+                                          ) {
+                                            return _c(
+                                              "option",
+                                              { domProps: { value: key } },
+                                              [_vm._v(_vm._s(status))]
+                                            )
+                                          }),
+                                          0
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    key === "type"
+                                      ? _c(
+                                          "select",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.form[key],
+                                                expression: "form[key]"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            class: {
+                                              "not-validated": _vm.errors[key]
+                                            },
+                                            on: {
+                                              change: function($event) {
+                                                var $$selectedVal = Array.prototype.filter
+                                                  .call(
+                                                    $event.target.options,
+                                                    function(o) {
+                                                      return o.selected
+                                                    }
+                                                  )
+                                                  .map(function(o) {
+                                                    var val =
+                                                      "_value" in o
+                                                        ? o._value
+                                                        : o.value
+                                                    return val
+                                                  })
+                                                _vm.$set(
+                                                  _vm.form,
+                                                  key,
+                                                  $event.target.multiple
+                                                    ? $$selectedVal
+                                                    : $$selectedVal[0]
+                                                )
+                                              }
+                                            }
+                                          },
+                                          _vm._l(_vm.eventTypes, function(
+                                            type,
+                                            key
+                                          ) {
+                                            return _c(
+                                              "option",
+                                              { domProps: { value: key } },
+                                              [_vm._v(_vm._s(type))]
+                                            )
+                                          }),
+                                          0
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    key === "vehicle"
+                                      ? _c(
+                                          "select",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.form[key],
+                                                expression: "form[key]"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            class: {
+                                              "not-validated": _vm.errors[key]
+                                            },
+                                            on: {
+                                              change: function($event) {
+                                                var $$selectedVal = Array.prototype.filter
+                                                  .call(
+                                                    $event.target.options,
+                                                    function(o) {
+                                                      return o.selected
+                                                    }
+                                                  )
+                                                  .map(function(o) {
+                                                    var val =
+                                                      "_value" in o
+                                                        ? o._value
+                                                        : o.value
+                                                    return val
+                                                  })
+                                                _vm.$set(
+                                                  _vm.form,
+                                                  key,
+                                                  $event.target.multiple
+                                                    ? $$selectedVal
+                                                    : $$selectedVal[0]
+                                                )
+                                              }
+                                            }
+                                          },
+                                          _vm._l(_vm.eventVehicles, function(
+                                            vehicle,
+                                            key
+                                          ) {
+                                            return _c(
+                                              "option",
+                                              { domProps: { value: key } },
+                                              [_vm._v(_vm._s(vehicle))]
+                                            )
+                                          }),
+                                          0
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    key === "type_of_install"
+                                      ? _c(
+                                          "select",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.form[key],
+                                                expression: "form[key]"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            class: {
+                                              "not-validated": _vm.errors[key]
+                                            },
+                                            on: {
+                                              change: function($event) {
+                                                var $$selectedVal = Array.prototype.filter
+                                                  .call(
+                                                    $event.target.options,
+                                                    function(o) {
+                                                      return o.selected
+                                                    }
+                                                  )
+                                                  .map(function(o) {
+                                                    var val =
+                                                      "_value" in o
+                                                        ? o._value
+                                                        : o.value
+                                                    return val
+                                                  })
+                                                _vm.$set(
+                                                  _vm.form,
+                                                  key,
+                                                  $event.target.multiple
+                                                    ? $$selectedVal
+                                                    : $$selectedVal[0]
+                                                )
+                                              }
+                                            }
+                                          },
+                                          _vm._l(
+                                            _vm.confSettings.installTypes,
+                                            function(install, key) {
+                                              return _c(
+                                                "option",
+                                                { domProps: { value: key } },
+                                                [_vm._v(_vm._s(install))]
+                                              )
+                                            }
+                                          ),
+                                          0
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    key === "type_of_roof"
+                                      ? _c(
+                                          "select",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.form[key],
+                                                expression: "form[key]"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            class: {
+                                              "not-validated": _vm.errors[key]
+                                            },
+                                            on: {
+                                              change: function($event) {
+                                                var $$selectedVal = Array.prototype.filter
+                                                  .call(
+                                                    $event.target.options,
+                                                    function(o) {
+                                                      return o.selected
+                                                    }
+                                                  )
+                                                  .map(function(o) {
+                                                    var val =
+                                                      "_value" in o
+                                                        ? o._value
+                                                        : o.value
+                                                    return val
+                                                  })
+                                                _vm.$set(
+                                                  _vm.form,
+                                                  key,
+                                                  $event.target.multiple
+                                                    ? $$selectedVal
+                                                    : $$selectedVal[0]
+                                                )
+                                              }
+                                            }
+                                          },
+                                          _vm._l(
+                                            _vm.confSettings.roofTypes,
+                                            function(roof, key) {
+                                              return _c(
+                                                "option",
+                                                { domProps: { value: key } },
+                                                [_vm._v(_vm._s(roof))]
+                                              )
+                                            }
+                                          ),
+                                          0
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    key === "plank_system"
+                                      ? _c(
+                                          "select",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.form[key],
+                                                expression: "form[key]"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            class: {
+                                              "not-validated": _vm.errors[key]
+                                            },
+                                            on: {
+                                              change: function($event) {
+                                                var $$selectedVal = Array.prototype.filter
+                                                  .call(
+                                                    $event.target.options,
+                                                    function(o) {
+                                                      return o.selected
+                                                    }
+                                                  )
+                                                  .map(function(o) {
+                                                    var val =
+                                                      "_value" in o
+                                                        ? o._value
+                                                        : o.value
+                                                    return val
+                                                  })
+                                                _vm.$set(
+                                                  _vm.form,
+                                                  key,
+                                                  $event.target.multiple
+                                                    ? $$selectedVal
+                                                    : $$selectedVal[0]
+                                                )
+                                              }
+                                            }
+                                          },
+                                          _vm._l(5, function(key) {
+                                            return _c(
+                                              "option",
+                                              { domProps: { value: key } },
+                                              [_vm._v(_vm._s(key))]
+                                            )
+                                          }),
+                                          0
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    key === "platform_lengths"
+                                      ? _c(
+                                          "select",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.form[key],
+                                                expression: "form[key]"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            class: {
+                                              "not-validated": _vm.errors[key]
+                                            },
+                                            on: {
+                                              change: function($event) {
+                                                var $$selectedVal = Array.prototype.filter
+                                                  .call(
+                                                    $event.target.options,
+                                                    function(o) {
+                                                      return o.selected
+                                                    }
+                                                  )
+                                                  .map(function(o) {
+                                                    var val =
+                                                      "_value" in o
+                                                        ? o._value
+                                                        : o.value
+                                                    return val
+                                                  })
+                                                _vm.$set(
+                                                  _vm.form,
+                                                  key,
+                                                  $event.target.multiple
+                                                    ? $$selectedVal
+                                                    : $$selectedVal[0]
+                                                )
+                                              }
+                                            }
+                                          },
+                                          _vm._l(
+                                            _vm.confSettings.platformLengths,
+                                            function(length, key) {
+                                              return _c(
+                                                "option",
+                                                { domProps: { value: key } },
+                                                [_vm._v(_vm._s(length))]
+                                              )
+                                            }
+                                          ),
+                                          0
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    key === "pitch"
+                                      ? _c(
+                                          "select",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.form[key],
+                                                expression: "form[key]"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            class: {
+                                              "not-validated": _vm.errors[key]
+                                            },
+                                            on: {
+                                              change: function($event) {
+                                                var $$selectedVal = Array.prototype.filter
+                                                  .call(
+                                                    $event.target.options,
+                                                    function(o) {
+                                                      return o.selected
+                                                    }
+                                                  )
+                                                  .map(function(o) {
+                                                    var val =
+                                                      "_value" in o
+                                                        ? o._value
+                                                        : o.value
+                                                    return val
+                                                  })
+                                                _vm.$set(
+                                                  _vm.form,
+                                                  key,
+                                                  $event.target.multiple
+                                                    ? $$selectedVal
+                                                    : $$selectedVal[0]
+                                                )
+                                              }
+                                            }
+                                          },
+                                          _vm._l(
+                                            _vm.confSettings.pitches,
+                                            function(pitch, key) {
+                                              return _c(
+                                                "option",
+                                                { domProps: { value: key } },
+                                                [_vm._v(_vm._s(pitch))]
+                                              )
+                                            }
+                                          ),
+                                          0
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    key === "height"
+                                      ? _c(
+                                          "select",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.form[key],
+                                                expression: "form[key]"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            class: {
+                                              "not-validated": _vm.errors[key]
+                                            },
+                                            on: {
+                                              change: function($event) {
+                                                var $$selectedVal = Array.prototype.filter
+                                                  .call(
+                                                    $event.target.options,
+                                                    function(o) {
+                                                      return o.selected
+                                                    }
+                                                  )
+                                                  .map(function(o) {
+                                                    var val =
+                                                      "_value" in o
+                                                        ? o._value
+                                                        : o.value
+                                                    return val
+                                                  })
+                                                _vm.$set(
+                                                  _vm.form,
+                                                  key,
+                                                  $event.target.multiple
+                                                    ? $$selectedVal
+                                                    : $$selectedVal[0]
+                                                )
+                                              }
+                                            }
+                                          },
+                                          _vm._l(
+                                            _vm.confSettings.heights,
+                                            function(height, key) {
+                                              return _c(
+                                                "option",
+                                                { domProps: { value: key } },
+                                                [_vm._v(_vm._s(height))]
+                                              )
+                                            }
+                                          ),
+                                          0
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    item["type"] === "date"
+                                      ? _c("date-picker", {
+                                          class: {
+                                            "not-validated": _vm.errors[key]
+                                          },
+                                          attrs: {
+                                            lang: "en",
+                                            "input-class": "form-control",
+                                            valueType: "format"
+                                          },
+                                          model: {
                                             value: _vm.form[key],
+                                            callback: function($$v) {
+                                              _vm.$set(_vm.form, key, $$v)
+                                            },
                                             expression: "form[key]"
                                           }
-                                        ],
-                                        staticClass: "custom-control-input",
-                                        attrs: {
-                                          id: "customCheck2_" + key,
-                                          type: "checkbox",
-                                          checked: ""
-                                        },
-                                        domProps: {
-                                          checked: Array.isArray(_vm.form[key])
-                                            ? _vm._i(_vm.form[key], null) > -1
-                                            : _vm.form[key]
-                                        },
-                                        on: {
-                                          change: function($event) {
-                                            var $$a = _vm.form[key],
-                                              $$el = $event.target,
-                                              $$c = $$el.checked ? true : false
-                                            if (Array.isArray($$a)) {
-                                              var $$v = null,
-                                                $$i = _vm._i($$a, $$v)
-                                              if ($$el.checked) {
-                                                $$i < 0 &&
-                                                  _vm.$set(
-                                                    _vm.form,
-                                                    key,
-                                                    $$a.concat([$$v])
-                                                  )
-                                              } else {
-                                                $$i > -1 &&
-                                                  _vm.$set(
-                                                    _vm.form,
-                                                    key,
-                                                    $$a
-                                                      .slice(0, $$i)
-                                                      .concat(
-                                                        $$a.slice($$i + 1)
-                                                      )
-                                                  )
+                                        })
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    item["type"] === "textarea"
+                                      ? _c("textarea", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: _vm.form[key],
+                                              expression: "form[key]"
+                                            }
+                                          ],
+                                          staticClass: "form-control",
+                                          class: {
+                                            "not-validated": _vm.errors[key]
+                                          },
+                                          attrs: { rows: "4", placeholder: "" },
+                                          domProps: { value: _vm.form[key] },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
                                               }
-                                            } else {
-                                              _vm.$set(_vm.form, key, $$c)
+                                              _vm.$set(
+                                                _vm.form,
+                                                key,
+                                                $event.target.value
+                                              )
                                             }
                                           }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c("label", {
-                                        staticClass: "custom-control-label",
-                                        attrs: { for: "customCheck2_" + key }
-                                      })
-                                    ]
-                                  )
-                                : _vm._e(),
-                              _vm._v(" "),
-                              key === "status"
-                                ? _c(
-                                    "select",
-                                    {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.form[key],
-                                          expression: "form[key]"
-                                        }
-                                      ],
-                                      staticClass: "form-control",
-                                      class: {
-                                        "not-validated": _vm.errors[key]
-                                      },
-                                      on: {
-                                        change: function($event) {
-                                          var $$selectedVal = Array.prototype.filter
-                                            .call(
-                                              $event.target.options,
-                                              function(o) {
-                                                return o.selected
-                                              }
+                                        })
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    _vm.errors[key]
+                                      ? _c(
+                                          "div",
+                                          {
+                                            staticClass: "invalid-feedback",
+                                            staticStyle: { display: "block" }
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                    " +
+                                                _vm._s(_vm.errors[key][0]) +
+                                                "\n                  "
                                             )
-                                            .map(function(o) {
-                                              var val =
-                                                "_value" in o
-                                                  ? o._value
-                                                  : o.value
-                                              return val
-                                            })
-                                          _vm.$set(
-                                            _vm.form,
-                                            key,
-                                            $event.target.multiple
-                                              ? $$selectedVal
-                                              : $$selectedVal[0]
-                                          )
-                                        }
-                                      }
-                                    },
-                                    _vm._l(_vm.eventStatuses, function(
-                                      status,
-                                      key
-                                    ) {
-                                      return _c(
-                                        "option",
-                                        { domProps: { value: key } },
-                                        [_vm._v(_vm._s(status))]
-                                      )
-                                    }),
-                                    0
-                                  )
-                                : _vm._e(),
-                              _vm._v(" "),
-                              key === "type"
-                                ? _c(
-                                    "select",
-                                    {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.form[key],
-                                          expression: "form[key]"
-                                        }
-                                      ],
-                                      staticClass: "form-control",
-                                      class: {
-                                        "not-validated": _vm.errors[key]
-                                      },
-                                      on: {
-                                        change: function($event) {
-                                          var $$selectedVal = Array.prototype.filter
-                                            .call(
-                                              $event.target.options,
-                                              function(o) {
-                                                return o.selected
-                                              }
-                                            )
-                                            .map(function(o) {
-                                              var val =
-                                                "_value" in o
-                                                  ? o._value
-                                                  : o.value
-                                              return val
-                                            })
-                                          _vm.$set(
-                                            _vm.form,
-                                            key,
-                                            $event.target.multiple
-                                              ? $$selectedVal
-                                              : $$selectedVal[0]
-                                          )
-                                        }
-                                      }
-                                    },
-                                    _vm._l(_vm.eventTypes, function(type, key) {
-                                      return _c(
-                                        "option",
-                                        { domProps: { value: key } },
-                                        [_vm._v(_vm._s(type))]
-                                      )
-                                    }),
-                                    0
-                                  )
-                                : _vm._e(),
-                              _vm._v(" "),
-                              key === "vehicle"
-                                ? _c(
-                                    "select",
-                                    {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.form[key],
-                                          expression: "form[key]"
-                                        }
-                                      ],
-                                      staticClass: "form-control",
-                                      class: {
-                                        "not-validated": _vm.errors[key]
-                                      },
-                                      on: {
-                                        change: function($event) {
-                                          var $$selectedVal = Array.prototype.filter
-                                            .call(
-                                              $event.target.options,
-                                              function(o) {
-                                                return o.selected
-                                              }
-                                            )
-                                            .map(function(o) {
-                                              var val =
-                                                "_value" in o
-                                                  ? o._value
-                                                  : o.value
-                                              return val
-                                            })
-                                          _vm.$set(
-                                            _vm.form,
-                                            key,
-                                            $event.target.multiple
-                                              ? $$selectedVal
-                                              : $$selectedVal[0]
-                                          )
-                                        }
-                                      }
-                                    },
-                                    _vm._l(_vm.eventVehicles, function(
-                                      vehicle,
-                                      key
-                                    ) {
-                                      return _c(
-                                        "option",
-                                        { domProps: { value: key } },
-                                        [_vm._v(_vm._s(vehicle))]
-                                      )
-                                    }),
-                                    0
-                                  )
-                                : _vm._e(),
-                              _vm._v(" "),
-                              key === "type_of_install"
-                                ? _c(
-                                    "select",
-                                    {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.form[key],
-                                          expression: "form[key]"
-                                        }
-                                      ],
-                                      staticClass: "form-control",
-                                      class: {
-                                        "not-validated": _vm.errors[key]
-                                      },
-                                      on: {
-                                        change: function($event) {
-                                          var $$selectedVal = Array.prototype.filter
-                                            .call(
-                                              $event.target.options,
-                                              function(o) {
-                                                return o.selected
-                                              }
-                                            )
-                                            .map(function(o) {
-                                              var val =
-                                                "_value" in o
-                                                  ? o._value
-                                                  : o.value
-                                              return val
-                                            })
-                                          _vm.$set(
-                                            _vm.form,
-                                            key,
-                                            $event.target.multiple
-                                              ? $$selectedVal
-                                              : $$selectedVal[0]
-                                          )
-                                        }
-                                      }
-                                    },
-                                    _vm._l(
-                                      _vm.confSettings.installTypes,
-                                      function(install, key) {
-                                        return _c(
-                                          "option",
-                                          { domProps: { value: key } },
-                                          [_vm._v(_vm._s(install))]
+                                          ]
                                         )
-                                      }
-                                    ),
-                                    0
-                                  )
-                                : _vm._e(),
-                              _vm._v(" "),
-                              key === "type_of_roof"
-                                ? _c(
-                                    "select",
-                                    {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.form[key],
-                                          expression: "form[key]"
-                                        }
-                                      ],
-                                      staticClass: "form-control",
-                                      class: {
-                                        "not-validated": _vm.errors[key]
-                                      },
-                                      on: {
-                                        change: function($event) {
-                                          var $$selectedVal = Array.prototype.filter
-                                            .call(
-                                              $event.target.options,
-                                              function(o) {
-                                                return o.selected
-                                              }
-                                            )
-                                            .map(function(o) {
-                                              var val =
-                                                "_value" in o
-                                                  ? o._value
-                                                  : o.value
-                                              return val
-                                            })
-                                          _vm.$set(
-                                            _vm.form,
-                                            key,
-                                            $event.target.multiple
-                                              ? $$selectedVal
-                                              : $$selectedVal[0]
-                                          )
-                                        }
-                                      }
-                                    },
-                                    _vm._l(_vm.confSettings.roofTypes, function(
-                                      roof,
-                                      key
-                                    ) {
-                                      return _c(
-                                        "option",
-                                        { domProps: { value: key } },
-                                        [_vm._v(_vm._s(roof))]
-                                      )
-                                    }),
-                                    0
-                                  )
-                                : _vm._e(),
-                              _vm._v(" "),
-                              key === "plank_system"
-                                ? _c(
-                                    "select",
-                                    {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.form[key],
-                                          expression: "form[key]"
-                                        }
-                                      ],
-                                      staticClass: "form-control",
-                                      class: {
-                                        "not-validated": _vm.errors[key]
-                                      },
-                                      on: {
-                                        change: function($event) {
-                                          var $$selectedVal = Array.prototype.filter
-                                            .call(
-                                              $event.target.options,
-                                              function(o) {
-                                                return o.selected
-                                              }
-                                            )
-                                            .map(function(o) {
-                                              var val =
-                                                "_value" in o
-                                                  ? o._value
-                                                  : o.value
-                                              return val
-                                            })
-                                          _vm.$set(
-                                            _vm.form,
-                                            key,
-                                            $event.target.multiple
-                                              ? $$selectedVal
-                                              : $$selectedVal[0]
-                                          )
-                                        }
-                                      }
-                                    },
-                                    _vm._l(5, function(key) {
-                                      return _c(
-                                        "option",
-                                        { domProps: { value: key } },
-                                        [_vm._v(_vm._s(key))]
-                                      )
-                                    }),
-                                    0
-                                  )
-                                : _vm._e(),
-                              _vm._v(" "),
-                              key === "platform_lengths"
-                                ? _c(
-                                    "select",
-                                    {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.form[key],
-                                          expression: "form[key]"
-                                        }
-                                      ],
-                                      staticClass: "form-control",
-                                      class: {
-                                        "not-validated": _vm.errors[key]
-                                      },
-                                      on: {
-                                        change: function($event) {
-                                          var $$selectedVal = Array.prototype.filter
-                                            .call(
-                                              $event.target.options,
-                                              function(o) {
-                                                return o.selected
-                                              }
-                                            )
-                                            .map(function(o) {
-                                              var val =
-                                                "_value" in o
-                                                  ? o._value
-                                                  : o.value
-                                              return val
-                                            })
-                                          _vm.$set(
-                                            _vm.form,
-                                            key,
-                                            $event.target.multiple
-                                              ? $$selectedVal
-                                              : $$selectedVal[0]
-                                          )
-                                        }
-                                      }
-                                    },
-                                    _vm._l(
-                                      _vm.confSettings.platformLengths,
-                                      function(length, key) {
-                                        return _c(
-                                          "option",
-                                          { domProps: { value: key } },
-                                          [_vm._v(_vm._s(length))]
-                                        )
-                                      }
-                                    ),
-                                    0
-                                  )
-                                : _vm._e(),
-                              _vm._v(" "),
-                              key === "pitch"
-                                ? _c(
-                                    "select",
-                                    {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.form[key],
-                                          expression: "form[key]"
-                                        }
-                                      ],
-                                      staticClass: "form-control",
-                                      class: {
-                                        "not-validated": _vm.errors[key]
-                                      },
-                                      on: {
-                                        change: function($event) {
-                                          var $$selectedVal = Array.prototype.filter
-                                            .call(
-                                              $event.target.options,
-                                              function(o) {
-                                                return o.selected
-                                              }
-                                            )
-                                            .map(function(o) {
-                                              var val =
-                                                "_value" in o
-                                                  ? o._value
-                                                  : o.value
-                                              return val
-                                            })
-                                          _vm.$set(
-                                            _vm.form,
-                                            key,
-                                            $event.target.multiple
-                                              ? $$selectedVal
-                                              : $$selectedVal[0]
-                                          )
-                                        }
-                                      }
-                                    },
-                                    _vm._l(_vm.confSettings.pitches, function(
-                                      pitch,
-                                      key
-                                    ) {
-                                      return _c(
-                                        "option",
-                                        { domProps: { value: key } },
-                                        [_vm._v(_vm._s(pitch))]
-                                      )
-                                    }),
-                                    0
-                                  )
-                                : _vm._e(),
-                              _vm._v(" "),
-                              key === "height"
-                                ? _c(
-                                    "select",
-                                    {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.form[key],
-                                          expression: "form[key]"
-                                        }
-                                      ],
-                                      staticClass: "form-control",
-                                      class: {
-                                        "not-validated": _vm.errors[key]
-                                      },
-                                      on: {
-                                        change: function($event) {
-                                          var $$selectedVal = Array.prototype.filter
-                                            .call(
-                                              $event.target.options,
-                                              function(o) {
-                                                return o.selected
-                                              }
-                                            )
-                                            .map(function(o) {
-                                              var val =
-                                                "_value" in o
-                                                  ? o._value
-                                                  : o.value
-                                              return val
-                                            })
-                                          _vm.$set(
-                                            _vm.form,
-                                            key,
-                                            $event.target.multiple
-                                              ? $$selectedVal
-                                              : $$selectedVal[0]
-                                          )
-                                        }
-                                      }
-                                    },
-                                    _vm._l(_vm.confSettings.heights, function(
-                                      height,
-                                      key
-                                    ) {
-                                      return _c(
-                                        "option",
-                                        { domProps: { value: key } },
-                                        [_vm._v(_vm._s(height))]
-                                      )
-                                    }),
-                                    0
-                                  )
-                                : _vm._e(),
-                              _vm._v(" "),
-                              item["type"] === "date"
-                                ? _c("date-picker", {
-                                    class: { "not-validated": _vm.errors[key] },
-                                    attrs: {
-                                      lang: "en",
-                                      "input-class": "form-control",
-                                      valueType: "format"
-                                    },
-                                    model: {
-                                      value: _vm.form[key],
-                                      callback: function($$v) {
-                                        _vm.$set(_vm.form, key, $$v)
-                                      },
-                                      expression: "form[key]"
-                                    }
-                                  })
-                                : _vm._e(),
-                              _vm._v(" "),
-                              item["type"] === "textarea"
-                                ? _c("textarea", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: _vm.form[key],
-                                        expression: "form[key]"
-                                      }
-                                    ],
-                                    staticClass: "form-control",
-                                    class: { "not-validated": _vm.errors[key] },
-                                    attrs: { rows: "4", placeholder: "" },
-                                    domProps: { value: _vm.form[key] },
-                                    on: {
-                                      input: function($event) {
-                                        if ($event.target.composing) {
-                                          return
-                                        }
-                                        _vm.$set(
-                                          _vm.form,
-                                          key,
-                                          $event.target.value
-                                        )
-                                      }
-                                    }
-                                  })
-                                : _vm._e(),
-                              _vm._v(" "),
-                              _vm.errors[key]
-                                ? _c(
-                                    "div",
-                                    {
-                                      staticClass: "invalid-feedback",
-                                      staticStyle: { display: "block" }
-                                    },
-                                    [
-                                      _vm._v(
-                                        "\n                    " +
-                                          _vm._s(_vm.errors[key][0]) +
-                                          "\n                  "
-                                      )
-                                    ]
-                                  )
-                                : _vm._e()
-                            ],
-                            1
-                          )
-                        ])
-                      }),
-                      0
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("hr", { staticClass: "my-4" })
-                ])
+                                      : _vm._e()
+                                  ],
+                                  1
+                                )
+                              ]
+                            )
+                          }),
+                          0
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("hr", { staticClass: "my-4" })
+                    ])
+                  : _vm._e()
               }),
               0
             ),
@@ -7850,6 +8268,1126 @@ var render = function() {
                   on: { click: _vm.save }
                 },
                 [_vm._v("Save changes")]
+              )
+            ])
+          ])
+        ]
+      )
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/jobs/events/edit.vue?vue&type=template&id=14bee05c&":
+/*!*******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/jobs/events/edit.vue?vue&type=template&id=14bee05c& ***!
+  \*******************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "modal fade",
+      attrs: {
+        id: "editJobEvents",
+        tabindex: "-1",
+        role: "dialog",
+        "aria-labelledby": "add_staffs_modal",
+        "aria-hidden": "true"
+      }
+    },
+    [
+      _c(
+        "div",
+        {
+          staticClass:
+            "modal-dialog modal- modal-dialog-centered modal- modal-fullscreen",
+          attrs: { role: "document" }
+        },
+        [
+          _c("div", { staticClass: "modal-content" }, [
+            _c("div", { staticClass: "modal-header text-center" }, [
+              _c(
+                "h6",
+                {
+                  staticClass: "modal-title",
+                  attrs: { id: "modal-title-default" }
+                },
+                [_vm._v("Edit Picking Slip Event")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  ref: "closeModal",
+                  staticClass: "close",
+                  attrs: {
+                    type: "button",
+                    "data-dismiss": "modal",
+                    "aria-label": "Close"
+                  }
+                },
+                [
+                  _c("span", { attrs: { "aria-hidden": "true" } }, [
+                    _vm._v("×")
+                  ])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "modal-body" },
+              _vm._l(_vm.fields, function(section, sec_name, index) {
+                return (sec_name !== "Brackets Req Const" &&
+                  sec_name !== "Brackets Req Reno" &&
+                  sec_name !== "Brackets Req Pole" &&
+                  _vm.job.job_type === 1) ||
+                  (sec_name !== "Brackets Req" &&
+                    sec_name !== "On Roof Systems" &&
+                    _vm.job.job_type === 2) ||
+                  _vm.form.superslip
+                  ? _c("div", [
+                      _c(
+                        "h6",
+                        { staticClass: "heading-small text-muted mb-4" },
+                        [_vm._v(_vm._s(sec_name))]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "pl-lg-4" }, [
+                        _c(
+                          "div",
+                          { staticClass: "row" },
+                          _vm._l(section, function(item, key) {
+                            return _c(
+                              "div",
+                              { class: "col-lg-" + item["col"] },
+                              [
+                                _c(
+                                  "div",
+                                  { staticClass: "form-group" },
+                                  [
+                                    _c(
+                                      "label",
+                                      {
+                                        staticClass: "form-control-label",
+                                        attrs: { for: "input-" + key }
+                                      },
+                                      [_vm._v(_vm._s(item["display_name"]))]
+                                    ),
+                                    _vm._v(" "),
+                                    item["type"] === "checkbox" &&
+                                    (item["type"] === "text" ||
+                                      item["type"] === "number")
+                                      ? _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: _vm.form[key],
+                                              expression: "form[key]"
+                                            }
+                                          ],
+                                          staticClass: "form-control",
+                                          class: {
+                                            "not-validated": _vm.errors[key]
+                                          },
+                                          attrs: {
+                                            id: "input-" + key,
+                                            placeholder: item["display_name"],
+                                            type: "checkbox"
+                                          },
+                                          domProps: {
+                                            checked: Array.isArray(
+                                              _vm.form[key]
+                                            )
+                                              ? _vm._i(_vm.form[key], null) > -1
+                                              : _vm.form[key]
+                                          },
+                                          on: {
+                                            change: function($event) {
+                                              var $$a = _vm.form[key],
+                                                $$el = $event.target,
+                                                $$c = $$el.checked
+                                                  ? true
+                                                  : false
+                                              if (Array.isArray($$a)) {
+                                                var $$v = null,
+                                                  $$i = _vm._i($$a, $$v)
+                                                if ($$el.checked) {
+                                                  $$i < 0 &&
+                                                    _vm.$set(
+                                                      _vm.form,
+                                                      key,
+                                                      $$a.concat([$$v])
+                                                    )
+                                                } else {
+                                                  $$i > -1 &&
+                                                    _vm.$set(
+                                                      _vm.form,
+                                                      key,
+                                                      $$a
+                                                        .slice(0, $$i)
+                                                        .concat(
+                                                          $$a.slice($$i + 1)
+                                                        )
+                                                    )
+                                                }
+                                              } else {
+                                                _vm.$set(_vm.form, key, $$c)
+                                              }
+                                            }
+                                          }
+                                        })
+                                      : item["type"] === "radio" &&
+                                        (item["type"] === "text" ||
+                                          item["type"] === "number")
+                                      ? _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: _vm.form[key],
+                                              expression: "form[key]"
+                                            }
+                                          ],
+                                          staticClass: "form-control",
+                                          class: {
+                                            "not-validated": _vm.errors[key]
+                                          },
+                                          attrs: {
+                                            id: "input-" + key,
+                                            placeholder: item["display_name"],
+                                            type: "radio"
+                                          },
+                                          domProps: {
+                                            checked: _vm._q(_vm.form[key], null)
+                                          },
+                                          on: {
+                                            change: function($event) {
+                                              return _vm.$set(
+                                                _vm.form,
+                                                key,
+                                                null
+                                              )
+                                            }
+                                          }
+                                        })
+                                      : item["type"] === "text" ||
+                                        item["type"] === "number"
+                                      ? _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: _vm.form[key],
+                                              expression: "form[key]"
+                                            }
+                                          ],
+                                          staticClass: "form-control",
+                                          class: {
+                                            "not-validated": _vm.errors[key]
+                                          },
+                                          attrs: {
+                                            id: "input-" + key,
+                                            placeholder: item["display_name"],
+                                            type: item["type"]
+                                          },
+                                          domProps: { value: _vm.form[key] },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.$set(
+                                                _vm.form,
+                                                key,
+                                                $event.target.value
+                                              )
+                                            }
+                                          }
+                                        })
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    item["type"] === "2text"
+                                      ? _c("div", [
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.form[key]["25x25s"],
+                                                expression:
+                                                  "form[key]['25x25s']"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            class: {
+                                              "not-validated": _vm.errors[key]
+                                            },
+                                            attrs: {
+                                              type: "text",
+                                              placeholder: "25x25s"
+                                            },
+                                            domProps: {
+                                              value: _vm.form[key]["25x25s"]
+                                            },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  _vm.form[key],
+                                                  "25x25s",
+                                                  $event.target.value
+                                                )
+                                              }
+                                            }
+                                          }),
+                                          _vm._v(" "),
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.form[key]["30x30s"],
+                                                expression:
+                                                  "form[key]['30x30s']"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            class: {
+                                              "not-validated": _vm.errors[key]
+                                            },
+                                            attrs: {
+                                              type: "text",
+                                              placeholder: "30x30s"
+                                            },
+                                            domProps: {
+                                              value: _vm.form[key]["30x30s"]
+                                            },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  _vm.form[key],
+                                                  "30x30s",
+                                                  $event.target.value
+                                                )
+                                              }
+                                            }
+                                          })
+                                        ])
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    item["type"] === "radio"
+                                      ? _c(
+                                          "div",
+                                          { staticClass: "col-md-12" },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "custom-control custom-radio mb-3"
+                                              },
+                                              [
+                                                _c("input", {
+                                                  directives: [
+                                                    {
+                                                      name: "model",
+                                                      rawName: "v-model",
+                                                      value: _vm.form[key],
+                                                      expression: "form[key]"
+                                                    }
+                                                  ],
+                                                  staticClass:
+                                                    "custom-control-input",
+                                                  attrs: {
+                                                    name: key,
+                                                    id: "customRadio5",
+                                                    type: "radio",
+                                                    value: "1"
+                                                  },
+                                                  domProps: {
+                                                    checked: _vm._q(
+                                                      _vm.form[key],
+                                                      "1"
+                                                    )
+                                                  },
+                                                  on: {
+                                                    change: function($event) {
+                                                      return _vm.$set(
+                                                        _vm.form,
+                                                        key,
+                                                        "1"
+                                                      )
+                                                    }
+                                                  }
+                                                }),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "label",
+                                                  {
+                                                    staticClass:
+                                                      "custom-control-label",
+                                                    attrs: {
+                                                      for: "customRadio5"
+                                                    }
+                                                  },
+                                                  [_vm._v(_vm._s(item["one"]))]
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "custom-control custom-radio mb-3"
+                                              },
+                                              [
+                                                _c("input", {
+                                                  directives: [
+                                                    {
+                                                      name: "model",
+                                                      rawName: "v-model",
+                                                      value: _vm.form[key],
+                                                      expression: "form[key]"
+                                                    }
+                                                  ],
+                                                  staticClass:
+                                                    "custom-control-input",
+                                                  attrs: {
+                                                    name: key,
+                                                    id: "customRadio6",
+                                                    type: "radio",
+                                                    value: "2"
+                                                  },
+                                                  domProps: {
+                                                    checked: _vm._q(
+                                                      _vm.form[key],
+                                                      "2"
+                                                    )
+                                                  },
+                                                  on: {
+                                                    change: function($event) {
+                                                      return _vm.$set(
+                                                        _vm.form,
+                                                        key,
+                                                        "2"
+                                                      )
+                                                    }
+                                                  }
+                                                }),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "label",
+                                                  {
+                                                    staticClass:
+                                                      "custom-control-label",
+                                                    attrs: {
+                                                      for: "customRadio6"
+                                                    }
+                                                  },
+                                                  [_vm._v(_vm._s(item["two"]))]
+                                                )
+                                              ]
+                                            )
+                                          ]
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    item["type"] === "checkbox"
+                                      ? _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "custom-control custom-checkbox mb-3"
+                                          },
+                                          [
+                                            _c("input", {
+                                              directives: [
+                                                {
+                                                  name: "model",
+                                                  rawName: "v-model",
+                                                  value: _vm.form[key],
+                                                  expression: "form[key]"
+                                                }
+                                              ],
+                                              staticClass:
+                                                "custom-control-input",
+                                              attrs: {
+                                                id: "customCheck2_" + key,
+                                                type: "checkbox"
+                                              },
+                                              domProps: {
+                                                checked: Array.isArray(
+                                                  _vm.form[key]
+                                                )
+                                                  ? _vm._i(
+                                                      _vm.form[key],
+                                                      null
+                                                    ) > -1
+                                                  : _vm.form[key]
+                                              },
+                                              on: {
+                                                change: function($event) {
+                                                  var $$a = _vm.form[key],
+                                                    $$el = $event.target,
+                                                    $$c = $$el.checked
+                                                      ? true
+                                                      : false
+                                                  if (Array.isArray($$a)) {
+                                                    var $$v = null,
+                                                      $$i = _vm._i($$a, $$v)
+                                                    if ($$el.checked) {
+                                                      $$i < 0 &&
+                                                        _vm.$set(
+                                                          _vm.form,
+                                                          key,
+                                                          $$a.concat([$$v])
+                                                        )
+                                                    } else {
+                                                      $$i > -1 &&
+                                                        _vm.$set(
+                                                          _vm.form,
+                                                          key,
+                                                          $$a
+                                                            .slice(0, $$i)
+                                                            .concat(
+                                                              $$a.slice($$i + 1)
+                                                            )
+                                                        )
+                                                    }
+                                                  } else {
+                                                    _vm.$set(_vm.form, key, $$c)
+                                                  }
+                                                }
+                                              }
+                                            }),
+                                            _vm._v(" "),
+                                            _c("label", {
+                                              staticClass:
+                                                "custom-control-label",
+                                              attrs: {
+                                                for: "customCheck2_" + key
+                                              }
+                                            })
+                                          ]
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    key === "status"
+                                      ? _c(
+                                          "select",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.form[key],
+                                                expression: "form[key]"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            class: {
+                                              "not-validated": _vm.errors[key]
+                                            },
+                                            on: {
+                                              change: function($event) {
+                                                var $$selectedVal = Array.prototype.filter
+                                                  .call(
+                                                    $event.target.options,
+                                                    function(o) {
+                                                      return o.selected
+                                                    }
+                                                  )
+                                                  .map(function(o) {
+                                                    var val =
+                                                      "_value" in o
+                                                        ? o._value
+                                                        : o.value
+                                                    return val
+                                                  })
+                                                _vm.$set(
+                                                  _vm.form,
+                                                  key,
+                                                  $event.target.multiple
+                                                    ? $$selectedVal
+                                                    : $$selectedVal[0]
+                                                )
+                                              }
+                                            }
+                                          },
+                                          _vm._l(_vm.eventStatuses, function(
+                                            status,
+                                            key
+                                          ) {
+                                            return _c(
+                                              "option",
+                                              { domProps: { value: key } },
+                                              [_vm._v(_vm._s(status))]
+                                            )
+                                          }),
+                                          0
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    key === "type"
+                                      ? _c(
+                                          "select",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.form[key],
+                                                expression: "form[key]"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            class: {
+                                              "not-validated": _vm.errors[key]
+                                            },
+                                            on: {
+                                              change: function($event) {
+                                                var $$selectedVal = Array.prototype.filter
+                                                  .call(
+                                                    $event.target.options,
+                                                    function(o) {
+                                                      return o.selected
+                                                    }
+                                                  )
+                                                  .map(function(o) {
+                                                    var val =
+                                                      "_value" in o
+                                                        ? o._value
+                                                        : o.value
+                                                    return val
+                                                  })
+                                                _vm.$set(
+                                                  _vm.form,
+                                                  key,
+                                                  $event.target.multiple
+                                                    ? $$selectedVal
+                                                    : $$selectedVal[0]
+                                                )
+                                              }
+                                            }
+                                          },
+                                          _vm._l(_vm.eventTypes, function(
+                                            type,
+                                            key
+                                          ) {
+                                            return _c(
+                                              "option",
+                                              { domProps: { value: key } },
+                                              [_vm._v(_vm._s(type))]
+                                            )
+                                          }),
+                                          0
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    key === "vehicle"
+                                      ? _c(
+                                          "select",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.form[key],
+                                                expression: "form[key]"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            class: {
+                                              "not-validated": _vm.errors[key]
+                                            },
+                                            on: {
+                                              change: function($event) {
+                                                var $$selectedVal = Array.prototype.filter
+                                                  .call(
+                                                    $event.target.options,
+                                                    function(o) {
+                                                      return o.selected
+                                                    }
+                                                  )
+                                                  .map(function(o) {
+                                                    var val =
+                                                      "_value" in o
+                                                        ? o._value
+                                                        : o.value
+                                                    return val
+                                                  })
+                                                _vm.$set(
+                                                  _vm.form,
+                                                  key,
+                                                  $event.target.multiple
+                                                    ? $$selectedVal
+                                                    : $$selectedVal[0]
+                                                )
+                                              }
+                                            }
+                                          },
+                                          _vm._l(_vm.eventVehicles, function(
+                                            vehicle,
+                                            key
+                                          ) {
+                                            return _c(
+                                              "option",
+                                              { domProps: { value: key } },
+                                              [_vm._v(_vm._s(vehicle))]
+                                            )
+                                          }),
+                                          0
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    key === "type_of_install"
+                                      ? _c(
+                                          "select",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.form[key],
+                                                expression: "form[key]"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            class: {
+                                              "not-validated": _vm.errors[key]
+                                            },
+                                            on: {
+                                              change: function($event) {
+                                                var $$selectedVal = Array.prototype.filter
+                                                  .call(
+                                                    $event.target.options,
+                                                    function(o) {
+                                                      return o.selected
+                                                    }
+                                                  )
+                                                  .map(function(o) {
+                                                    var val =
+                                                      "_value" in o
+                                                        ? o._value
+                                                        : o.value
+                                                    return val
+                                                  })
+                                                _vm.$set(
+                                                  _vm.form,
+                                                  key,
+                                                  $event.target.multiple
+                                                    ? $$selectedVal
+                                                    : $$selectedVal[0]
+                                                )
+                                              }
+                                            }
+                                          },
+                                          _vm._l(
+                                            _vm.confSettings.installTypes,
+                                            function(install, key) {
+                                              return _c(
+                                                "option",
+                                                { domProps: { value: key } },
+                                                [_vm._v(_vm._s(install))]
+                                              )
+                                            }
+                                          ),
+                                          0
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    key === "type_of_roof"
+                                      ? _c(
+                                          "select",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.form[key],
+                                                expression: "form[key]"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            class: {
+                                              "not-validated": _vm.errors[key]
+                                            },
+                                            on: {
+                                              change: function($event) {
+                                                var $$selectedVal = Array.prototype.filter
+                                                  .call(
+                                                    $event.target.options,
+                                                    function(o) {
+                                                      return o.selected
+                                                    }
+                                                  )
+                                                  .map(function(o) {
+                                                    var val =
+                                                      "_value" in o
+                                                        ? o._value
+                                                        : o.value
+                                                    return val
+                                                  })
+                                                _vm.$set(
+                                                  _vm.form,
+                                                  key,
+                                                  $event.target.multiple
+                                                    ? $$selectedVal
+                                                    : $$selectedVal[0]
+                                                )
+                                              }
+                                            }
+                                          },
+                                          _vm._l(
+                                            _vm.confSettings.roofTypes,
+                                            function(roof, key) {
+                                              return _c(
+                                                "option",
+                                                { domProps: { value: key } },
+                                                [_vm._v(_vm._s(roof))]
+                                              )
+                                            }
+                                          ),
+                                          0
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    key === "plank_system"
+                                      ? _c(
+                                          "select",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.form[key],
+                                                expression: "form[key]"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            class: {
+                                              "not-validated": _vm.errors[key]
+                                            },
+                                            on: {
+                                              change: function($event) {
+                                                var $$selectedVal = Array.prototype.filter
+                                                  .call(
+                                                    $event.target.options,
+                                                    function(o) {
+                                                      return o.selected
+                                                    }
+                                                  )
+                                                  .map(function(o) {
+                                                    var val =
+                                                      "_value" in o
+                                                        ? o._value
+                                                        : o.value
+                                                    return val
+                                                  })
+                                                _vm.$set(
+                                                  _vm.form,
+                                                  key,
+                                                  $event.target.multiple
+                                                    ? $$selectedVal
+                                                    : $$selectedVal[0]
+                                                )
+                                              }
+                                            }
+                                          },
+                                          _vm._l(5, function(key) {
+                                            return _c(
+                                              "option",
+                                              { domProps: { value: key } },
+                                              [_vm._v(_vm._s(key))]
+                                            )
+                                          }),
+                                          0
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    key === "platform_lengths"
+                                      ? _c(
+                                          "select",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.form[key],
+                                                expression: "form[key]"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            class: {
+                                              "not-validated": _vm.errors[key]
+                                            },
+                                            on: {
+                                              change: function($event) {
+                                                var $$selectedVal = Array.prototype.filter
+                                                  .call(
+                                                    $event.target.options,
+                                                    function(o) {
+                                                      return o.selected
+                                                    }
+                                                  )
+                                                  .map(function(o) {
+                                                    var val =
+                                                      "_value" in o
+                                                        ? o._value
+                                                        : o.value
+                                                    return val
+                                                  })
+                                                _vm.$set(
+                                                  _vm.form,
+                                                  key,
+                                                  $event.target.multiple
+                                                    ? $$selectedVal
+                                                    : $$selectedVal[0]
+                                                )
+                                              }
+                                            }
+                                          },
+                                          _vm._l(
+                                            _vm.confSettings.platformLengths,
+                                            function(length, key) {
+                                              return _c(
+                                                "option",
+                                                { domProps: { value: key } },
+                                                [_vm._v(_vm._s(length))]
+                                              )
+                                            }
+                                          ),
+                                          0
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    key === "pitch"
+                                      ? _c(
+                                          "select",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.form[key],
+                                                expression: "form[key]"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            class: {
+                                              "not-validated": _vm.errors[key]
+                                            },
+                                            on: {
+                                              change: function($event) {
+                                                var $$selectedVal = Array.prototype.filter
+                                                  .call(
+                                                    $event.target.options,
+                                                    function(o) {
+                                                      return o.selected
+                                                    }
+                                                  )
+                                                  .map(function(o) {
+                                                    var val =
+                                                      "_value" in o
+                                                        ? o._value
+                                                        : o.value
+                                                    return val
+                                                  })
+                                                _vm.$set(
+                                                  _vm.form,
+                                                  key,
+                                                  $event.target.multiple
+                                                    ? $$selectedVal
+                                                    : $$selectedVal[0]
+                                                )
+                                              }
+                                            }
+                                          },
+                                          _vm._l(
+                                            _vm.confSettings.pitches,
+                                            function(pitch, key) {
+                                              return _c(
+                                                "option",
+                                                { domProps: { value: key } },
+                                                [_vm._v(_vm._s(pitch))]
+                                              )
+                                            }
+                                          ),
+                                          0
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    key === "height"
+                                      ? _c(
+                                          "select",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.form[key],
+                                                expression: "form[key]"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            class: {
+                                              "not-validated": _vm.errors[key]
+                                            },
+                                            on: {
+                                              change: function($event) {
+                                                var $$selectedVal = Array.prototype.filter
+                                                  .call(
+                                                    $event.target.options,
+                                                    function(o) {
+                                                      return o.selected
+                                                    }
+                                                  )
+                                                  .map(function(o) {
+                                                    var val =
+                                                      "_value" in o
+                                                        ? o._value
+                                                        : o.value
+                                                    return val
+                                                  })
+                                                _vm.$set(
+                                                  _vm.form,
+                                                  key,
+                                                  $event.target.multiple
+                                                    ? $$selectedVal
+                                                    : $$selectedVal[0]
+                                                )
+                                              }
+                                            }
+                                          },
+                                          _vm._l(
+                                            _vm.confSettings.heights,
+                                            function(height, key) {
+                                              return _c(
+                                                "option",
+                                                { domProps: { value: key } },
+                                                [_vm._v(_vm._s(height))]
+                                              )
+                                            }
+                                          ),
+                                          0
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    item["type"] === "date"
+                                      ? _c("date-picker", {
+                                          class: {
+                                            "not-validated": _vm.errors[key]
+                                          },
+                                          attrs: {
+                                            lang: "en",
+                                            "input-class": "form-control",
+                                            valueType: "format"
+                                          },
+                                          model: {
+                                            value: _vm.form[key],
+                                            callback: function($$v) {
+                                              _vm.$set(_vm.form, key, $$v)
+                                            },
+                                            expression: "form[key]"
+                                          }
+                                        })
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    item["type"] === "textarea"
+                                      ? _c("textarea", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: _vm.form[key],
+                                              expression: "form[key]"
+                                            }
+                                          ],
+                                          staticClass: "form-control",
+                                          class: {
+                                            "not-validated": _vm.errors[key]
+                                          },
+                                          attrs: { rows: "4", placeholder: "" },
+                                          domProps: { value: _vm.form[key] },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.$set(
+                                                _vm.form,
+                                                key,
+                                                $event.target.value
+                                              )
+                                            }
+                                          }
+                                        })
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    _vm.errors[key]
+                                      ? _c(
+                                          "div",
+                                          {
+                                            staticClass: "invalid-feedback",
+                                            staticStyle: { display: "block" }
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                    " +
+                                                _vm._s(_vm.errors[key][0]) +
+                                                "\n                  "
+                                            )
+                                          ]
+                                        )
+                                      : _vm._e()
+                                  ],
+                                  1
+                                )
+                              ]
+                            )
+                          }),
+                          0
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("hr", { staticClass: "my-4" })
+                    ])
+                  : _vm._e()
+              }),
+              0
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-footer" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-outline-primary",
+                  on: { click: _vm.update }
+                },
+                [_vm._v("Update changes")]
               )
             ])
           ])
@@ -7906,7 +9444,7 @@ var render = function() {
             ],
             1
           ),
-          _vm._v("\n\t\t\t|\n\t\t\t"),
+          _vm._v("\n\t\t\t\t|\n\t\t\t\t"),
           _c(
             "div",
             { staticClass: "col-2" },
@@ -7929,7 +9467,7 @@ var render = function() {
                 },
                 on: {
                   click: function($event) {
-                    return _vm.passData()
+                    return _vm.passData("create", 3)
                   }
                 }
               },
@@ -7959,7 +9497,27 @@ var render = function() {
                 _vm._v(" "),
                 _c("td", [_vm._v(_vm._s(event.date))]),
                 _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(event.ref))])
+                _c("td", [_vm._v(_vm._s(event.ref))]),
+                _vm._v(" "),
+                _c("td", [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "table-action",
+                      attrs: {
+                        href: "#",
+                        "data-toggle": "modal",
+                        "data-target": "#editJobEvents"
+                      },
+                      on: {
+                        click: function($event) {
+                          return _vm.passData("edit", 4, event.id)
+                        }
+                      }
+                    },
+                    [_c("i", { staticClass: "fas fa-edit" })]
+                  )
+                ])
               ])
             }),
             0
@@ -7979,7 +9537,9 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c("create")
+      _c("create"),
+      _vm._v(" "),
+      _c("edit")
     ],
     1
   )
@@ -8003,7 +9563,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Date")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Ref")])
+        _c("th", [_vm._v("Ref")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Actions")])
       ])
     ])
   }
@@ -23452,6 +25014,93 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_create_vue_vue_type_template_id_2cafadc4___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_create_vue_vue_type_template_id_2cafadc4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/jobs/events/edit.vue":
+/*!******************************************************!*\
+  !*** ./resources/js/components/jobs/events/edit.vue ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _edit_vue_vue_type_template_id_14bee05c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./edit.vue?vue&type=template&id=14bee05c& */ "./resources/js/components/jobs/events/edit.vue?vue&type=template&id=14bee05c&");
+/* harmony import */ var _edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./edit.vue?vue&type=script&lang=js& */ "./resources/js/components/jobs/events/edit.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _edit_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./edit.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/jobs/events/edit.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _edit_vue_vue_type_template_id_14bee05c___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _edit_vue_vue_type_template_id_14bee05c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/jobs/events/edit.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/jobs/events/edit.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/jobs/events/edit.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./edit.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/jobs/events/edit.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/jobs/events/edit.vue?vue&type=style&index=0&lang=css&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/jobs/events/edit.vue?vue&type=style&index=0&lang=css& ***!
+  \***************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader!../../../../../node_modules/css-loader??ref--6-1!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/src??ref--6-2!../../../../../node_modules/vue-loader/lib??vue-loader-options!./edit.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/jobs/events/edit.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./resources/js/components/jobs/events/edit.vue?vue&type=template&id=14bee05c&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/jobs/events/edit.vue?vue&type=template&id=14bee05c& ***!
+  \*************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_template_id_14bee05c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./edit.vue?vue&type=template&id=14bee05c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/jobs/events/edit.vue?vue&type=template&id=14bee05c&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_template_id_14bee05c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_template_id_14bee05c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

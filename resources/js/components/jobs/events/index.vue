@@ -14,7 +14,7 @@
 					</router-link>
 				</div>
 				<div class="col-7 text-right">
-					<button class="btn btn-outline-primary" data-toggle="modal" data-target="#addJobEvents" @click="passData()">Add Events</button>
+					<button class="btn btn-outline-primary" data-toggle="modal" data-target="#addJobEvents" @click="passData('create',3)">Add Events</button>
 				</div>
 			</div>
 		</div>
@@ -29,6 +29,7 @@
 						<th>Vehicle</th>
 						<th>Date</th>
 						<th>Ref</th>
+						<th>Actions</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -40,6 +41,11 @@
 						<td>{{eventVehicles[event.vehicle]}}</td>
 						<td>{{event.date}}</td>
 						<td>{{event.ref}}</td>
+						<td>
+							<a href="#" class="table-action" data-toggle="modal" data-target="#editJobEvents" @click="passData('edit',4,event.id)">
+	            	<i class="fas fa-edit"></i>
+	            </a>
+						</td>
 					</tr>
 				</tbody>
 			</table>
@@ -47,16 +53,18 @@
 		<div class="card-footer py-4">
 			<pagination :data="events" @pagination-change-page="getResults"></pagination>
 		</div>
-		<create></create>
+    <create></create>
+		<edit></edit>
 	</div>
 </template>
 
 <script>
-	import create from './create.vue'
 
+  import create from './create.vue'
+	import edit from './edit.vue'
 	export default{
 		components: {
-			create
+			create,edit
 		},
 		props:['job'],
 		data(){
@@ -70,7 +78,7 @@
 		},
 		mounted(){
 			if(this.job===undefined){
-				// this.$router.push({name:'jobIndex'});
+				this.$router.push({name:'jobIndex'});
 			}
 			this.getResults();
 			this.defSettings();
@@ -89,14 +97,18 @@
 				axios.get('eventTypes').then(response => this.eventTypes = response.data);
 				axios.get('eventVehicles').then(response => this.eventVehicles = response.data);
 			},
-			passData(){
-				this.$children[3].eventStatuses = this.eventStatuses;
-				this.$children[3].eventTypes = this.eventTypes;
-				this.$children[3].eventVehicles = this.eventVehicles;
-				this.$children[3].job = this.job;
-				this.$children[3].initializeForm();
-				
-				
+			passData(type,child,id = null){
+        if(type==='create' || type==='edit'){
+  				this.$children[child].eventStatuses = this.eventStatuses;
+  				this.$children[child].eventTypes = this.eventTypes;
+  				this.$children[child].eventVehicles = this.eventVehicles;
+  				this.$children[child].job = this.job;
+          if(type==='edit' && id!==null)
+            this.$children[child].getData(id);
+          else
+  				  this.$children[child].initializeForm();
+          
+        }
 			}
 		}
 	}
