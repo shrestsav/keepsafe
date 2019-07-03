@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card-header">
       <div class="row align-items-center">
-        <div class="col-1">
+        <div class="col-2">
           <h3 class="mb-0">Create Job</h3>
         </div>
       </div>

@@ -33,6 +33,7 @@ Route::post('clientContacts','ClientController@clientContacts');
 Route::resource('jobs','JobController');
 Route::get('listJobs','JobController@jobs');
 Route::get('listEvents/{job_id}','JobController@jobEvents');
+Route::get('listAllEvents','JobController@allEvents');
 Route::post('storeEvent','JobController@jobEventStore');
 Route::post('updateEvent','JobController@jobEventUpdate');
 Route::get('detailEvent/{event_id}','JobController@jobEventDetails');

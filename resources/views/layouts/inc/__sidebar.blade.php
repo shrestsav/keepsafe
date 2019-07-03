@@ -66,9 +66,9 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link @if ($title === 'Jobs') active @endif" href="{{route('jobs.index')}}">
+          <a class="nav-link @if ($title === 'Jobs and Events') active @endif" href="{{route('jobs.index')}}">
             <i class="ni ni-archive-2 text-green"></i>
-            <span class="nav-link-text">Jobs</span>
+            <span class="nav-link-text">Jobs and Events</span>
           </a>
         </li>
       </ul>

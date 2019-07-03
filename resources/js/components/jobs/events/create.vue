@@ -9,17 +9,34 @@
           </button>
         </div>
         <div class="modal-body">
-          <div v-for="(section,sec_name,index) in fields" v-if="(sec_name!=='Brackets Req Const' && sec_name!=='Brackets Req Reno' && sec_name!=='Brackets Req Pole' && job.job_type===1) || (sec_name!=='Brackets Req' && sec_name!=='On Roof Systems' && job.job_type===2) || form.superslip">
+          <div v-for="(section,sec_name,index) in fields" v-if="(job.job_type=='1' && sec_name!=='Brackets Req Const' && sec_name!=='Brackets Req Reno' && sec_name!=='Brackets Req Pole') || (job.job_type=='2' && sec_name!=='Brackets Req' && sec_name!=='On Roof Systems') || form.superslip">
             <h6 class="heading-small text-muted mb-4">{{sec_name}}</h6>
             <div class="pl-lg-4">
               <div class="row">
-                <div :class="'col-lg-'+item['col']" v-for="item,key in section">
+                <div :class="'col-lg-'+item['col']" v-for="item,key in section" v-if="item['type']!=='custom' || form.type=='5'">
                   <div class="form-group">
                     <label class="form-control-label" :for="'input-'+key">{{item['display_name']}}</label>
                     <input 
                       v-if="item['type']==='text' || item['type']==='number'" 
                       :class="{'not-validated':errors[key]}" 
                       :type="item['type']" 
+                      :id="'input-'+key" 
+                      :placeholder="item['display_name']" 
+                      v-model="form[key]"
+                      class="form-control" 
+                    >
+                    <date-picker 
+                      v-if="item['type']==='custom' && key==='off_hired' && form.type=='5'"
+                      v-model="form[key]"
+                      lang='en' 
+                      input-class="form-control"
+                      valueType="format" 
+                      :class="{'not-validated':errors[key]}" 
+                    ></date-picker>
+                    <input 
+                      v-if="item['type']==='custom' && key==='hire_days' && form.type=='5'" 
+                      :class="{'not-validated':errors[key]}" 
+                      type="number" 
                       :id="'input-'+key" 
                       :placeholder="item['display_name']" 
                       v-model="form[key]"
@@ -136,9 +153,6 @@
           pitches:{},
           heights:{},
         },
-        eventStatuses:{},
-        eventTypes:{},
-        eventVehicles:{},
         errors:{},
         fields:{},
         job:{},
@@ -147,19 +161,17 @@
     mounted(){
       this.defSettings();
     },
-    // computed: {
-    //   superslip() {
-    //     return this.form.superslip;
-    //   }
-    // },
-    // watch: {
-    //   superslip(newVal) {
-    //     if(!newVal && this.job.job_type===1)
-    //       this.clearForm(['BRC_list','BRR_list','BRP_list'])
-    //     else if(!newVal && this.job.job_type===2)
-    //       this.clearForm(['BR_list','ORS_list'])
-    //   }
-    // },
+    computed: {
+      eventStatuses(){
+        return this.$store.state.eventStatuses;          
+      },
+      eventTypes(){
+        return this.$store.state.eventTypes;        
+      },
+      eventVehicles(){
+        return this.$store.state.eventVehicles;
+      }
+    },
     methods:{
       clearForm(arrSection){
         arrSection.forEach((section) => {

@@ -63,6 +63,16 @@ return [
         'col' => '2',
         'type' =>  'text',
       ],
+      'off_hired' => [
+        'display_name' => 'Off Hired',
+        'col' => '2',
+        'type' =>  'custom',
+      ],
+      'hire_days' => [
+        'display_name' => 'Hired Days',
+        'col' => '2',
+        'type' =>  'custom',
+      ],
       'location' => [
         'display_name' => 'Location',
         'col' => '2',

@@ -123,6 +123,11 @@ class JobController extends Controller
         return JobEvent::where('job_id',$job_id)->paginate(config('settings.rows'));
     }
 
+    public function allEvents()
+    {
+        return JobEvent::paginate(config('settings.rows'));
+    }
+
     public function jobEventStore(Request $request)
     { 
         $validatedData = $request->validate([

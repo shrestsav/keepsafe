@@ -71,9 +71,6 @@
 			return{
 				errors:{},
 				events:{},
-				eventStatuses:{},
-				eventTypes:{},
-				eventVehicles:{},
 			}
 		},
 		mounted(){
@@ -83,6 +80,17 @@
 			this.getResults();
 			this.defSettings();
 		},
+    computed: {
+      eventStatuses(){
+        return this.$store.state.eventStatuses;          
+      },
+      eventTypes(){
+        return this.$store.state.eventTypes;        
+      },
+      eventVehicles(){
+        return this.$store.state.eventVehicles;
+      }
+    },
 		methods:{
 			getResults(page = 1) {
 				this.$Progress.start();
@@ -93,15 +101,12 @@
 				});
 			},
 			defSettings(){
-				axios.get('eventStatuses').then(response => this.eventStatuses = response.data);
-				axios.get('eventTypes').then(response => this.eventTypes = response.data);
-				axios.get('eventVehicles').then(response => this.eventVehicles = response.data);
+        axios.get('eventStatuses').then(response => this.$store.commit('changeEventStatuses', response.data));
+				axios.get('eventTypes').then(response => this.$store.commit('changeEventTypes', response.data));
+				axios.get('eventVehicles').then(response => this.$store.commit('changeEventVehicles', response.data));
 			},
 			passData(type,child,id = null){
         if(type==='create' || type==='edit'){
-  				this.$children[child].eventStatuses = this.eventStatuses;
-  				this.$children[child].eventTypes = this.eventTypes;
-  				this.$children[child].eventVehicles = this.eventVehicles;
   				this.$children[child].job = this.job;
           if(type==='edit' && id!==null)
             this.$children[child].getData(id);
