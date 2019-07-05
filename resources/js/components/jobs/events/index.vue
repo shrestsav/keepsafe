@@ -3,18 +3,18 @@
 		<div class="card-header border-0">
 			<div class="row">
 				<div class="col-2">
-					<router-link :to="{ name: 'jobEdit', params:{ job_id:job.id } }">
+					<router-link :to="{ name: 'jobEdit', query: { whereJob: $route.query.whereJob } }">
 						<h3 class="mb-0">Edit Job Details</h3>
 					</router-link>
 				</div>
 				|
 				<div class="col-2">
-					<router-link :to="{ name: 'jobEvent'}">
+					<a href="javascript:void(0)">
 						<h3 class="mb-0">Event</h3>
-					</router-link>
+					</a>
 				</div>
 				<div class="col-7 text-right">
-					<button class="btn btn-outline-primary" data-toggle="modal" data-target="#addJobEvents" @click="passData('create',3)">Add Events</button>
+					<button class="btn btn-outline-primary" data-toggle="modal" data-target="#addJobEvents" @click="passData('create',2)">Add Events</button>
 				</div>
 			</div>
 		</div>
@@ -42,7 +42,7 @@
 						<td>{{event.date}}</td>
 						<td>{{event.ref}}</td>
 						<td>
-							<a href="#" class="table-action" data-toggle="modal" data-target="#editJobEvents" @click="passData('edit',4,event.id)">
+							<a href="#" class="table-action" data-toggle="modal" data-target="#editJobEvents" @click="passData('edit',3,event.id)">
 	            	<i class="fas fa-edit"></i>
 	            </a>
 						</td>
@@ -53,8 +53,8 @@
 		<div class="card-footer py-4">
 			<pagination :data="events" @pagination-change-page="getResults"></pagination>
 		</div>
-    <create></create>
-		<edit></edit>
+    <create v-if="loaded"></create>
+		<edit v-if="loaded"></edit>
 	</div>
 </template>
 
@@ -66,20 +66,21 @@
 		components: {
 			create,edit
 		},
-		props:['job'],
 		data(){
 			return{
+        job:{},
 				errors:{},
 				events:{},
+        loaded:false,
 			}
 		},
-		mounted(){
-			if(this.job===undefined){
-				this.$router.push({name:'jobIndex'});
-			}
-			this.getResults();
-			this.defSettings();
-		},
+    mounted(){
+      if(this.$route.query.whereJob===undefined){
+        this.$router.push({name:'jobIndex'});
+      }
+      this.defSettings();
+      this.getJobDetails(this.$route.query.whereJob)
+    },
     computed: {
       eventStatuses(){
         return this.$store.state.eventStatuses;          
@@ -92,12 +93,24 @@
       }
     },
 		methods:{
+      getJobDetails(id){
+        axios.get('/jobs/'+id)
+        .then((response) => {
+          this.job = response.data;
+          this.getResults();
+        })
+        .catch((error) => {
+          this.errors = error.response.data.errors;
+          for (var prop in this.errors) {
+            showNotify('danger',this.errors[prop])
+          }       
+        })
+      },
 			getResults(page = 1) {
-				this.$Progress.start();
 				axios.get('listEvents/'+this.job.id+'?page=' + page)
 				.then(response => {
-					this.$Progress.finish();
 					this.events = response.data;
+          this.loaded = true;  
 				});
 			},
 			defSettings(){
@@ -105,13 +118,15 @@
 				axios.get('eventTypes').then(response => this.$store.commit('changeEventTypes', response.data));
 				axios.get('eventVehicles').then(response => this.$store.commit('changeEventVehicles', response.data));
 			},
-			passData(type,child,id = null){
+			passData(type,child,id = null){ 
         if(type==='create' || type==='edit'){
-  				this.$children[child].job = this.job;
-          if(type==='edit' && id!==null)
+          if(type==='edit' && id!==null){
             this.$children[child].getData(id);
-          else
+          }
+          else{
   				  this.$children[child].initializeForm();
+            this.$children[child].job = this.job;
+          }
           
         }
 			}

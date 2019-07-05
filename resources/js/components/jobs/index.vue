@@ -34,9 +34,9 @@
               <a href="#" class="table-action" @click="showDetails(key-1)" data-toggle="modal" data-target="#showJobDetails">
                 <i class="fas fa-eye"></i>
               </a>
-              <a href="#" class="table-action" @click="editJob(job.id)">
+              <router-link :to="{ name: 'jobEdit', query: { whereJob: job.id }  }" class="table-action">
                 <i class="fas fa-edit"></i>
-              </a>
+              </router-link>
             </td>
           </tr>
         </tbody>
@@ -68,19 +68,14 @@
     },
     methods:{
       getResults(page = 1) {
-        this.$Progress.start();
         axios.get('listJobs?page=' + page)
           .then(response => {
-            this.$Progress.finish();
             this.jobs = response.data;
           });
       },
       showDetails(key){
         this.$children[1].details = this.jobs.data[key]
       },
-      editJob(id){
-        this.$router.push({ name: 'jobEdit', params:{ job_id:id } });
-      }
     }
 
   }

@@ -71,7 +71,8 @@ class JobController extends Controller
      */
     public function show($id)
     {
-        //
+        $job = Job::where('id',$id)->with('client')->first();
+        return response()->json($job);
     }
 
     /**
@@ -120,7 +121,7 @@ class JobController extends Controller
 
     public function jobEvents($job_id)
     {
-        return JobEvent::where('job_id',$job_id)->paginate(config('settings.rows'));
+        return JobEvent::where('job_id',$job_id)->orderBy('id','DESC')->paginate(config('settings.rows'));
     }
 
     public function allEvents()

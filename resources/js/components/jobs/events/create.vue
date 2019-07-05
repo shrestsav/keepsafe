@@ -205,7 +205,7 @@
       },
       initializeForm(){
         this.$data.form = {
-          job_id:this.job.id,
+          job_id:this.$route.query.whereJob,
           '6.5s':{
             '25x25s':'',
             '30x30s':'',

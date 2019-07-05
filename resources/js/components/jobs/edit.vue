@@ -3,14 +3,15 @@
     <div class="card-header">
       <div class="row align-items-center">
         <div class="col-2">
-          <h3 class="mb-0">Edit Job Details</h3>
+          <a href="javascript:void(0)">
+            <h3 class="mb-0">Edit Job Details</h3>
+          </a>
         </div>
         |
         <div class="col-2">
-          <router-link :to="{ name: 'jobEvent', params:{job:job}}">
+          <router-link :to="{ name: 'jobEvent', query: { whereJob: job.id }}">
             <h3 class="mb-0">Event</h3>
           </router-link>
-          
         </div>
       </div>
     </div>
@@ -115,13 +116,14 @@
     components: {
       vSelect
     },
-    props: ['job_types','job_statuses','job_id'],
+    props: ['job_types','job_statuses'],
     data(){
       return{
         create:true,
         job: {
           client_contacts:[],
         },
+        job_id:'',
         clients:{},
         clientContacts:{},
         errors:{},
@@ -204,10 +206,13 @@
       }
     },
     mounted(){
-      if(this.job_id===undefined){
+      if(this.$route.query.whereJob===undefined){
         this.$router.push({name:'jobIndex'});
       }
-      this.getJobData(this.job_id);
+      else{
+        this.job_id = this.$route.query.whereJob;
+      }
+      this.getJobDetails(this.job_id);
       this.getClients();
     },
     methods:{
@@ -219,8 +224,8 @@
         .catch((error) => {
         })
       },
-      getJobData(id){
-        axios.get('/jobs/'+id+'/edit')
+      getJobDetails(id){
+        axios.get('/jobs/'+id)
         .then((response) => {
           this.job = response.data;
           this.job.client_contacts = JSON.parse(response.data.client_contacts);

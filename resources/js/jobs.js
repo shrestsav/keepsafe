@@ -22,13 +22,15 @@ import create from './components/jobs/create.vue'
 import edit from './components/jobs/edit.vue'
 import event from './components/jobs/events/index.vue'
 import allEvent from './components/jobs/events/all.vue'
+import invoice from './components/jobs/invoices/index.vue'
 
 const routes = [
   {name:'jobIndex', path: '/', component: index },
   {name:'jobCreate', path: '/create', component: create, props:true },
   {name:'jobEdit', path: '/edit', component: edit, props:true },
   {name:'jobEvent', path: '/event', component: event, props:true },
-  {name:'allEvent', path: '/allEvent', component: allEvent},
+  {name:'allEvent', path: '/allEvent', component: allEvent, props:true },
+  {name:'invoice', path: '/invoice', component: invoice, props:true },
 ]
 
 const router = new VueRouter({
@@ -39,5 +41,32 @@ const store = new Vuex.Store(moduleStore);
 const app = new Vue({
     el: '#app',
     router,
-    store
+    store,
+    mounted(){
+      // Intercept all requests
+      window.axios.interceptors.request.use(
+        (config) => {
+         // do something before sending requests
+          this.$Progress.start();
+          return config
+        },
+        (error) => {
+          return Promise.reject(error);
+        }
+      );
+
+      // Intercept all responses
+      window.axios.interceptors.response.use(
+        (response) => {
+          this.$Progress.finish();
+         // when success from server
+          return response;
+        },
+
+        (error) => {
+         // when error from server
+          return Promise.reject(error);
+        }
+      );
+    }
 });

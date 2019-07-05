@@ -162,6 +162,9 @@
             '25x25s':'',
             '30x30s':'',
           },
+          job:{
+            job_type:'',
+          }
         },
         confSettings:{
           installTypes:{},
@@ -183,6 +186,8 @@
       eventVehicles(){
         return this.$store.state.eventVehicles;
       }
+    },
+    created(){
     },
     mounted(){
       this.defSettings();

@@ -1,10 +1,12 @@
 <template>
   <div class="card">
     <div class="card-header border-0">
-      <div class="row">
-        <div class="col-2">
-          <h3 class="mb-0">Event</h3>
-        </div>
+      <div class="nav-wrapper">
+        <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">
+          <li class="nav-item" v-for="status,key in eventStatuses">
+            <a class="nav-link mb-sm-3 mb-md-0" :id="key" data-toggle="tab" href="" role="tab" aria-controls="tabs-icons-text-1" aria-selected="false"><i :class="'fas fa-'+icons[key]+' mr-2'"></i>{{status}}</a>
+          </li>
+        </ul>
       </div>
     </div>
     <div class="table-responsive">
@@ -36,6 +38,9 @@
               <a href="#" class="table-action" data-toggle="modal" data-target="#editJobEvents" @click="passData('edit',1,event.id)">
                 <i class="fas fa-edit"></i>
               </a>
+              <router-link :to="{ name:'invoice', query: { ofEvent: event.id } }" class="table-action" data-toggle="tooltip" data-placement="top" title="Invoice">
+                <i class="fas fa-file-invoice"></i>
+              </router-link>
             </td>
           </tr>
         </tbody>
@@ -59,6 +64,15 @@
       return{
         errors:{},
         events:{},
+        icons:{
+          '1':'calendar',
+          '2':'power-off',
+          '3':'clock',
+          '4':'sync',
+          '5':'check',
+          '6':'times',
+          '7':'quote-left',
+        }
       }
     },
     mounted(){
@@ -78,10 +92,8 @@
     },
     methods:{
       getResults(page = 1) {
-        this.$Progress.start();
         axios.get('listAllEvents/?page=' + page)
         .then(response => {
-          this.$Progress.finish();
           this.events = response.data;
         });
       },
