@@ -1,9 +1,13 @@
 <template>
   <div class="card">
     <div class="card-header">
-      <div class="row align-items-center">
-        <div class="col-2">
-          <h3 class="mb-0">Create Job</h3>
+      <div class="col-md-2">
+        <div class="nav-wrapper">
+          <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link mb-sm-3 mb-md-0 active" id="createJob" data-toggle="tab" href="" role="tab" aria-controls="tabs-icons-text-1" aria-selected="false">Create Job</a>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -249,7 +253,7 @@
         axios.post('/jobs',this.$data.job)
         .then((response) => {
           showNotify('primary','Job Created');
-          this.$router.push({ name: 'jobEdit', params:{ job_id:response.data } });
+          this.$router.push({ name: 'jobEdit', query:{ whereJob:response.data } });
         })
         .catch((error) => {
           this.errors = error.response.data.errors;

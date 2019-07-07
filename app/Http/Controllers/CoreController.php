@@ -13,8 +13,13 @@ class CoreController extends Controller
     }
     public function jobStatuses()
     {
-    	$jobStatuses = config('settings.job_statuses');
-    	return $jobStatuses;
+        $jobStatuses = config('settings.job_statuses');
+        return $jobStatuses;
+    }    
+    public function jobStatusesMenu()
+    {
+    	$jobStatusesMenu = config('settings.job_statuses_menu');
+    	return $jobStatusesMenu;
     }
     public function states()
     {

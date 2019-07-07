@@ -1,17 +1,17 @@
 <template>
   <div class="card">
     <div class="card-header">
-      <div class="row align-items-center">
-        <div class="col-2">
-          <a href="javascript:void(0)">
-            <h3 class="mb-0">Edit Job Details</h3>
-          </a>
-        </div>
-        |
-        <div class="col-2">
-          <router-link :to="{ name: 'jobEvent', query: { whereJob: job.id }}">
-            <h3 class="mb-0">Event</h3>
-          </router-link>
+      <div class="col-md-4">
+        <div class="nav-wrapper">
+          <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link mb-sm-3 mb-md-0 active" id="editJob" data-toggle="tab" href="" role="tab" aria-controls="tabs-icons-text-1" aria-selected="false">Edit Job</a>
+            </li>
+            <li class="nav-item">
+              <router-link :to="{ name: 'jobEvents', query: { whereJob: job.id }}" class="nav-link mb-sm-3 mb-md-0" id="events" data-toggle="tab" href="" role="tab" aria-controls="tabs-icons-text-1" aria-selected="false">Events
+              </router-link>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -231,10 +231,7 @@
           this.job.client_contacts = JSON.parse(response.data.client_contacts);
         })
         .catch((error) => {
-          this.errors = error.response.data.errors;
-          for (var prop in this.errors) {
-            showNotify('danger',this.errors[prop])
-          }       
+          this.$router.push({name:'jobIndex'});     
         })
       },
       getClientContacts(client_id){

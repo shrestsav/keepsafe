@@ -313,7 +313,7 @@
             <div class="col-lg-6">
               <div class="form-group">
                 <label class="form-control-label" for="input-username">Equipment Recovery</label>
-                <input type="text" id="input-username" class="form-control" placeholder="Equipment Recovery" value="lucky.jesse">
+                <input type="text" id="input-username" class="form-control" placeholder="Equipment Recovery">
               </div>
             </div>
             <div class="col-lg-6">

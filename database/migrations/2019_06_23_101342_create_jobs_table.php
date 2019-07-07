@@ -30,6 +30,7 @@ class CreateJobsTable extends Migration
             $table->smallInteger('status')->unsigned();
             $table->text('invoice_note');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

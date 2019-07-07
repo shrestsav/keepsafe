@@ -45,6 +45,7 @@ class CreateJobEventsTable extends Migration
             $table->longText('BRR')->nullable()->comment('Brackets Req Reno');
             $table->longText('BRP')->nullable()->comment('Brackets Req Pole');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

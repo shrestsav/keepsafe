@@ -31,9 +31,11 @@ Route::resource('clients','ClientController');
 Route::post('clientContacts','ClientController@clientContacts');
 
 Route::resource('jobs','JobController');
-Route::get('listJobs','JobController@jobs');
+Route::get('listJobs/{key}','JobController@jobs');
+Route::get('deletedJobs','JobController@deletedJobs');
+Route::post('restoreJob','JobController@restoreJob');
 Route::get('listEvents/{job_id}','JobController@jobEvents');
-Route::get('listAllEvents','JobController@allEvents');
+Route::get('listAllEvents/{key}','JobController@allEvents');
 Route::post('storeEvent','JobController@jobEventStore');
 Route::post('updateEvent','JobController@jobEventUpdate');
 Route::get('detailEvent/{event_id}','JobController@jobEventDetails');
@@ -41,6 +43,7 @@ Route::get('detailEvent/{event_id}','JobController@jobEventDetails');
 //Config variables
 Route::get('jobTypes','CoreController@jobTypes');
 Route::get('jobStatuses','CoreController@jobStatuses');
+Route::get('jobStatusesMenu','CoreController@jobStatusesMenu');
 Route::get('states','CoreController@states');
 Route::get('eventStatuses','CoreController@event_statuses');
 Route::get('eventTypes','CoreController@event_types');

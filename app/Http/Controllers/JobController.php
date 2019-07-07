@@ -30,9 +30,9 @@ class JobController extends Controller
         return $clients;
     }
 
-    public function jobs()
+    public function jobs($key)
     {
-        $jobs = Job::with('client')->withCount('events')->paginate(config('settings.rows'));
+        $jobs = Job::with('client')->withCount('events')->where('status',$key)->paginate(config('settings.rows'));
         foreach($jobs as $job){
             $contacts = $job->clientContacts();
             $job['contacts'] = $contacts;
@@ -116,7 +116,19 @@ class JobController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $deleteJob = Job::destroy($id);
+    }
+
+    public function deletedJobs()
+    {
+        $deletedJobs = Job::onlyTrashed()->with('client')->withCount('events')->paginate(config('settings.rows'));
+        return $deletedJobs;
+    }    
+
+    public function restoreJob(Request $request)
+    {
+        $restoreJob = Job::onlyTrashed()->where('id',$request->job_id)->restore();
+        return response()->json('Successfull');
     }
 
     public function jobEvents($job_id)
@@ -124,9 +136,9 @@ class JobController extends Controller
         return JobEvent::where('job_id',$job_id)->orderBy('id','DESC')->paginate(config('settings.rows'));
     }
 
-    public function allEvents()
+    public function allEvents($key)
     {
-        return JobEvent::paginate(config('settings.rows'));
+        return JobEvent::where('status',$key)->paginate(config('settings.rows'));
     }
 
     public function jobEventStore(Request $request)
