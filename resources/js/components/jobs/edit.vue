@@ -205,9 +205,13 @@
         }
       }
     },
+    created(){
+      this.$store.commit('changeCurrentPage', 'editJob')
+      this.$store.commit('changeCurrentMenu', 'jobsMenu')
+    },
     mounted(){
       if(this.$route.query.whereJob===undefined){
-        this.$router.push({name:'jobIndex'});
+        this.$router.push({name:'jobs'});
       }
       else{
         this.job_id = this.$route.query.whereJob;
@@ -231,7 +235,7 @@
           this.job.client_contacts = JSON.parse(response.data.client_contacts);
         })
         .catch((error) => {
-          this.$router.push({name:'jobIndex'});     
+          this.$router.push({name:'jobs'});     
         })
       },
       getClientContacts(client_id){

@@ -59,15 +59,17 @@
         staffs:{},
       }
     },
+    created(){
+      this.$store.commit('changeCurrentPage', 'staffs')
+      this.$store.commit('changeCurrentMenu', 'staffsMenu')
+    },
     mounted(){
       this.getResults();
     },
     methods:{
       getResults(page = 1) {
-        this.$Progress.start();
-        axios.get('listStaffs?page=' + page)
+        axios.get('/listStaffs?page=' + page)
         .then(response => {
-          this.$Progress.finish();
           this.staffs = response.data;
         });
       },

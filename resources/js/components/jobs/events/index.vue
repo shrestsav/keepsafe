@@ -63,6 +63,7 @@
     data(){
       return{
         selectedStatus:'1',
+        loaded:false,
         errors:{},
         events:{},
         icons:{
@@ -76,9 +77,13 @@
         }
       }
     },
+    created(){
+      this.$store.commit('changeCurrentPage', 'events')
+      this.$store.commit('changeCurrentMenu', 'jobsMenu')
+      this.defSettings()
+    },
     mounted(){
       this.getResults();
-      this.defSettings();
     },
     computed: {
       eventStatuses(){
@@ -93,21 +98,24 @@
     },
     methods:{
       getResults(page = 1) {
-        axios.get('listAllEvents/'+this.selectedStatus+'?page=' + page)
+        axios.get('/listAllEvents/'+this.selectedStatus+'?page=' + page)
         .then(response => {
           this.events = response.data;
+          this.loaded = true; 
         });
       },
       defSettings(){
-        axios.get('eventStatuses').then(response => this.$store.commit('changeEventStatuses', response.data));
-        axios.get('eventTypes').then(response => this.$store.commit('changeEventTypes', response.data));
-        axios.get('eventVehicles').then(response => this.$store.commit('changeEventVehicles', response.data));
+        axios.get('/eventStatuses').then(response => this.$store.commit('changeEventStatuses', response.data));
+        axios.get('/eventTypes').then(response => this.$store.commit('changeEventTypes', response.data));
+        axios.get('/eventVehicles').then(response => this.$store.commit('changeEventVehicles', response.data));
       },
       passData(type,child,id = null){
+        console.log(this.$children)
         if(type==='edit' && id!==null)
           this.$children[child].getData(id);
       },
       getEvents(key){
+        this.events = {};      
         this.selectedStatus = key;
         this.getResults();
       }

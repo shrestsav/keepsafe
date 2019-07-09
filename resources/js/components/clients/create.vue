@@ -102,9 +102,9 @@
 <script>
 
   export default{
-    props: ['states'],
     data(){
       return{
+        states:{},
         client: {
           name:'',
           address:'',
@@ -222,9 +222,17 @@
         }
       }
     },
-    computed: {
+    created(){
+      this.$store.commit('changeCurrentPage', 'createClient')
+      this.$store.commit('changeCurrentMenu', 'clientsMenu')
+    },
+    mounted() {
+      this.defSettings()
     },
     methods:{
+      defSettings(){
+        axios.get('/states').then(response => this.states = response.data);
+      },
       addRow() {
         this.client.contacts.push({
           name: '',
@@ -240,7 +248,7 @@
       save(){
         axios.post('/clients',this.$data.client)
           .then((response) => {
-            this.$router.push({ path: '/' });
+            this.$router.push({ name: 'clients' });
             showNotify('primary','Client Created');
           })
           .catch((error) => {

@@ -126,7 +126,7 @@ class UserController extends Controller
 
     public function staffs()
     {
-        return view('staffs.index');
+        // 
     }
 
     public function listStaffs()

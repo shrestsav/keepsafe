@@ -50,6 +50,10 @@
          return Object.keys(this.fields).length-1;
       },
     },
+    created(){
+      this.$store.commit('changeCurrentPage', 'clients')
+      this.$store.commit('changeCurrentMenu', 'clientsMenu')
+    },
     mounted(){
       axios.get('/clients/create')
         .then((response) => {

@@ -212,6 +212,10 @@
         }
       }
     },
+    created(){
+      this.$store.commit('changeCurrentPage', 'createJob')
+      this.$store.commit('changeCurrentMenu', 'jobsMenu')
+    },
     mounted(){
       this.getClients();
     },
@@ -253,7 +257,7 @@
         axios.post('/jobs',this.$data.job)
         .then((response) => {
           showNotify('primary','Job Created');
-          this.$router.push({ name: 'jobEdit', query:{ whereJob:response.data } });
+          this.$router.push({ name: 'editJob', query:{ whereJob:response.data } });
         })
         .catch((error) => {
           this.errors = error.response.data.errors;

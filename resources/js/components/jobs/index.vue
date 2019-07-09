@@ -37,7 +37,7 @@
                 <a href="#" class="table-action" @click="showDetails(key-1)" data-toggle="modal" data-target="#showJobDetails" title="Show Job Details">
                   <i class="fas fa-eye"></i>
                 </a>
-                <router-link :to="{ name: 'jobEdit', query: { whereJob: job.id }  }" class="table-action" title="Edit Job">
+                <router-link :to="{ name: 'editJob', query: { whereJob: job.id }  }" class="table-action" title="Edit Job">
                   <i class="fas fa-edit"></i>
                 </router-link>
                 <a href="#" class="table-action" @click="deleteJob(job.id)" title="Delete Job">
@@ -77,15 +77,19 @@
         deletedList:false,
       }
     },
+    created(){
+      this.$store.commit('changeCurrentPage', 'jobs')
+      this.$store.commit('changeCurrentMenu', 'jobsMenu')
+    },
     mounted(){
       this.getResults();
     },
     methods:{
       getResults(page = 1) {
         if(this.deletedList)
-          var route = 'deletedJobs';
+          var route = '/deletedJobs';
         else
-          var route = 'listJobs/'+this.selectedStatus;
+          var route = '/listJobs/'+this.selectedStatus;
         axios.get(route+'?page=' + page)
         .then(response => {
           this.jobs = response.data;
@@ -95,7 +99,8 @@
       showDetails(key){
         this.$children[1].details = this.jobs.data[key]
       },
-      getJobs(key){        
+      getJobs(key){  
+        this.jobs = {};      
         if(key==14)
           this.deletedList = true;
         else

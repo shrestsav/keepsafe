@@ -6,7 +6,7 @@
           <div class="nav-wrapper">
             <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">
               <li class="nav-item">
-                <router-link :to="{ name: 'jobEdit', query: { whereJob: $route.query.whereJob } }" class="nav-link mb-sm-3 mb-md-0" id="editJob" data-toggle="tab" href="" role="tab" aria-controls="tabs-icons-text-1" aria-selected="false">Edit Job
+                <router-link :to="{ name: 'editJob', query: { whereJob: $route.query.whereJob } }" class="nav-link mb-sm-3 mb-md-0" id="editJob" data-toggle="tab" href="" role="tab" aria-controls="tabs-icons-text-1" aria-selected="false">Edit Job
                 </router-link>
               </li>
               <li class="nav-item">
@@ -77,9 +77,13 @@
         loaded:false,
 			}
 		},
+    created(){
+      this.$store.commit('changeCurrentPage', 'jobEvents')
+      this.$store.commit('changeCurrentMenu', 'jobsMenu')
+    },
     mounted(){
       if(this.$route.query.whereJob===undefined){
-        this.$router.push({name:'jobIndex'});
+        this.$router.push({name:'jobs'});
       }
       this.defSettings();
       this.getJobDetails(this.$route.query.whereJob)
@@ -110,16 +114,16 @@
         })
       },
 			getResults(page = 1) {
-				axios.get('listEvents/'+this.job.id+'?page=' + page)
+				axios.get('/listEvents/'+this.job.id+'?page=' + page)
 				.then(response => {
 					this.events = response.data;
           this.loaded = true;  
 				});
 			},
 			defSettings(){
-        axios.get('eventStatuses').then(response => this.$store.commit('changeEventStatuses', response.data));
-				axios.get('eventTypes').then(response => this.$store.commit('changeEventTypes', response.data));
-				axios.get('eventVehicles').then(response => this.$store.commit('changeEventVehicles', response.data));
+        axios.get('/eventStatuses').then(response => this.$store.commit('changeEventStatuses', response.data));
+				axios.get('/eventTypes').then(response => this.$store.commit('changeEventTypes', response.data));
+				axios.get('/eventVehicles').then(response => this.$store.commit('changeEventVehicles', response.data));
 			},
 			passData(type,child,id = null){ 
         if(type==='create' || type==='edit'){

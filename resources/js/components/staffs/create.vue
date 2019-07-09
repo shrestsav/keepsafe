@@ -145,6 +145,10 @@
         }
       }
     },
+    created(){
+      this.$store.commit('changeCurrentPage', 'createStaff')
+      this.$store.commit('changeCurrentMenu', 'staffsMenu')
+    },
     computed: {
       last(){
          return Object.keys(this.fields).length-1;
@@ -155,7 +159,7 @@
         axios.post('/createStaff',this.$data.staff)
           .then((response) => {
             showNotify('primary','Staff Created');
-            this.$router.push({ path: '/' });
+            this.$router.push({ name: 'staffs' });
           })
           .catch((error) => {
             this.errors = error.response.data.errors;

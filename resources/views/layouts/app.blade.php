@@ -29,6 +29,14 @@
       width: 100%;
       height: 5px;
     }
+    .navbar-vertical.navbar-expand-xs .navbar-nav>.nav-item>a>.nav-link.active {
+        margin-right: .5rem;
+        margin-left: .5rem;
+        padding-right: 1rem;
+        padding-left: 1rem;
+        border-radius: .375rem;
+        background: #f6f9fc;
+    }
   </style>
   @stack('styles')
 </head>

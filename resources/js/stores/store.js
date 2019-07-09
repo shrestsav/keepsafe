@@ -1,5 +1,7 @@
 export default {
 	state:{
+		currentPage:'',
+		currentMenu:'',
 		eventStatuses: {},
 		eventTypes: {},
 		eventVehicles: {},
@@ -15,7 +17,13 @@ export default {
 	    },
 	    changeEventVehicles(state, eventVehicles) {
 	      state.eventVehicles = eventVehicles
-	    }
+	    },
+	    changeCurrentPage(state, currentPage) {
+	      state.currentPage = currentPage
+	    },
+	    changeCurrentMenu(state, currentMenu) {
+	      state.currentMenu = currentMenu
+	    },
 	},
 	actions:{}
 }

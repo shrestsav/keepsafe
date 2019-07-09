@@ -13,6 +13,7 @@
 
 Route::get('/', 'HomeController@index')->name('dashboard');
 
+Route::get('/v/{any}', 'HomeController@index')->where('any', '.*');
 
 Auth::routes();
 
@@ -21,7 +22,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['role:superAdmin']], functio
     Route::resource('users','UserController');
 });
 
-Route::get('/staffs','UserController@staffs')->name('staffs.index');
 Route::get('/listStaffs','UserController@listStaffs')->name('staffs.list');
 Route::post('/createStaff','UserController@create_staff')->name('staffs.create');
 

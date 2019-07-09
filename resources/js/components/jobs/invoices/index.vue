@@ -341,6 +341,10 @@
         hireRate:false,
       }
     },
+    created(){
+      this.$store.commit('changeCurrentPage', 'invoice')
+      this.$store.commit('changeCurrentMenu', 'jobsMenu')
+    },
     mounted(){
       if(this.$route.query.ofEvent===undefined){
         this.$router.push({name:'allEvent'});
@@ -361,7 +365,7 @@
     },
     methods:{
       getResults() {
-        axios.get('detailEvent/'+this.$route.query.ofEvent)
+        axios.get('/detailEvent/'+this.$route.query.ofEvent)
         .then(response => {
           this.eventDetails = response.data;
           this.getJobDetails();
@@ -369,13 +373,13 @@
         });
       },
       getJobDetails(){
-        axios.get('jobs/'+this.eventDetails.job_id)
+        axios.get('/jobs/'+this.eventDetails.job_id)
         .then(response => {
           this.jobDetails = response.data;
         });
       },
       getJobEvents(page = 1) {
-        axios.get('listEvents/'+this.eventDetails.job_id+'?page=' + page)
+        axios.get('/listEvents/'+this.eventDetails.job_id+'?page=' + page)
         .then(response => {
           this.events = response.data;
         });

@@ -194,7 +194,7 @@
     },
     methods:{
       getData(event_id){
-        axios.get('detailEvent/'+event_id).then((response) => {
+        axios.get('/detailEvent/'+event_id).then((response) => {
           this.form = response.data;
           this.initializeForm();
         });
@@ -207,11 +207,11 @@
         })
       },
       defSettings(){
-        axios.get('installTypes').then(response => this.confSettings.installTypes = response.data);
-        axios.get('roofTypes').then(response => this.confSettings.roofTypes = response.data);
-        axios.get('pitches').then(response => this.confSettings.pitches = response.data);
-        axios.get('heights').then(response => this.confSettings.heights = response.data);
-        axios.get('jobEventFields').then(response => this.fields = response.data);
+        axios.get('/installTypes').then(response => this.confSettings.installTypes = response.data);
+        axios.get('/roofTypes').then(response => this.confSettings.roofTypes = response.data);
+        axios.get('/pitches').then(response => this.confSettings.pitches = response.data);
+        axios.get('/heights').then(response => this.confSettings.heights = response.data);
+        axios.get('/jobEventFields').then(response => this.fields = response.data);
       },
       update(){
         axios.post('/updateEvent',this.$data.form)
