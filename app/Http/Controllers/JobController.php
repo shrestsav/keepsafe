@@ -38,7 +38,6 @@ class JobController extends Controller
             $job['contacts'] = $contacts;
         }
     
-        // return $jobs; //same thing
         return response()->json($jobs);
     }
     /**

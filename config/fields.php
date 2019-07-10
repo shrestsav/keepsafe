@@ -542,4 +542,231 @@ return [
       ],
     ],
   ],
+  'client_details' => [
+    'Client Information' => [
+      'name' => [
+        'display_name' => 'Client Name',
+        'col' => '4',
+        'type' =>  'text',
+      ],
+      'address' => [
+        'display_name' => 'Address',
+        'col' => '4',
+        'type' =>  'text',
+      ],
+      'suburb' => [
+        'display_name' => 'Suburb',
+        'col' => '4',
+        'type' =>  'text',
+      ],
+      'state' => [
+        'display_name' => 'State',
+        'col' => '3',
+        'type' =>  'select',
+      ],
+      'postcode' => [
+        'display_name' => 'Postcode',
+        'col' => '3',
+        'type' =>  'text',
+      ],
+      'phone' => [
+        'display_name' => 'Phone',
+        'col' => '3',
+        'type' =>  'text',
+      ],
+      'fax' => [
+        'display_name' => 'Fax',
+        'col' => '3',
+        'type' =>  'text',
+      ],
+      'account_limit' => [
+        'display_name' => 'Account Limit',
+        'col' => '3',
+        'type' =>  'number',
+      ],
+    ],
+    'Billing Information' => [
+      'billing_email' => [
+        'display_name' => 'Billing Email',
+        'col' => '4',
+        'type' =>  'text',
+      ],
+      'billing_address' => [
+        'display_name' => 'Billing Address',
+        'col' => '4',
+        'type' =>  'text',
+      ],
+      'billing_suburb' => [
+        'display_name' => 'Billing Suburb',
+        'col' => '4',
+        'type' =>  'text',
+      ],
+      'billing_state' => [
+        'display_name' => 'Billing State',
+        'col' => '4',
+        'type' =>  'select',
+      ],
+      'billing_postcode' => [
+        'display_name' => 'Billing Postcode',
+        'col' => '4',
+        'type' =>  'text',
+      ],
+    ],
+    'Other Information' => [
+      'website' => [
+        'display_name' => 'Website',
+        'col' => '4',
+        'type' =>  'text',
+      ],
+      'abn' => [
+        'display_name' => 'A.B.N',
+        'col' => '4',
+        'type' =>  'text',
+      ],
+      'charge_rate' => [
+        'display_name' => 'Charge Rate',
+        'col' => '4',
+        'type' =>  'number',
+      ],
+      'footnote' => [
+        'display_name' => 'Footnote',
+        'col' => '12',
+        'type' =>  'textarea',
+      ],
+    ],
+  ],
+  'pantry_price' => [
+    'Pantry Price List' => [
+      'CSFEP' => [
+        'display_name' => 'Construction Steel Frame Edge Protection',
+        'col' => '4',
+        'type' =>  'number',
+      ],
+      'CTFEP' => [
+        'display_name' => 'Construction Timber Frame Edge Protection',
+        'col' => '4',
+        'type' =>  'number',
+      ],
+      'RSEP' => [
+        'display_name' => 'Re-roof Standard Edge Protection',
+        'col' => '4',
+        'type' =>  'number',
+      ],
+      'RPEP' => [
+        'display_name' => 'Re-roof Pole Edge Protection',
+        'col' => '3',
+        'type' =>  'number',
+      ],
+      'REP' => [
+        'display_name' => 'Renovation Edge Protection',
+        'col' => '3',
+        'type' =>  'number',
+      ],
+      'RP' => [
+        'display_name' => 'Residential Platform',
+        'col' => '3',
+        'type' =>  'number',
+      ],
+      'STDCP' => [
+        'display_name' => 'STD Commercial Platform',
+        'col' => '3',
+        'type' =>  'number',
+      ],
+      'ICP' => [
+        'display_name' => 'Internal Commercial Platform',
+        'col' => '3',
+        'type' =>  'number',
+      ],
+      'CEP' => [
+        'display_name' => 'Commercial Edge Protection',
+        'col' => '3',
+        'type' =>  'number',
+      ],
+      'BL' => [
+        'display_name' => 'Boom Lift',
+        'col' => '3',
+        'type' =>  'number',
+      ],
+      'CO' => [
+        'display_name' => 'Charge On, 1:Install - 2:Dismantle',
+        'col' => '3',
+        'type' =>  'number',
+      ],
+      'EVOR' => [
+        'display_name' => 'Edge Void 1 Rail',
+        'col' => '3',
+        'type' =>  'number',
+      ],
+      'EVTR' => [
+        'display_name' => 'Edge Void 2 Rail',
+        'col' => '3',
+        'type' =>  'number',
+      ],
+      'K' => [
+        'display_name' => 'Kickboards',
+        'col' => '3',
+        'type' =>  'number',
+      ],
+      'MG' => [
+        'display_name' => 'Mesh Guard',
+        'col' => '3',
+        'type' =>  'number',
+      ],
+      'COF' => [
+        'display_name' => 'Call Out Fee',
+        'col' => '3',
+        'type' =>  'number',
+      ],
+      'ERC' => [
+        'display_name' => 'Equipment Recovery Charge',
+        'col' => '3',
+        'type' =>  'number',
+      ],
+      'MMC' => [
+        'display_name' => 'Minimum Meter Charges',
+        'col' => '3',
+        'type' =>  'number',
+      ],
+      'HCR' => [
+        'display_name' => 'Hire Charge Rail',
+        'col' => '3',
+        'type' =>  'number',
+      ],
+      'HCP' => [
+        'display_name' => 'Hire Charge Platform',
+        'col' => '3',
+        'type' =>  'number',
+      ],
+      'HCEVO' => [
+        'display_name' => 'Hire Charge Edge Void 1',
+        'col' => '3',
+        'type' =>  'number',
+      ],
+      'HCEVT' => [
+        'display_name' => 'Hire Charge Edge Void 2',
+        'col' => '3',
+        'type' =>  'number',
+      ],
+      'HCEK' => [
+        'display_name' => 'Hire Charge Edge Kickboard',
+        'col' => '3',
+        'type' =>  'number',
+      ],
+      'HCEMG' => [
+        'display_name' => 'Hire Charge Edge Mesh Guard',
+        'col' => '3',
+        'type' =>  'number',
+      ],
+      'DW' => [
+        'display_name' => 'Damage Waiver(%)',
+        'col' => '3',
+        'type' =>  'number',
+      ],
+      'Note' => [
+        'display_name' => 'Note',
+        'col' => '3',
+        'type' =>  'textarea',
+      ],
+    ],
+  ],
 ];

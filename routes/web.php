@@ -29,6 +29,8 @@ Route::resource('attendance','AttendanceController');
 
 Route::resource('clients','ClientController');
 Route::post('clientContacts','ClientController@clientContacts');
+Route::get('defaultPantryPrice','ClientController@defaultPantryPrice');
+Route::get('clientPantryPrice/{id}','ClientController@clientPantryPrice');
 
 Route::resource('jobs','JobController');
 Route::get('listJobs/{key}','JobController@jobs');
@@ -55,3 +57,5 @@ Route::get('heights','CoreController@heights');
 
 //Config Fields
 Route::get('jobEventFields','CoreController@job_event_fields');
+Route::get('clientDetailsFields','CoreController@client_details_fields');
+Route::get('pantryPriceListFields','CoreController@pantry_price_fields');

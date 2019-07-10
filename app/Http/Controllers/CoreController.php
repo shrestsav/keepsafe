@@ -66,4 +66,14 @@ class CoreController extends Controller
         $fields = config('fields.job_event');
         return $fields;
     }
+    public function client_details_fields()
+    {
+        $fields = config('fields.client_details');
+        return $fields;
+    }
+    public function pantry_price_fields()
+    {
+        $fields = config('fields.pantry_price');
+        return $fields;
+    }
 }

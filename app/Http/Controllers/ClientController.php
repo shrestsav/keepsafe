@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Client;
 use App\ClientContact;
+use App\PantryPrice;
 use Illuminate\Support\Facades\Validator;
 
 class ClientController extends Controller
@@ -53,6 +54,8 @@ class ClientController extends Controller
                 $contact = ClientContact::create($contact);
             }
         }
+
+        return $client->id;
     }
 
     /**
@@ -63,7 +66,8 @@ class ClientController extends Controller
      */
     public function show($id)
     {
-        //
+        $client = Client::where('id',$id)->with('contacts')->first();
+        return response()->json($client);
     }
 
     /**
@@ -86,7 +90,16 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'billing_email' => 'required|string|max:255',
+            'suburb' => 'required|string|max:255',
+            'footnote' => 'required|string|max:555',
+        ]);
+        $contacts = $request['contacts'];
+        unset($request['contacts']);
+        $update = Client::where('id',$id)->update($request->all());
+        return $id;
     }
 
     /**
@@ -104,5 +117,20 @@ class ClientController extends Controller
     {
         $clientContacts = Client::find($request->client_id)->contacts;
         return $clientContacts;
+    }
+
+    public function defaultPantryPrice()
+    {
+        $pantryPrice = PantryPrice::where('client_id',0)->first();
+        return $pantryPrice;
+    }
+
+    public function clientPantryPrice($client_id)
+    {
+        $pantryPrice = PantryPrice::where('client_id',$client_id);
+        // if($pantryPrice->exists())
+            return $pantryPrice->first();
+        // else 
+        //     return 'No Records Found';
     }
 }

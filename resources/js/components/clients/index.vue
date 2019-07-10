@@ -24,7 +24,11 @@
             <td>{{item.name}}</td>
             <td>{{item.website}}</td>
             <td>{{item.suburb}}</td>
-            <td></td>
+            <td>
+              <router-link :to="{ name: 'editClient', query: { whereClient: item.id }  }" class="table-action" title="Edit Job">
+                <i class="fas fa-edit"></i>
+              </router-link>
+            </td>
           </tr>
         </tbody>
       </table>

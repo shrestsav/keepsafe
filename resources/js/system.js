@@ -23,6 +23,8 @@ import dashboard from './components/dashboard.vue'
 
 import clients from './components/clients/index.vue'
 import createClient from './components/clients/create.vue'
+import editClient from './components/clients/edit.vue'
+import clientPantry from './components/clients/pantry.vue'
 
 import staffs from './components/staffs/index.vue'
 import createStaff from './components/staffs/create.vue'
@@ -44,6 +46,8 @@ const routes = [
 
   {name:'clients',  path: '/v/clients', component: clients },
   {name:'createClient',  path: '/v/createClient', component: createClient },
+  {name:'editClient',  path: '/v/editClient', component: editClient },
+  {name:'clientPantry',  path: '/v/clientPantry', component: clientPantry },
   
   {name:'staffs', path: '/v/staffs', component: staffs },
   {name:'createStaff', path: '/v/createStaff', component: createStaff },
