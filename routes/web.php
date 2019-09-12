@@ -30,7 +30,8 @@ Route::resource('attendance','AttendanceController');
 Route::resource('clients','ClientController');
 Route::post('clientContacts','ClientController@clientContacts');
 Route::get('defaultPantryPrice','ClientController@defaultPantryPrice');
-Route::get('clientPantryPrice/{id}','ClientController@clientPantryPrice');
+Route::get('clientPantryPrice/{client_id}','ClientController@clientPantryPrice');
+Route::post('setClientPantryPrice/{client_id}','ClientController@setClientPantryPrice');
 
 Route::resource('jobs','JobController');
 Route::get('listJobs/{key}','JobController@jobs');

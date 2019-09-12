@@ -5,7 +5,7 @@
         <div class="nav-wrapper">
           <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">
             <li class="nav-item">
-              <router-link :to="{ name: 'editClient', query: { whereClient: form.id }}" class="nav-link mb-sm-3 mb-md-0" id="events" data-toggle="tab" href="" role="tab" aria-controls="tabs-icons-text-1" aria-selected="false">Client Details
+              <router-link :to="{ name: 'editClient', query: { whereClient: client_id }}" class="nav-link mb-sm-3 mb-md-0" id="events" data-toggle="tab" href="" role="tab" aria-controls="tabs-icons-text-1" aria-selected="false">Client Details
               </router-link>
             </li>
             <li class="nav-item">
@@ -16,12 +16,13 @@
       </div>
     </div>
     <div class="card-body">
+      <div class="text-center"><button class="btn btn-outline-primary" @click="loadDefaults">Load Defaults</button></div>
       <div v-for="(section,sec_name,index) in fields">
         <h6 class="heading-small text-muted mb-4">{{sec_name}}</h6>
         <div class="pl-lg-4">
           <div class="form-group row" v-for="item,key in section">
             <label :for="'input-'+key" class="col-md-3 col-form-label form-control-label">{{item['display_name']}}</label>
-            <div class="col-md-5">
+            <div class="col-md-4">
               <input 
                 v-if="item['type']==='number'"
                 :class="{'not-validated':errors[key]}" 
@@ -39,7 +40,7 @@
                 v-model="form.footnote"
               ></textarea>
             </div>
-            <label class="col-md-2 col-form-label form-control-label">{{defaultPantryPrice[key]}}</label>
+            <label class="offset-md-1 col-md-2 col-form-label form-control-label">{{defaultPantryPrice[key]}}</label>
           </div>
         </div>
       </div>
@@ -88,9 +89,14 @@
         axios.get('/states').then(response => this.states = response.data)
         axios.get('/pantryPriceListFields').then(response => this.fields = response.data)
         axios.get('/defaultPantryPrice').then(response => this.defaultPantryPrice = response.data)
+      }, 
+      loadDefaults(){
+        this.$Progress.start(1);
+        this.form = this.defaultPantryPrice;
+        this.form.client_id = this.client_id;
       },
       update(){
-        axios.patch('/clients/'+this.client_id,this.$data.form)
+        axios.post('/setClientPantryPrice/'+this.client_id,this.$data.form)
         .then((response) => {
           console.log(response)
           showNotify('primary','Updated')

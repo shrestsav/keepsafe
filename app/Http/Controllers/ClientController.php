@@ -127,10 +127,17 @@ class ClientController extends Controller
 
     public function clientPantryPrice($client_id)
     {
-        $pantryPrice = PantryPrice::where('client_id',$client_id);
-        // if($pantryPrice->exists())
-            return $pantryPrice->first();
-        // else 
-        //     return 'No Records Found';
+        $pantryPrice = PantryPrice::where('client_id',$client_id)->first();
+        return $pantryPrice;
+    }
+
+    public function setClientPantryPrice(Request $request, $client_id)
+    {
+        // return $request->all();
+        $setPantryPrice = PantryPrice::updateOrCreate(
+                                    ['client_id' => $client_id],
+                                    $request->all()
+                                );
+        return $setPantryPrice;
     }
 }

@@ -2376,6 +2376,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2424,10 +2425,15 @@ __webpack_require__.r(__webpack_exports__);
         return _this2.defaultPantryPrice = response.data;
       });
     },
+    loadDefaults: function loadDefaults() {
+      this.$Progress.start(1);
+      this.form = this.defaultPantryPrice;
+      this.form.client_id = this.client_id;
+    },
     update: function update() {
       var _this3 = this;
 
-      axios.patch('/clients/' + this.client_id, this.$data.form).then(function (response) {
+      axios.post('/setClientPantryPrice/' + this.client_id, this.$data.form).then(function (response) {
         console.log(response);
         showNotify('primary', 'Updated');
       })["catch"](function (error) {
@@ -12369,7 +12375,7 @@ var render = function() {
                       attrs: {
                         to: {
                           name: "editClient",
-                          query: { whereClient: _vm.form.id }
+                          query: { whereClient: _vm.client_id }
                         },
                         id: "events",
                         "data-toggle": "tab",
@@ -12395,94 +12401,114 @@ var render = function() {
     _c(
       "div",
       { staticClass: "card-body" },
-      _vm._l(_vm.fields, function(section, sec_name, index) {
-        return _c("div", [
-          _c("h6", { staticClass: "heading-small text-muted mb-4" }, [
-            _vm._v(_vm._s(sec_name))
-          ]),
-          _vm._v(" "),
+      [
+        _c("div", { staticClass: "text-center" }, [
           _c(
-            "div",
-            { staticClass: "pl-lg-4" },
-            _vm._l(section, function(item, key) {
-              return _c("div", { staticClass: "form-group row" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-md-3 col-form-label form-control-label",
-                    attrs: { for: "input-" + key }
-                  },
-                  [_vm._v(_vm._s(item["display_name"]))]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-5" }, [
-                  item["type"] === "number"
-                    ? _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.form[key],
-                            expression: "form[key]"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        class: { "not-validated": _vm.errors[key] },
-                        attrs: {
-                          placeholder: item["display_name"],
-                          id: "input-" + key,
-                          type: "number"
-                        },
-                        domProps: { value: _vm.form[key] },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(_vm.form, key, $event.target.value)
-                          }
-                        }
-                      })
-                    : _vm._e(),
-                  _vm._v(" "),
-                  item["type"] === "textarea"
-                    ? _c("textarea", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.form.footnote,
-                            expression: "form.footnote"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        class: { "not-validated": _vm.errors[key] },
-                        attrs: { rows: "4", placeholder: "Note" },
-                        domProps: { value: _vm.form.footnote },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(_vm.form, "footnote", $event.target.value)
-                          }
-                        }
-                      })
-                    : _vm._e()
-                ]),
-                _vm._v(" "),
-                _c(
-                  "label",
-                  { staticClass: "col-md-2 col-form-label form-control-label" },
-                  [_vm._v(_vm._s(_vm.defaultPantryPrice[key]))]
-                )
-              ])
-            }),
-            0
+            "button",
+            {
+              staticClass: "btn btn-outline-primary",
+              on: { click: _vm.loadDefaults }
+            },
+            [_vm._v("Load Defaults")]
           )
-        ])
-      }),
-      0
+        ]),
+        _vm._v(" "),
+        _vm._l(_vm.fields, function(section, sec_name, index) {
+          return _c("div", [
+            _c("h6", { staticClass: "heading-small text-muted mb-4" }, [
+              _vm._v(_vm._s(sec_name))
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "pl-lg-4" },
+              _vm._l(section, function(item, key) {
+                return _c("div", { staticClass: "form-group row" }, [
+                  _c(
+                    "label",
+                    {
+                      staticClass: "col-md-3 col-form-label form-control-label",
+                      attrs: { for: "input-" + key }
+                    },
+                    [_vm._v(_vm._s(item["display_name"]))]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-4" }, [
+                    item["type"] === "number"
+                      ? _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form[key],
+                              expression: "form[key]"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: { "not-validated": _vm.errors[key] },
+                          attrs: {
+                            placeholder: item["display_name"],
+                            id: "input-" + key,
+                            type: "number"
+                          },
+                          domProps: { value: _vm.form[key] },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(_vm.form, key, $event.target.value)
+                            }
+                          }
+                        })
+                      : _vm._e(),
+                    _vm._v(" "),
+                    item["type"] === "textarea"
+                      ? _c("textarea", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.footnote,
+                              expression: "form.footnote"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: { "not-validated": _vm.errors[key] },
+                          attrs: { rows: "4", placeholder: "Note" },
+                          domProps: { value: _vm.form.footnote },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "footnote",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      : _vm._e()
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "label",
+                    {
+                      staticClass:
+                        "offset-md-1 col-md-2 col-form-label form-control-label"
+                    },
+                    [_vm._v(_vm._s(_vm.defaultPantryPrice[key]))]
+                  )
+                ])
+              }),
+              0
+            )
+          ])
+        })
+      ],
+      2
     ),
     _vm._v(" "),
     _c("div", { staticClass: "card-footer text-center" }, [
